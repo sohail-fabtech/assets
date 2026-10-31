@@ -47,6 +47,15 @@
         ],
         "createdAt": "2026-10-31T08:21:15.193Z",
         "reason": "User's ribbon/level-up/victory references specify gold gradient game lettering"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "assets/pages/splash.html"
+        ],
+        "createdAt": "2026-10-31T08:49:57.205Z",
+        "reason": "Gold 3D Edge Pulse logo lettering established by the user's reference mockups"
       }
     ]
   }

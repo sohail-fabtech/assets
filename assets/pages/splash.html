@@ -1,0 +1,178 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Edge Pulse – Splash &amp; opening</title>
+<link rel="stylesheet" href="../motion/themes.css">
+<link rel="stylesheet" href="../motion/chrome.css">
+<style>
+:root{--bg:#3b2bd9;--c0:#14b8d4;--c1:#e83fb8;--c2:#7fd420;--c3:#ffa51f;--ink:#160a3a}
+body{margin:0;min-height:100vh;display:grid;justify-items:center;gap:14px;padding:22px 0 40px;background:#0f0b24;color:#fff;font:600 14px/1.4 Poppins,sans-serif}
+.ctrls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.ctrls button{font:800 12px Poppins;color:#fff;background:#ffffff14;border:1px solid #ffffff2a;border-radius:99px;padding:7px 14px;cursor:pointer}
+.ctrls button[aria-pressed=true]{background:#fff;color:#0f0b24}
+/* phone: 390×844 (19.5:9) */
+.phone{position:relative;width:390px;height:844px;border-radius:52px;overflow:hidden;background:var(--bg);box-shadow:0 0 0 10px #1c1640,0 0 0 12px #3a3070,0 40px 80px #000a;isolation:isolate}
+.phone::after{content:"";position:absolute;top:12px;left:50%;width:118px;height:32px;translate:-50% 0;border-radius:20px;background:#000;z-index:50}
+.scene{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity 280ms}
+.scene.on{opacity:1;pointer-events:auto}
+/* ---- 1. studio splash ---- */
+#s1{display:grid;place-items:center;background:var(--bg)}
+.pulse{position:absolute;left:50%;top:50%;width:80px;height:80px;margin:-40px;border-radius:50%;border:6px solid #fff;opacity:0}
+.on .pulse{animation:ring 1.4s cubic-bezier(.2,.8,.3,1) both}.on .pulse:nth-child(2){animation-delay:.2s}.on .pulse:nth-child(3){animation-delay:.4s}
+@keyframes ring{0%{scale:.2;opacity:1}100%{scale:7;opacity:0}}
+.mark{position:relative;z-index:2;text-align:center}
+.mark .dot{width:68px;height:68px;margin:0 auto 14px;border-radius:50%;background:#fff;box-shadow:inset -8px -10px 0 #0002}
+.on .mark .dot{animation:dot 700ms cubic-bezier(.34,1.6,.64,1) both}
+@keyframes dot{0%{scale:0}100%{scale:1}}
+.word{display:flex;justify-content:center;font:900 52px/1 Poppins;letter-spacing:-.02em}
+.word span{display:inline-block;opacity:0}
+.on .word span{animation:letter 520ms cubic-bezier(.34,1.6,.64,1) both;animation-delay:calc(300ms + var(--i) * 45ms)}
+@keyframes letter{0%{opacity:0;translate:0 40px;scale:.6}100%{opacity:1;translate:0;scale:1}}
+.tagline{margin-top:10px;font:700 14px Poppins;opacity:0;letter-spacing:.14em}
+.on .tagline{animation:fade 500ms 1s both}
+@keyframes fade{to{opacity:.85}}
+/* ---- blobs (shared by scenes 2–4) ---- */
+.blob{position:absolute;will-change:translate,scale;filter:drop-shadow(0 10px 0 #0002)}
+@keyframes morph{0%,100%{border-radius:42% 58% 63% 37% / 45% 40% 60% 55%}33%{border-radius:60% 40% 38% 62% / 55% 62% 38% 45%}66%{border-radius:38% 62% 55% 45% / 62% 38% 62% 38%}}
+.eyes{position:absolute;display:flex;gap:10px}
+.eye{position:relative;width:var(--e,40px);height:calc(var(--e,40px) * 1.15);border-radius:50%;background:#fff;box-shadow:inset 0 -4px 0 #0001;animation:blink 4.2s infinite;animation-delay:var(--bd,0s)}
+.eye i{position:absolute;left:50%;top:50%;width:46%;height:46%;margin:-23% 0 0 -23%;border-radius:50%;background:var(--ink);transition:translate 260ms cubic-bezier(.34,1.4,.64,1)}
+.eye i::after{content:"";position:absolute;left:18%;top:16%;width:32%;height:32%;border-radius:50%;background:#fff}
+@keyframes blink{0%,94%,100%{scale:1 1}96%{scale:1 .08}}
+.mouth{position:absolute;width:38px;height:18px;border:6px solid var(--ink);border-top:0;border-radius:0 0 40px 40px}
+.mouth.o{width:22px;height:24px;border:0;border-radius:50%;background:var(--ink)}
+/* ---- 2. blob burst ---- */
+#s2 .blob{opacity:0}
+#s2.on .blob{animation:enter 700ms cubic-bezier(.34,1.5,.64,1) both;animation-delay:calc(var(--i) * 140ms)}
+@keyframes enter{0%{opacity:0;translate:var(--fx) var(--fy);scale:.3}70%{opacity:1;scale:1.08 .92}100%{opacity:1;translate:0 0;scale:1}}
+/* ---- 3. loading ---- */
+#s3 .hint{position:absolute;left:30px;right:30px;bottom:150px;text-align:center}
+#s3 h3{margin:0 0 8px;font:900 30px/1.1 Poppins}#s3 p{margin:0;font:600 14px/1.45 Poppins;opacity:.85;min-height:3em;transition:opacity .3s}
+.load{position:absolute;left:40px;right:40px;bottom:96px;height:20px;border-radius:99px;background:#0003;box-shadow:inset 0 3px 0 #0003}
+.load i{position:absolute;left:3px;top:3px;bottom:3px;width:0;border-radius:99px;background:linear-gradient(#fff,#e8e0ff);transition:width 200ms linear}
+.load i::after{content:"";position:absolute;right:-8px;top:50%;width:22px;height:22px;translate:0 -50%;border-radius:50%;background:var(--c3);box-shadow:0 0 0 4px #fff}
+#s3 .hop{animation:hop 900ms cubic-bezier(.3,0,.4,1) infinite alternate}
+@keyframes hop{to{translate:0 -26px;scale:1 1.04}}
+/* ---- 4. title ---- */
+#s4 .logo{position:absolute;top:120px;left:0;right:0;text-align:center}
+#s4 .logo .title-3d{font:900 62px/1 Poppins}
+#s4 .logo small{display:block;margin-top:10px;font:800 13px Poppins;letter-spacing:.16em;opacity:.85}
+.on .logo{animation:drop 700ms cubic-bezier(.34,1.5,.64,1) both}
+@keyframes drop{0%{translate:0 -60px;opacity:0}100%{translate:0;opacity:1}}
+.play{position:absolute;left:50%;bottom:120px;width:250px;translate:-50% 0;cursor:pointer;z-index:5}
+.play img{display:block;width:100%}.play span{position:absolute;inset:0 0 12%;display:grid;place-items:center;font:900 28px Poppins;color:#0e2a06}
+.on .play{animation:playin 600ms 500ms cubic-bezier(.34,1.5,.64,1) both, breathe 1.8s 1.2s ease-in-out infinite}
+@keyframes playin{0%{scale:0}100%{scale:1}}@keyframes breathe{50%{scale:1.05}}
+.play:active{scale:.94}
+.chipbar{position:absolute;bottom:60px;left:0;right:0;display:flex;justify-content:center;gap:10px;font:700 12px Poppins;opacity:.8}
+/* ---- transition: blobs swallow the screen ---- */
+.wipe{position:absolute;left:50%;bottom:150px;width:60px;height:60px;margin-left:-30px;border-radius:50%;background:var(--c2);z-index:20;scale:0}
+.wipe.go{animation:wipe 700ms cubic-bezier(.6,0,.4,1) forwards}
+@keyframes wipe{to{scale:30}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:1ms!important;animation-iteration-count:1!important}}
+</style></head><body>
+<div class="ctrls"><button id="replay">▶ Replay sequence</button><button data-go="s1">1 · Studio</button><button data-go="s2">2 · Characters</button><button data-go="s3">3 · Loading</button><button data-go="s4">4 · Title</button></div>
+<div class="phone" id="phone">
+  <section class="scene" id="s1"><div class="pulse"></div><div class="pulse"></div><div class="pulse"></div>
+    <div class="mark"><div class="dot"></div><div class="word" id="word"></div><div class="tagline">WATCH THE EDGE</div></div></section>
+  <section class="scene" id="s2"></section>
+  <section class="scene" id="s3"><div id="s3b"></div><div class="hint"><h3>Loading…</h3><p id="tip"></p></div><div class="load"><i id="bar"></i></div></section>
+  <section class="scene" id="s4"><div id="s4b"></div><div class="logo"><span class="title-3d gold-3d" data-text="Edge Pulse">Edge Pulse</span><small>CHOOSE YOUR MOMENT</small></div>
+    <div class="play" id="play"><img src="../buttons/graphite/ui_graphite_pill-primary_normal.svg" alt=""><span>PLAY</span></div>
+    <div class="chipbar"><span>Endless</span>·<span>Campaign</span>·<span>Daily Pulse</span></div></section><div id="paint" style="position:absolute;inset:0;z-index:30;pointer-events:none"></div>
+</div>
+<script>
+const $ = s => document.querySelector(s);
+const C = ['var(--c0)', 'var(--c1)', 'var(--c2)', 'var(--c3)'];
+// four original mascots, one per piece colour: [colour, x, y, w, h, eyeSize, eyesX, eyesY, mouth, enterFrom]
+const CAST = {
+  s2: [[2, -60, 420, 330, 300, 46, 120, 90, 'smile', '-300px 0'], [3, 160, 560, 300, 340, 40, 70, 80, 'o', '300px 0'],
+       [0, 40, 80, 260, 240, 36, 90, 70, 'smile', '0 -400px'], [1, 220, 250, 230, 230, 34, 60, 60, 'smile', '300px -200px']],
+  s3: [[1, 120, 300, 160, 150, 30, 40, 40, 'o', '0 0'], [0, 30, 380, 110, 110, 24, 24, 30, 'smile', '0 0'], [3, 260, 390, 110, 110, 24, 24, 30, 'smile', '0 0']],
+  s4: [[2, -70, 600, 260, 280, 40, 100, 70, 'smile', '0 0'], [3, 210, 640, 240, 260, 36, 60, 64, 'smile', '0 0'], [0, -40, 300, 120, 120, 24, 40, 30, 'smile', '0 0'], [1, 300, 330, 120, 120, 24, 30, 30, 'o', '0 0']],
+};
+const NAMES = ['cyan', 'magenta', 'lime', 'amber'];
+// mascots are self-animating SVG files (body morph, blink, pupils) — see tools/make_mascots.py
+const blob = ([c, x, y, w, h, e, ex, ey, m, from], i, hop) => `<img class="blob ${hop ? 'hop' : ''}" data-c="${c}" src="../ui/mascots/masc_${NAMES[c]}.svg" alt=""
+  style="--i:${i};--fx:${from.split(' ')[0]};--fy:${from.split(' ')[1]};left:${x}px;top:${y}px;width:${w}px;height:${w * 1.05}px;${hop ? `animation-delay:${i * 150}ms` : ''}">`;
+$('#s2').innerHTML = CAST.s2.map((b, i) => blob(b, i)).join('');
+$('#s3b').innerHTML = CAST.s3.map((b, i) => blob(b, i, true)).join('');
+$('#s4b').innerHTML = CAST.s4.map((b, i) => blob(b, i)).join('');
+$('#word').innerHTML = [...'Edge Pulse'].map((ch, i) => `<span style="--i:${i}">${ch === ' ' ? '&nbsp;' : ch}</span>`).join('');
+
+// eyes follow a wandering target (or the pointer) — keeps the cast alive
+let target = null;
+document.addEventListener('pointermove', e => (target = [e.clientX, e.clientY]));
+setInterval(() => {
+  const r = $('#phone').getBoundingClientRect();
+  const [tx, ty] = target || [r.left + Math.random() * r.width, r.top + Math.random() * r.height];
+  document.querySelectorAll('.scene.on .eye i').forEach(p => {
+    const b = p.parentElement.getBoundingClientRect(), dx = tx - (b.left + b.width / 2), dy = ty - (b.top + b.height / 2), d = Math.hypot(dx, dy) || 1, k = Math.min(1, d / 200) * b.width * .22;
+    p.style.translate = `${dx / d * k}px ${dy / d * k}px`;
+  });
+  if (!target || Math.random() < .3) target = null;
+}, 900);
+
+const TIPS = ['Wait for the launcher to line up with a gap, then tap to fire.', 'Fill a whole row or column to clear it — any colours count.',
+              'Swap NOW and NEXT when another colour fits better.', 'Every fifth good shot in Blast drops a charged piece.'];
+let timers = [];
+const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+function show(id) { document.querySelectorAll('.scene').forEach(s => s.classList.toggle('on', s.id === id));
+  document.querySelectorAll('[data-go]').forEach(b => b.setAttribute('aria-pressed', b.dataset.go === id)); }
+function loading(onDone) {
+  let p = 0, t = 0; $('#tip').textContent = TIPS[0]; $('#bar').style.width = '0';
+  const iv = setInterval(() => { p = Math.min(100, p + 2 + Math.random() * 5); $('#bar').style.width = `calc(${p}% - 6px)`;
+    if (++t % 14 === 0) { $('#tip').style.opacity = 0; setTimeout(() => { $('#tip').textContent = TIPS[(t / 14) % TIPS.length]; $('#tip').style.opacity = .85; }, 300); }
+    if (p >= 100) { clearInterval(iv); onDone && onDone(); } }, 90);
+  timers.push(iv);
+}
+function play() {
+  timers.forEach(clearTimeout); timers.forEach(clearInterval); timers = [];
+  $('#paint').innerHTML = '';
+  show('s1'); later(() => show('s2'), 2100); later(() => { show('s3'); loading(() => later(() => show('s4'), 300)); }, 3900);
+}
+document.addEventListener('click', e => {
+  const g = e.target.closest('[data-go]');
+  if (g) { timers.forEach(clearTimeout); timers.forEach(clearInterval); timers = []; show(g.dataset.go); if (g.dataset.go === 's3') loading(); }
+  if (e.target.id === 'replay') play();
+  if (e.target.closest('#play')) collide();
+});
+/** PLAY: mascots fly to the centre, squash into each other, burst, and their colours splash over the screen. */
+let busy = false;
+async function collide() {
+  if (busy) return; busy = true;
+  const phone = $('#phone').getBoundingClientRect(), cx = phone.width / 2, cy = phone.height * .46;
+  const cast = [...document.querySelectorAll('#s4 .blob')];
+  A2(document.querySelector('#play'), [{ scale: 1 }, { scale: .85 }, { scale: 1.1 }, { scale: 0, opacity: 0 }], 360);
+  // 1. wind-up then fly in (each from where it stands), squashing on the way
+  cast.forEach((b, i) => {
+    const r = b.getBoundingClientRect(), bx = r.left - phone.left + r.width / 2, by = r.top - phone.top + r.height / 2;
+    const dx = cx - bx, dy = cy - by;
+    return A2(b, [{ translate: '0 0', scale: '1' }, { translate: `${-dx * .08}px ${-dy * .08}px`, scale: '1.1 .9', offset: .25 },
+                  { translate: `${dx}px ${dy}px`, scale: '.75 1.15' }], 520, 'cubic-bezier(.6,0,.9,.5)', i * 40);
+  });
+  await new Promise(r => setTimeout(r, 640));   // timer-driven so the sequence never waits on a paused animation
+  // 2. impact: squash flat, shake the phone
+  cast.forEach(b => { A2(b, [{ scale: '.75 1.15' }, { scale: '1.5 .55' }], 90); setTimeout(() => (b.style.opacity = 0), 90); });
+  A2($('#phone'), [{ translate: '0 0' }, { translate: '-8px 4px' }, { translate: '7px -5px' }, { translate: '-4px 3px' }, { translate: '0 0' }], 320);
+  const P = $('#paint'), cols = ['#14b8d4', '#e83fb8', '#7fd420', '#ffa51f'];
+  P.innerHTML = '';
+  // 3. droplets fly out
+  for (let i = 0; i < 26; i++) {
+    const d = document.createElement('div'), a = Math.random() * 6.283, dist = 160 + Math.random() * 260, s = 10 + Math.random() * 26;
+    d.style.cssText = `position:absolute;left:${cx - s / 2}px;top:${cy - s / 2}px;width:${s}px;height:${s}px;border-radius:50%;background:${cols[i % 4]}`;
+    P.appendChild(d);
+    A2(d, [{ translate: '0 0', scale: 1 }, { translate: `${Math.cos(a) * dist}px ${Math.sin(a) * dist + 80}px`, scale: .6 }], 700 + Math.random() * 300, 'cubic-bezier(.2,.8,.4,1)');
+  }
+  // 4. four splats bloom one over another until the last colour fills the screen
+  for (let i = 0; i < 4; i++) {
+    const sp = document.createElement('img'), rot = Math.random() * 360;
+    sp.src = `../ui/mascots/masc_splat_${NAMES[(i + 2) % 4]}.svg`;
+    sp.style.cssText = `position:absolute;left:${cx - 100}px;top:${cy - 100}px;width:200px;height:200px;rotate:${rot}deg`;
+    P.appendChild(sp);
+    A2(sp, [{ scale: 0 }, { scale: i === 3 ? 14 : 3 + i * 1.6 }], 520 + i * 90, 'cubic-bezier(.2,.9,.3,1)', 60 + i * 130);
+  }
+  await new Promise(r => setTimeout(r, 1700));
+  busy = false; play();    // in the game this is where the first level loads
+}
+const A2 = (el, kf, ms, easing = 'ease-out', delay = 0) => el.animate(kf, { duration: ms, easing, delay, fill: 'forwards' }).finished;
+play();
+</script></body></html>

@@ -37,7 +37,8 @@ for folder, title in CATEGORIES.items():
             nav.append(f'<a class="sub" href="#pieces-{sub}">{sub} <b>{n}</b></a>')
     sections.append(f'<section id="{folder}"><h2>{title} <span>{folder}/ · {count}</span></h2>{body}</section>')
 
-LIVE = [("ribbons-live", "Ribbons & result banners (live)", "pages/ribbons.html", "Curved/wave/bow ribbons, level-up badges, level completed, victory, icon progress bars", 1500),
+LIVE = [("splash-live", "Splash & opening (live)", "pages/splash.html", "Vertical opening: studio splash → characters → loading tips → title + Play", 960),
+        ("ribbons-live", "Ribbons & result banners (live)", "pages/ribbons.html", "Curved/wave/bow ribbons, level-up badges, level completed, victory, icon progress bars", 1500),
         ("panels-live", "Panels & banners (live)", "pages/panels.html", "Dialogs, rewards, results, shop, daily, quests, toasts, events, callouts, lists, banners", 1500),
         ("worlds", "World select (live)", "pages/worlds.html", "10 world cards · scene, ribbon title, Edge Pulse board, collect goal", 1150),
         ("world-collection", "World collection (live)", "pages/world-collection.html", "Collection screen · tap a world · +1 item fills the bar, chest unlocks at the goal", 900),
