@@ -30,6 +30,9 @@ def folder_for(name):
     if name.startswith("bombc_"):   return f"pieces/bombs/colored/{p[1]}"             # bombc_mini_0
     if name.startswith("bomb_"):    return f"pieces/bombs/metal/{p[1]}"               # bomb_mini_iron
     if name.startswith("blk_"):     return f"pieces/blockers/{p[1]}"                  # blk_crate_3
+    if name.startswith("ui_"):      return f"buttons/{p[1]}"                          # ui_volcano_pill-primary_normal
+    if name.startswith("lv_"):      return f"pieces/levels/{p[1]}/{p[2]}"             # lv_volcano_obstacles_lava_2
+    if name.startswith("lvb_"):     return f"board/levels/{p[1]}"                     # lvb_volcano_board
     if name.startswith("th_"):      return f"pieces/themes/{'_'.join(p[1:-2])}/{p[-2]}"  # th_orchid_dusk_gem_0
     if name.startswith("thb_"):     return f"board/themes/{'_'.join(p[1:-1])}"        # thb_lagoon_board
     if name.startswith("sea_"):                                                        # sea_autumn_acorn_0 / _board / _emblem
@@ -51,5 +54,8 @@ if __name__ == "__main__":  # self-check
     assert folder_for("sw_bakery_donut_1.svg") == "pieces/sweets/bakery/donut"
     assert folder_for("bomb_mega_gold.svg") == "pieces/bombs/metal/mega"
     assert folder_for("blk_ice_2.svg") == "pieces/blockers/ice"
+    assert folder_for("ui_volcano_pill-primary_pressed.svg") == "buttons/volcano"
+    assert folder_for("lv_reef_collectibles_pearl_0.svg") == "pieces/levels/reef/collectibles"
+    assert folder_for("lvb_nebula_board.svg") == "board/levels/nebula"
     assert folder_for("icon_home.svg") == "buttons"
     print("layout ok")

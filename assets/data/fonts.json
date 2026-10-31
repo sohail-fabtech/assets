@@ -1,0 +1,79 @@
+[
+ {
+  "family": "Poppins",
+  "file": "fonts/poppins/Poppins-ExtraBold.ttf",
+  "license": "SIL Open Font License 1.1",
+  "licenseFile": "fonts/poppins/OFL.txt",
+  "source": "https://github.com/google/fonts/tree/main/ofl/poppins"
+ },
+ {
+  "family": "Bungee",
+  "file": "fonts/bungee/Bungee-Regular.ttf",
+  "license": "SIL Open Font License 1.1",
+  "licenseFile": "fonts/bungee/OFL.txt",
+  "source": "https://github.com/google/fonts/tree/main/ofl/bungee"
+ },
+ {
+  "family": "Fredoka",
+  "file": "fonts/fredoka/Fredoka[wdth,wght].ttf",
+  "license": "SIL Open Font License 1.1",
+  "licenseFile": "fonts/fredoka/OFL.txt",
+  "source": "https://github.com/google/fonts/tree/main/ofl/fredoka"
+ },
+ {
+  "family": "Cinzel Decorative",
+  "file": "fonts/cinzel-decorative/CinzelDecorative-Bold.ttf",
+  "license": "SIL Open Font License 1.1",
+  "licenseFile": "fonts/cinzel-decorative/OFL.txt",
+  "source": "https://github.com/google/fonts/tree/main/ofl/cinzeldecorative"
+ },
+ {
+  "family": "Exo 2",
+  "file": "fonts/exo2/Exo2[wght].ttf",
+  "license": "SIL Open Font License 1.1",
+  "licenseFile": "fonts/exo2/OFL.txt",
+  "source": "https://github.com/google/fonts/tree/main/ofl/exo2"
+ },
+ {
+  "family": "Baloo 2",
+  "file": "fonts/baloo2/Baloo2[wght].ttf",
+  "license": "SIL Open Font License 1.1",
+  "licenseFile": "fonts/baloo2/OFL.txt",
+  "source": "https://github.com/google/fonts/tree/main/ofl/baloo2"
+ },
+ {
+  "family": "Creepster",
+  "file": "fonts/creepster/Creepster-Regular.ttf",
+  "license": "SIL Open Font License 1.1",
+  "licenseFile": "fonts/creepster/OFL.txt",
+  "source": "https://github.com/google/fonts/tree/main/ofl/creepster"
+ },
+ {
+  "family": "Righteous",
+  "file": "fonts/righteous/Righteous-Regular.ttf",
+  "license": "SIL Open Font License 1.1",
+  "licenseFile": "fonts/righteous/OFL.txt",
+  "source": "https://github.com/google/fonts/tree/main/ofl/righteous"
+ },
+ {
+  "family": "Lilita One",
+  "file": "fonts/lilita-one/LilitaOne-Regular.ttf",
+  "license": "SIL Open Font License 1.1",
+  "licenseFile": "fonts/lilita-one/OFL.txt",
+  "source": "https://github.com/google/fonts/tree/main/ofl/lilitaone"
+ },
+ {
+  "family": "Rye",
+  "file": "fonts/rye/Rye-Regular.ttf",
+  "license": "SIL Open Font License 1.1",
+  "licenseFile": "fonts/rye/OFL.txt",
+  "source": "https://github.com/google/fonts/tree/main/ofl/rye"
+ },
+ {
+  "family": "Audiowide",
+  "file": "fonts/audiowide/Audiowide-Regular.ttf",
+  "license": "SIL Open Font License 1.1",
+  "licenseFile": "fonts/audiowide/OFL.txt",
+  "source": "https://github.com/google/fonts/tree/main/ofl/audiowide"
+ }
+]

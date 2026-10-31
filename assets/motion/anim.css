@@ -57,3 +57,63 @@
 /* Gentle motion setting + OS preference: kill loops, keep instant feedback */
 .gentle .ep, .gentle .ep::before, .gentle .ep::after, .gentle .ep > img { animation: none !important }
 @media (prefers-reduced-motion: reduce) { .ep, .ep::before, .ep::after, .ep > img { animation: none !important } }
+
+/* ============ Themed controls (tokens from themes.css: --dur, --ease, --idle) ============ */
+.ctl { position: relative; display: inline-grid; place-items: center; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
+  transition: transform calc(160ms * var(--dur, 1)) var(--out-cubic), filter 160ms; }
+.ctl > img { display: block; width: 100%; pointer-events: none }
+.ctl > .lbl { position: absolute; inset: 0 0 12%; display: grid; place-items: center; font: 800 clamp(13px, 2.4vw, 22px)/1.2 var(--font-button, Poppins);
+  letter-spacing: -.01em; color: var(--lblc, #fff); text-shadow: 0 2px 0 rgba(0,0,0,.25); pointer-events: none; white-space: nowrap }
+@media (hover: hover) { .ctl:hover { transform: translateY(-2px); filter: brightness(1.06) } }
+.ctl:active, .ctl.is-pressed { transform: translateY(3px) scale(.96); transition-duration: calc(80ms * var(--dur, 1)) }
+.ctl[aria-disabled="true"] { cursor: not-allowed; filter: none; transform: none }
+
+/* one-shot feedback, triggered by anim.js play(el, name) */
+.fx-jelly  { animation: fx-jelly  calc(420ms * var(--dur, 1)) var(--ease, var(--out-back)) }
+.fx-deny   { animation: fx-deny   260ms var(--out-cubic) }
+.fx-pop    { animation: fx-pop    calc(260ms * var(--dur, 1)) var(--ease, var(--out-back)) }
+.fx-glow   { animation: fx-glow   calc(600ms * var(--dur, 1)) var(--out-cubic) }
+@keyframes fx-jelly { 0% { transform: scale(1) } 30% { transform: scale(1.1, .9) } 50% { transform: scale(.94, 1.06) } 70% { transform: scale(1.03, .98) } 100% { transform: scale(1) } }
+@keyframes fx-deny  { 20%, 60% { transform: translateX(-6px) } 40%, 80% { transform: translateX(6px) } }
+@keyframes fx-pop   { 0% { transform: scale(.6) } 70% { transform: scale(1.12) } 100% { transform: scale(1) } }
+@keyframes fx-glow  { 0% { filter: drop-shadow(0 0 0 transparent) } 40% { filter: drop-shadow(0 0 16px var(--accent, #fff)) brightness(1.2) } 100% { filter: none } }
+
+/* ripple (material-style press origin) */
+.ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,.45); transform: scale(0); pointer-events: none;
+  animation: ripple calc(520ms * var(--dur, 1)) var(--out-cubic) forwards }
+@keyframes ripple { to { transform: scale(1); opacity: 0 } }
+
+/* loading spinner + success check draw */
+.spin { width: 26px; height: 26px; border-radius: 50%; border: 4px solid rgba(255,255,255,.35); border-top-color: #fff; animation: spin 700ms linear infinite }
+.check-draw path { stroke-dasharray: 60; stroke-dashoffset: 60; animation: draw calc(320ms * var(--dur, 1)) var(--out-cubic) forwards }
+@keyframes draw { to { stroke-dashoffset: 0 } }
+
+/* tab underline glide */
+.tabs-glide { position: relative } .tabs-glide .bar { position: absolute; bottom: 2px; height: 4px; border-radius: 2px; background: var(--accent, #fff);
+  transition: left calc(260ms * var(--dur, 1)) var(--ease, var(--out-back)), width calc(260ms * var(--dur, 1)) var(--ease, var(--out-back)) }
+
+/* per-theme idle personality on .idle elements (primary CTA, panels) */
+.idle { animation: idle-shine 3.6s var(--in-out) infinite }
+[data-theme="volcano"] .idle   { animation: idle-ember 1.6s var(--in-out) infinite }
+[data-theme="sky"] .idle       { animation: idle-float 3.2s var(--in-out) infinite }
+[data-theme="forest"] .idle    { animation: idle-firefly 2.8s var(--in-out) infinite }
+[data-theme="tundra"] .idle    { animation: idle-frost 3s var(--in-out) infinite }
+[data-theme="reef"] .idle      { animation: idle-sway 3.4s var(--in-out) infinite }
+[data-theme="carnival"] .idle  { animation: idle-flicker 2.4s steps(1) infinite }
+[data-theme="crystal"] .idle   { animation: idle-sparkle 2.2s var(--in-out) infinite }
+[data-theme="desert"] .idle    { animation: idle-haze 2.6s var(--in-out) infinite }
+[data-theme="steampunk"] .idle { animation: idle-chug 1.2s var(--in-out) infinite }
+[data-theme="nebula"] .idle    { animation: idle-cosmic 4s var(--in-out) infinite }
+@keyframes idle-shine   { 50% { filter: brightness(1.08) } }
+@keyframes idle-ember   { 0%, 100% { filter: drop-shadow(0 0 4px #ff6a1a) } 50% { filter: drop-shadow(0 0 14px #ffb04a) brightness(1.1) } }
+@keyframes idle-float   { 50% { transform: translateY(-5px) } }
+@keyframes idle-firefly { 0%, 100% { filter: drop-shadow(0 0 2px #7fe8ff) } 50% { filter: drop-shadow(0 0 12px #c8ffa8) } }
+@keyframes idle-frost   { 50% { filter: brightness(1.12) saturate(.85) } }
+@keyframes idle-sway    { 25% { transform: rotate(-1.5deg) } 75% { transform: rotate(1.5deg) } }
+@keyframes idle-flicker { 0%, 46%, 52%, 100% { filter: brightness(1) } 48% { filter: brightness(.55) } 50% { filter: brightness(1.25) } }
+@keyframes idle-sparkle { 50% { filter: drop-shadow(0 0 10px #fff) brightness(1.15) } }
+@keyframes idle-haze    { 50% { transform: skewX(1.2deg) scaleY(1.01) } }
+@keyframes idle-chug    { 0%, 100% { transform: translateY(0) } 15% { transform: translateY(2px) } 30% { transform: translateY(0) } }
+@keyframes idle-cosmic  { 50% { filter: drop-shadow(0 0 12px #ff4ab8) hue-rotate(15deg) } }
+.gentle .idle, .gentle .ctl { animation: none !important }
+@media (prefers-reduced-motion: reduce) { .idle, [class*="fx-"] { animation: none !important } }

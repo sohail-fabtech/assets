@@ -1,0 +1,639 @@
+{
+ "graphite": {
+  "name": "Graphite",
+  "mood": "Clean, shiny graphite and glass",
+  "material": "glossy",
+  "pieces": [
+   "pieces/levels/graphite/pieces/lv_graphite_pieces_p_0.svg",
+   "pieces/levels/graphite/pieces/lv_graphite_pieces_p_1.svg",
+   "pieces/levels/graphite/pieces/lv_graphite_pieces_p_2.svg",
+   "pieces/levels/graphite/pieces/lv_graphite_pieces_p_3.svg"
+  ],
+  "obstacles": [
+   {
+    "id": "crate",
+    "name": "Wooden Crate",
+    "hits": 3,
+    "states": [
+     "pieces/levels/graphite/obstacles/lv_graphite_obstacles_crate_3.svg",
+     "pieces/levels/graphite/obstacles/lv_graphite_obstacles_crate_2.svg",
+     "pieces/levels/graphite/obstacles/lv_graphite_obstacles_crate_1.svg"
+    ]
+   },
+   {
+    "id": "ice",
+    "name": "Ice Block",
+    "hits": 3,
+    "states": [
+     "pieces/levels/graphite/obstacles/lv_graphite_obstacles_ice_3.svg",
+     "pieces/levels/graphite/obstacles/lv_graphite_obstacles_ice_2.svg",
+     "pieces/levels/graphite/obstacles/lv_graphite_obstacles_ice_1.svg"
+    ]
+   },
+   {
+    "id": "chain",
+    "name": "Chain Lock",
+    "hits": 2,
+    "states": [
+     "pieces/levels/graphite/obstacles/lv_graphite_obstacles_chain_2.svg",
+     "pieces/levels/graphite/obstacles/lv_graphite_obstacles_chain_1.svg"
+    ]
+   }
+  ],
+  "collectibles": [
+   {
+    "id": "shard",
+    "name": "Pulse Shard",
+    "file": "pieces/levels/graphite/collectibles/lv_graphite_collectibles_shard_0.svg"
+   },
+   {
+    "id": "star",
+    "name": "Gold Star",
+    "file": "pieces/levels/graphite/collectibles/lv_graphite_collectibles_star_0.svg"
+   }
+  ],
+  "mechanics": [],
+  "board": "board/levels/graphite/lvb_graphite_board.svg",
+  "cell": "board/levels/graphite/lvb_graphite_cell.svg"
+ },
+ "volcano": {
+  "name": "Dangerous Volcano",
+  "mood": "High pressure, lava everywhere",
+  "material": "lava",
+  "pieces": [
+   "pieces/levels/volcano/pieces/lv_volcano_pieces_p_0.svg",
+   "pieces/levels/volcano/pieces/lv_volcano_pieces_p_1.svg",
+   "pieces/levels/volcano/pieces/lv_volcano_pieces_p_2.svg",
+   "pieces/levels/volcano/pieces/lv_volcano_pieces_p_3.svg"
+  ],
+  "obstacles": [
+   {
+    "id": "lava",
+    "name": "Lava Tile",
+    "hits": 2,
+    "states": [
+     "pieces/levels/volcano/obstacles/lv_volcano_obstacles_lava_2.svg",
+     "pieces/levels/volcano/obstacles/lv_volcano_obstacles_lava_1.svg"
+    ]
+   },
+   {
+    "id": "rock",
+    "name": "Falling Rock",
+    "hits": 3,
+    "states": [
+     "pieces/levels/volcano/obstacles/lv_volcano_obstacles_rock_3.svg",
+     "pieces/levels/volcano/obstacles/lv_volcano_obstacles_rock_2.svg",
+     "pieces/levels/volcano/obstacles/lv_volcano_obstacles_rock_1.svg"
+    ]
+   },
+   {
+    "id": "fire",
+    "name": "Fire Blocker",
+    "hits": 2,
+    "states": [
+     "pieces/levels/volcano/obstacles/lv_volcano_obstacles_fire_2.svg",
+     "pieces/levels/volcano/obstacles/lv_volcano_obstacles_fire_1.svg"
+    ]
+   }
+  ],
+  "collectibles": [
+   {
+    "id": "firecrystal",
+    "name": "Fire Crystal",
+    "file": "pieces/levels/volcano/collectibles/lv_volcano_collectibles_firecrystal_0.svg"
+   },
+   {
+    "id": "magmagem",
+    "name": "Volcanic Gem",
+    "file": "pieces/levels/volcano/collectibles/lv_volcano_collectibles_magmagem_0.svg"
+   }
+  ],
+  "mechanics": [
+   "lava melts unmatched tiles",
+   "rocks fall each 5 moves"
+  ],
+  "board": "board/levels/volcano/lvb_volcano_board.svg",
+  "cell": "board/levels/volcano/lvb_volcano_cell.svg"
+ },
+ "sky": {
+  "name": "Sky Islands",
+  "mood": "Light, airy, always shifting",
+  "material": "frosted",
+  "pieces": [
+   "pieces/levels/sky/pieces/lv_sky_pieces_p_0.svg",
+   "pieces/levels/sky/pieces/lv_sky_pieces_p_1.svg",
+   "pieces/levels/sky/pieces/lv_sky_pieces_p_2.svg",
+   "pieces/levels/sky/pieces/lv_sky_pieces_p_3.svg"
+  ],
+  "obstacles": [
+   {
+    "id": "balloon",
+    "name": "Balloon Blocker",
+    "hits": 1,
+    "states": [
+     "pieces/levels/sky/obstacles/lv_sky_obstacles_balloon_1.svg"
+    ]
+   },
+   {
+    "id": "cloud",
+    "name": "Cloud Patch",
+    "hits": 2,
+    "states": [
+     "pieces/levels/sky/obstacles/lv_sky_obstacles_cloud_2.svg",
+     "pieces/levels/sky/obstacles/lv_sky_obstacles_cloud_1.svg"
+    ]
+   },
+   {
+    "id": "platform",
+    "name": "Floating Platform",
+    "hits": 3,
+    "states": [
+     "pieces/levels/sky/obstacles/lv_sky_obstacles_platform_3.svg",
+     "pieces/levels/sky/obstacles/lv_sky_obstacles_platform_2.svg",
+     "pieces/levels/sky/obstacles/lv_sky_obstacles_platform_1.svg"
+    ]
+   }
+  ],
+  "collectibles": [
+   {
+    "id": "feather",
+    "name": "Cloud Feather",
+    "file": "pieces/levels/sky/collectibles/lv_sky_collectibles_feather_0.svg"
+   },
+   {
+    "id": "skycrystal",
+    "name": "Sky Crystal",
+    "file": "pieces/levels/sky/collectibles/lv_sky_collectibles_skycrystal_0.svg"
+   }
+  ],
+  "mechanics": [
+   "wind pushes pieces sideways",
+   "platforms drift"
+  ],
+  "board": "board/levels/sky/lvb_sky_board.svg",
+  "cell": "board/levels/sky/lvb_sky_cell.svg"
+ },
+ "forest": {
+  "name": "Enchanted Forest",
+  "mood": "Mysterious and glowing",
+  "material": "wood",
+  "pieces": [
+   "pieces/levels/forest/pieces/lv_forest_pieces_p_0.svg",
+   "pieces/levels/forest/pieces/lv_forest_pieces_p_1.svg",
+   "pieces/levels/forest/pieces/lv_forest_pieces_p_2.svg",
+   "pieces/levels/forest/pieces/lv_forest_pieces_p_3.svg"
+  ],
+  "obstacles": [
+   {
+    "id": "vine",
+    "name": "Creeping Vines",
+    "hits": 2,
+    "states": [
+     "pieces/levels/forest/obstacles/lv_forest_obstacles_vine_2.svg",
+     "pieces/levels/forest/obstacles/lv_forest_obstacles_vine_1.svg"
+    ]
+   },
+   {
+    "id": "mushroom",
+    "name": "Mushroom Blocker",
+    "hits": 3,
+    "states": [
+     "pieces/levels/forest/obstacles/lv_forest_obstacles_mushroom_3.svg",
+     "pieces/levels/forest/obstacles/lv_forest_obstacles_mushroom_2.svg",
+     "pieces/levels/forest/obstacles/lv_forest_obstacles_mushroom_1.svg"
+    ]
+   },
+   {
+    "id": "stump",
+    "name": "Sleeping Stump",
+    "hits": 2,
+    "states": [
+     "pieces/levels/forest/obstacles/lv_forest_obstacles_stump_2.svg",
+     "pieces/levels/forest/obstacles/lv_forest_obstacles_stump_1.svg"
+    ]
+   }
+  ],
+  "collectibles": [
+   {
+    "id": "glowshroom",
+    "name": "Glowing Mushroom",
+    "file": "pieces/levels/forest/collectibles/lv_forest_collectibles_glowshroom_0.svg"
+   },
+   {
+    "id": "fairydust",
+    "name": "Fairy Dust",
+    "file": "pieces/levels/forest/collectibles/lv_forest_collectibles_fairydust_0.svg"
+   }
+  ],
+  "mechanics": [
+   "vines grow over a tile each turn"
+  ],
+  "board": "board/levels/forest/lvb_forest_board.svg",
+  "cell": "board/levels/forest/lvb_forest_cell.svg"
+ },
+ "tundra": {
+  "name": "Frozen Tundra",
+  "mood": "Cold, slippery, precise",
+  "material": "ice",
+  "pieces": [
+   "pieces/levels/tundra/pieces/lv_tundra_pieces_p_0.svg",
+   "pieces/levels/tundra/pieces/lv_tundra_pieces_p_1.svg",
+   "pieces/levels/tundra/pieces/lv_tundra_pieces_p_2.svg",
+   "pieces/levels/tundra/pieces/lv_tundra_pieces_p_3.svg"
+  ],
+  "obstacles": [
+   {
+    "id": "iceblock",
+    "name": "Ice Block",
+    "hits": 3,
+    "states": [
+     "pieces/levels/tundra/obstacles/lv_tundra_obstacles_iceblock_3.svg",
+     "pieces/levels/tundra/obstacles/lv_tundra_obstacles_iceblock_2.svg",
+     "pieces/levels/tundra/obstacles/lv_tundra_obstacles_iceblock_1.svg"
+    ]
+   },
+   {
+    "id": "frostlock",
+    "name": "Frozen Lock",
+    "hits": 2,
+    "states": [
+     "pieces/levels/tundra/obstacles/lv_tundra_obstacles_frostlock_2.svg",
+     "pieces/levels/tundra/obstacles/lv_tundra_obstacles_frostlock_1.svg"
+    ]
+   },
+   {
+    "id": "slide",
+    "name": "Sliding Ice",
+    "hits": 1,
+    "states": [
+     "pieces/levels/tundra/obstacles/lv_tundra_obstacles_slide_1.svg"
+    ]
+   }
+  ],
+  "collectibles": [
+   {
+    "id": "icediamond",
+    "name": "Ice Diamond",
+    "file": "pieces/levels/tundra/collectibles/lv_tundra_collectibles_icediamond_0.svg"
+   },
+   {
+    "id": "snowflake",
+    "name": "Snowflake",
+    "file": "pieces/levels/tundra/collectibles/lv_tundra_collectibles_snowflake_0.svg"
+   }
+  ],
+  "mechanics": [
+   "sliding ice moves pieces one tile"
+  ],
+  "board": "board/levels/tundra/lvb_tundra_board.svg",
+  "cell": "board/levels/tundra/lvb_tundra_cell.svg"
+ },
+ "reef": {
+  "name": "Coral Reef",
+  "mood": "Fluid and dreamy",
+  "material": "pearl",
+  "pieces": [
+   "pieces/levels/reef/pieces/lv_reef_pieces_p_0.svg",
+   "pieces/levels/reef/pieces/lv_reef_pieces_p_1.svg",
+   "pieces/levels/reef/pieces/lv_reef_pieces_p_2.svg",
+   "pieces/levels/reef/pieces/lv_reef_pieces_p_3.svg"
+  ],
+  "obstacles": [
+   {
+    "id": "seaweed",
+    "name": "Seaweed",
+    "hits": 2,
+    "states": [
+     "pieces/levels/reef/obstacles/lv_reef_obstacles_seaweed_2.svg",
+     "pieces/levels/reef/obstacles/lv_reef_obstacles_seaweed_1.svg"
+    ]
+   },
+   {
+    "id": "bubble",
+    "name": "Air Bubble",
+    "hits": 1,
+    "states": [
+     "pieces/levels/reef/obstacles/lv_reef_obstacles_bubble_1.svg"
+    ]
+   },
+   {
+    "id": "coral",
+    "name": "Coral Wall",
+    "hits": 3,
+    "states": [
+     "pieces/levels/reef/obstacles/lv_reef_obstacles_coral_3.svg",
+     "pieces/levels/reef/obstacles/lv_reef_obstacles_coral_2.svg",
+     "pieces/levels/reef/obstacles/lv_reef_obstacles_coral_1.svg"
+    ]
+   }
+  ],
+  "collectibles": [
+   {
+    "id": "pearl",
+    "name": "Pearl",
+    "file": "pieces/levels/reef/collectibles/lv_reef_collectibles_pearl_0.svg"
+   },
+   {
+    "id": "shell",
+    "name": "Sea Shell",
+    "file": "pieces/levels/reef/collectibles/lv_reef_collectibles_shell_0.svg"
+   }
+  ],
+  "mechanics": [
+   "currents push pieces",
+   "bubbles float upward"
+  ],
+  "board": "board/levels/reef/lvb_reef_board.svg",
+  "cell": "board/levels/reef/lvb_reef_cell.svg"
+ },
+ "carnival": {
+  "name": "Haunted Carnival",
+  "mood": "Creepy but fun",
+  "material": "neon",
+  "pieces": [
+   "pieces/levels/carnival/pieces/lv_carnival_pieces_p_0.svg",
+   "pieces/levels/carnival/pieces/lv_carnival_pieces_p_1.svg",
+   "pieces/levels/carnival/pieces/lv_carnival_pieces_p_2.svg",
+   "pieces/levels/carnival/pieces/lv_carnival_pieces_p_3.svg"
+  ],
+  "obstacles": [
+   {
+    "id": "ghost",
+    "name": "Wandering Ghost",
+    "hits": 2,
+    "states": [
+     "pieces/levels/carnival/obstacles/lv_carnival_obstacles_ghost_2.svg",
+     "pieces/levels/carnival/obstacles/lv_carnival_obstacles_ghost_1.svg"
+    ]
+   },
+   {
+    "id": "bulb",
+    "name": "Broken Light",
+    "hits": 1,
+    "states": [
+     "pieces/levels/carnival/obstacles/lv_carnival_obstacles_bulb_1.svg"
+    ]
+   },
+   {
+    "id": "wheel",
+    "name": "Spinning Wheel",
+    "hits": 3,
+    "states": [
+     "pieces/levels/carnival/obstacles/lv_carnival_obstacles_wheel_3.svg",
+     "pieces/levels/carnival/obstacles/lv_carnival_obstacles_wheel_2.svg",
+     "pieces/levels/carnival/obstacles/lv_carnival_obstacles_wheel_1.svg"
+    ]
+   }
+  ],
+  "collectibles": [
+   {
+    "id": "ticket",
+    "name": "Ghost Ticket",
+    "file": "pieces/levels/carnival/collectibles/lv_carnival_collectibles_ticket_0.svg"
+   },
+   {
+    "id": "token",
+    "name": "Haunted Token",
+    "file": "pieces/levels/carnival/collectibles/lv_carnival_collectibles_token_0.svg"
+   }
+  ],
+  "mechanics": [
+   "ghosts swap two random pieces",
+   "broken lights hide tiles"
+  ],
+  "board": "board/levels/carnival/lvb_carnival_board.svg",
+  "cell": "board/levels/carnival/lvb_carnival_cell.svg"
+ },
+ "crystal": {
+  "name": "Crystal Caves",
+  "mood": "Sparkly and satisfying",
+  "material": "crystal",
+  "pieces": [
+   "pieces/levels/crystal/pieces/lv_crystal_pieces_p_0.svg",
+   "pieces/levels/crystal/pieces/lv_crystal_pieces_p_1.svg",
+   "pieces/levels/crystal/pieces/lv_crystal_pieces_p_2.svg",
+   "pieces/levels/crystal/pieces/lv_crystal_pieces_p_3.svg"
+  ],
+  "obstacles": [
+   {
+    "id": "barrier",
+    "name": "Crystal Barrier",
+    "hits": 3,
+    "states": [
+     "pieces/levels/crystal/obstacles/lv_crystal_obstacles_barrier_3.svg",
+     "pieces/levels/crystal/obstacles/lv_crystal_obstacles_barrier_2.svg",
+     "pieces/levels/crystal/obstacles/lv_crystal_obstacles_barrier_1.svg"
+    ]
+   },
+   {
+    "id": "geode",
+    "name": "Geode",
+    "hits": 2,
+    "states": [
+     "pieces/levels/crystal/obstacles/lv_crystal_obstacles_geode_2.svg",
+     "pieces/levels/crystal/obstacles/lv_crystal_obstacles_geode_1.svg"
+    ]
+   },
+   {
+    "id": "echochain",
+    "name": "Echo Chain",
+    "hits": 2,
+    "states": [
+     "pieces/levels/crystal/obstacles/lv_crystal_obstacles_echochain_2.svg",
+     "pieces/levels/crystal/obstacles/lv_crystal_obstacles_echochain_1.svg"
+    ]
+   }
+  ],
+  "collectibles": [
+   {
+    "id": "rarecrystal",
+    "name": "Rare Crystal",
+    "file": "pieces/levels/crystal/collectibles/lv_crystal_collectibles_rarecrystal_0.svg"
+   },
+   {
+    "id": "prism",
+    "name": "Prism Shard",
+    "file": "pieces/levels/crystal/collectibles/lv_crystal_collectibles_prism_0.svg"
+   }
+  ],
+  "mechanics": [
+   "barriers break only to special matches"
+  ],
+  "board": "board/levels/crystal/lvb_crystal_board.svg",
+  "cell": "board/levels/crystal/lvb_crystal_cell.svg"
+ },
+ "desert": {
+  "name": "Desert Oasis",
+  "mood": "Hot and dry until the water",
+  "material": "sand",
+  "pieces": [
+   "pieces/levels/desert/pieces/lv_desert_pieces_p_0.svg",
+   "pieces/levels/desert/pieces/lv_desert_pieces_p_1.svg",
+   "pieces/levels/desert/pieces/lv_desert_pieces_p_2.svg",
+   "pieces/levels/desert/pieces/lv_desert_pieces_p_3.svg"
+  ],
+  "obstacles": [
+   {
+    "id": "sand",
+    "name": "Sand Cover",
+    "hits": 2,
+    "states": [
+     "pieces/levels/desert/obstacles/lv_desert_obstacles_sand_2.svg",
+     "pieces/levels/desert/obstacles/lv_desert_obstacles_sand_1.svg"
+    ]
+   },
+   {
+    "id": "cactus",
+    "name": "Cactus Blocker",
+    "hits": 3,
+    "states": [
+     "pieces/levels/desert/obstacles/lv_desert_obstacles_cactus_3.svg",
+     "pieces/levels/desert/obstacles/lv_desert_obstacles_cactus_2.svg",
+     "pieces/levels/desert/obstacles/lv_desert_obstacles_cactus_1.svg"
+    ]
+   },
+   {
+    "id": "mirage",
+    "name": "Mirage Tile",
+    "hits": 1,
+    "states": [
+     "pieces/levels/desert/obstacles/lv_desert_obstacles_mirage_1.svg"
+    ]
+   }
+  ],
+  "collectibles": [
+   {
+    "id": "jewel",
+    "name": "Desert Jewel",
+    "file": "pieces/levels/desert/collectibles/lv_desert_collectibles_jewel_0.svg"
+   },
+   {
+    "id": "waterdrop",
+    "name": "Oasis Drop",
+    "file": "pieces/levels/desert/collectibles/lv_desert_collectibles_waterdrop_0.svg"
+   }
+  ],
+  "mechanics": [
+   "sand covers a tile every 3 moves",
+   "mirages fake a match"
+  ],
+  "board": "board/levels/desert/lvb_desert_board.svg",
+  "cell": "board/levels/desert/lvb_desert_cell.svg"
+ },
+ "steampunk": {
+  "name": "Steampunk Factory",
+  "mood": "Mechanical and rhythmic",
+  "material": "brass",
+  "pieces": [
+   "pieces/levels/steampunk/pieces/lv_steampunk_pieces_p_0.svg",
+   "pieces/levels/steampunk/pieces/lv_steampunk_pieces_p_1.svg",
+   "pieces/levels/steampunk/pieces/lv_steampunk_pieces_p_2.svg",
+   "pieces/levels/steampunk/pieces/lv_steampunk_pieces_p_3.svg"
+  ],
+  "obstacles": [
+   {
+    "id": "gear",
+    "name": "Moving Gear",
+    "hits": 2,
+    "states": [
+     "pieces/levels/steampunk/obstacles/lv_steampunk_obstacles_gear_2.svg",
+     "pieces/levels/steampunk/obstacles/lv_steampunk_obstacles_gear_1.svg"
+    ]
+   },
+   {
+    "id": "vent",
+    "name": "Steam Vent",
+    "hits": 1,
+    "states": [
+     "pieces/levels/steampunk/obstacles/lv_steampunk_obstacles_vent_1.svg"
+    ]
+   },
+   {
+    "id": "machine",
+    "name": "Locked Machine",
+    "hits": 3,
+    "states": [
+     "pieces/levels/steampunk/obstacles/lv_steampunk_obstacles_machine_3.svg",
+     "pieces/levels/steampunk/obstacles/lv_steampunk_obstacles_machine_2.svg",
+     "pieces/levels/steampunk/obstacles/lv_steampunk_obstacles_machine_1.svg"
+    ]
+   }
+  ],
+  "collectibles": [
+   {
+    "id": "cog",
+    "name": "Brass Cog",
+    "file": "pieces/levels/steampunk/collectibles/lv_steampunk_collectibles_cog_0.svg"
+   },
+   {
+    "id": "steamcore",
+    "name": "Steam Core",
+    "file": "pieces/levels/steampunk/collectibles/lv_steampunk_collectibles_steamcore_0.svg"
+   }
+  ],
+  "mechanics": [
+   "gears rotate a row each turn"
+  ],
+  "board": "board/levels/steampunk/lvb_steampunk_board.svg",
+  "cell": "board/levels/steampunk/lvb_steampunk_cell.svg"
+ },
+ "nebula": {
+  "name": "Cosmic Nebula",
+  "mood": "Epic, vast and magical",
+  "material": "cosmic",
+  "pieces": [
+   "pieces/levels/nebula/pieces/lv_nebula_pieces_p_0.svg",
+   "pieces/levels/nebula/pieces/lv_nebula_pieces_p_1.svg",
+   "pieces/levels/nebula/pieces/lv_nebula_pieces_p_2.svg",
+   "pieces/levels/nebula/pieces/lv_nebula_pieces_p_3.svg"
+  ],
+  "obstacles": [
+   {
+    "id": "asteroid",
+    "name": "Asteroid",
+    "hits": 3,
+    "states": [
+     "pieces/levels/nebula/obstacles/lv_nebula_obstacles_asteroid_3.svg",
+     "pieces/levels/nebula/obstacles/lv_nebula_obstacles_asteroid_2.svg",
+     "pieces/levels/nebula/obstacles/lv_nebula_obstacles_asteroid_1.svg"
+    ]
+   },
+   {
+    "id": "blackhole",
+    "name": "Black Hole",
+    "hits": 2,
+    "states": [
+     "pieces/levels/nebula/obstacles/lv_nebula_obstacles_blackhole_2.svg",
+     "pieces/levels/nebula/obstacles/lv_nebula_obstacles_blackhole_1.svg"
+    ]
+   },
+   {
+    "id": "satellite",
+    "name": "Dead Satellite",
+    "hits": 2,
+    "states": [
+     "pieces/levels/nebula/obstacles/lv_nebula_obstacles_satellite_2.svg",
+     "pieces/levels/nebula/obstacles/lv_nebula_obstacles_satellite_1.svg"
+    ]
+   }
+  ],
+  "collectibles": [
+   {
+    "id": "starfrag",
+    "name": "Star Fragment",
+    "file": "pieces/levels/nebula/collectibles/lv_nebula_collectibles_starfrag_0.svg"
+   },
+   {
+    "id": "planetcore",
+    "name": "Planet Core",
+    "file": "pieces/levels/nebula/collectibles/lv_nebula_collectibles_planetcore_0.svg"
+   }
+  ],
+  "mechanics": [
+   "black holes pull pieces in",
+   "gravity flips each 10 moves"
+  ],
+  "board": "board/levels/nebula/lvb_nebula_board.svg",
+  "cell": "board/levels/nebula/lvb_nebula_cell.svg"
+ }
+}

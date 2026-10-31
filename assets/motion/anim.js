@@ -112,3 +112,25 @@ export function particles(canvas) {
     },
   };
 }
+
+// ---- themed control feedback (CSS classes in anim.css, timing from theme tokens) ----
+/** Replay a one-shot CSS effect: 'jelly' | 'deny' | 'pop' | 'glow'. */
+export function play(el, name) {
+  const cls = 'fx-' + name; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls);
+  el.addEventListener('animationend', () => el.classList.remove(cls), { once: true });
+}
+/** Ripple from the pointer position inside el. */
+export function ripple(el, ev) {
+  const r = el.getBoundingClientRect(), s = Math.max(r.width, r.height) * 2, d = document.createElement('span');
+  d.className = 'ripple'; d.style.cssText = `width:${s}px;height:${s}px;left:${ev.clientX - r.left - s / 2}px;top:${ev.clientY - r.top - s / 2}px`;
+  el.style.overflow = 'hidden'; el.appendChild(d); d.addEventListener('animationend', () => d.remove(), { once: true });
+}
+/** Loading → success: swaps the label for a spinner, then draws a check. */
+export async function loadThenSucceed(el, ms = 900) {
+  const lbl = el.querySelector('.lbl'), text = lbl.innerHTML;
+  lbl.innerHTML = '<span class="spin"></span>';
+  await new Promise(r => setTimeout(r, ms));
+  lbl.innerHTML = '<svg class="check-draw" width="34" height="34" viewBox="0 0 34 34"><path d="M7 18 L14 25 L27 10" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  play(el, 'pop');
+  await new Promise(r => setTimeout(r, 900)); lbl.innerHTML = text;
+}

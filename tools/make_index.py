@@ -2,6 +2,7 @@
 #   see tools/build_all.sh
 import os
 from layout import CATEGORIES
+from level_themes import THEMES
 
 A = os.path.join(os.path.dirname(__file__), "..", "assets")
 WIDE = ("board_", "thb_", "sea_spring_board", "sea_summer_board", "sea_autumn_board", "sea_winter_board", "panel_", "ribbon", "btn_play", "btn_secondary", "progress_", "hud_pill")
@@ -25,7 +26,10 @@ for folder, title in CATEGORIES.items():
         depth = rel.count("/")
         label = rel.split("/", 1)[1].replace("/", " › ") if depth else ""
         anchor = rel.replace("/", "-")
-        body += (f'<h3 id="{anchor}" class="d{depth}">{label} <span>{len(files)}</span></h3>' if label else "") + f'<div class="grid">{html_cards}</div>'
+        parts = rel.split("/")
+        th = next((x for x in parts[1:3] if x in THEMES), None) if parts[0] in ("buttons", "pieces", "board") and ("levels" in parts or parts[0] == "buttons") else None
+        block = (f'<h3 id="{anchor}" class="d{depth}">{label} <span>{len(files)}</span></h3>' if label else "") + f'<div class="grid">{html_cards}</div>'
+        body += f'<div data-for-theme="{th}">{block}</div>' if th else block
     nav.append(f'<a href="#{folder}">{title} <b>{count}</b></a>')
     if folder == "pieces":  # quick links into each piece collection
         for sub in sorted(os.listdir(os.path.join(A, folder))):
@@ -33,7 +37,9 @@ for folder, title in CATEGORIES.items():
             nav.append(f'<a class="sub" href="#pieces-{sub}">{sub} <b>{n}</b></a>')
     sections.append(f'<section id="{folder}"><h2>{title} <span>{folder}/ · {count}</span></h2>{body}</section>')
 
-LIVE = [("bombs-live", "Bombs (live)", "pages/bombs.html", "Lit fuses with live sparks · tap a bomb to detonate · Blast all", 900),
+LIVE = [("ui-kit", "UI kit (live)", "pages/ui-kit.html", "Every themed control, live labels in the theme font, animations, typography", 1500),
+        ("levels-live", "Level themes (live)", "pages/levels.html", "10 level worlds · tap obstacles to break them", 900),
+        ("bombs-live", "Bombs (live)", "pages/bombs.html", "Lit fuses with live sparks · tap a bomb to detonate · Blast all", 900),
         ("seasons-live", "Seasons", "pages/seasons.html", "Four seasons · current season is live · tap pieces", 1000),
         ("events-live", "Events", "pages/events.html", "Live event prize path + yearly calendar · tap Play a run", 1000),
         ("vault", "Piece Vault", "pages/vault.html", "Unlock pieces with Shards · tap a silhouette", 900),
@@ -47,7 +53,7 @@ for sid, title, src, sub, h in LIVE:  # interactive pages embedded so this one p
 
 html = f'''<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Edge Pulse · Asset library</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="motion/themes.css">
 <style>
 body{{margin:0;background:#12141a;color:#d6dae3;font:600 14px/1.45 Poppins,sans-serif}}
 header{{position:sticky;top:0;z-index:2;background:#12141ae6;backdrop-filter:blur(14px);padding:16px 28px 12px;border-bottom:1px solid #ffffff10}}
@@ -67,17 +73,31 @@ figure img{{height:88px;max-width:100%;object-fit:contain}}figcaption{{font-size
 .wp{{display:grid;grid-template-columns:120px repeat(20,minmax(36px,1fr));gap:4px;align-items:center}}.wp img{{width:100%;cursor:pointer}}
 h3{{font:800 14px Poppins;margin:16px 0 8px;text-transform:capitalize;opacity:.8}}h3 span{{opacity:.5;font-weight:600}}h3.d1{{font-size:16px;opacity:1}}
 iframe{{width:100%;border:0;border-radius:22px;background:#16181e;display:block;margin-bottom:12px}}
+html[data-theme] [data-for-theme]{{display:none}}{{HIDE_RULES}}
+.themes{{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}}.themes button{{border:1px solid #ffffff22;background:#ffffff0c;color:#e6e9f0;border-radius:99px;padding:6px 12px;cursor:pointer;font-size:14px;display:flex;gap:6px;align-items:center}}
+.themes button[aria-pressed=true]{{background:#fff;color:#12141a}}.themes i{{width:12px;height:12px;border-radius:50%}}
 #toast{{position:fixed;bottom:24px;left:50%;translate:-50%;background:#fff;color:#12141a;padding:8px 16px;border-radius:99px;opacity:0;transition:opacity .2s}}
 @media (max-width:900px){{.wp{{grid-template-columns:repeat(10,1fr)}}.wb{{grid-column:span 10;width:120px}}}}
 </style></head><body>
-<header><h1>Edge Pulse · Asset library <input id="q" placeholder="Filter by name…" aria-label="Filter assets"></h1><nav>{"".join(nav)}</nav></header>
+<header><div id="themes" class="themes">{{THEME_CHIPS}}</div><h1>Edge Pulse · Asset library <input id="q" placeholder="Filter by name…" aria-label="Filter assets"></h1><nav>{"".join(nav)}</nav></header>
 {"".join(sections)}
 <div id="toast"></div>
 <script>
 const toast = t => {{ const e = document.getElementById('toast'); e.textContent = t; e.style.opacity = 1; clearTimeout(e.t); e.t = setTimeout(() => e.style.opacity = 0, 1200); }};
 document.addEventListener('click', e => {{ const p = e.target.closest('[data-path]'); if (p) navigator.clipboard?.writeText('assets/' + p.dataset.path).then(() => toast('Copied assets/' + p.dataset.path)); }});
+function setTheme(t) {{
+  document.documentElement.dataset.theme = t; localStorage.setItem('edgepulse.theme', t);
+  document.querySelectorAll('#themes button').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === t));
+  document.querySelectorAll('iframe').forEach(f => f.contentWindow?.postMessage({{ type: 'theme', theme: t }}, '*'));
+}}
+document.getElementById('themes').onclick = e => {{ const b = e.target.closest('button'); if (b) setTheme(b.dataset.t); }};
+document.querySelectorAll('iframe').forEach(f => f.addEventListener('load', () => f.contentWindow.postMessage({{ type: 'theme', theme: document.documentElement.dataset.theme }}, '*')));
+setTheme(localStorage.getItem('edgepulse.theme') || 'graphite');
 document.getElementById('q').oninput = e => {{ const q = e.target.value.toLowerCase();
   document.querySelectorAll('figure').forEach(f => f.hidden = q && !f.dataset.path.includes(q.replace(/ /g, '_'))); }};
 </script></body></html>'''
+chips = "".join(f'<button data-t="{tid}" style="font-family:\'{t["font"]}\'"><i style="background:{t["palette"]["primary"]}"></i>{t["name"]}</button>' for tid, t in THEMES.items())
+hide = "".join(f'html[data-theme="{tid}"] [data-for-theme="{tid}"]{{display:block}}' for tid in THEMES)
+html = html.replace("{THEME_CHIPS}", chips).replace("{HIDE_RULES}", hide)
 open(os.path.join(A, "index.html"), "w").write(html)
 print(f"wrote assets/index.html")

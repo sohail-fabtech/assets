@@ -192,26 +192,27 @@ def combo_burst():
                '<circle cx="64" cy="64" r="30" fill="#fff" opacity=".25"/>', 128, 128)
 
 
-files = {f"icon_{n}.svg": icon_button(n) for n in
-         ("home", "pause", "settings", "sound", "sound_off", "music", "haptics", "share", "back", "close", "swap", "shop", "trophy")}
-files |= {"icon_play_green.svg": icon_button("play", "green"), "icon_check_green.svg": icon_button("check", "green"),
-          "icon_close_red.svg": icon_button("close", "red"), "btn_fire.svg": icon_button("fire", "cyan")}
-MODES = {"endless": ("infinity", "violet"), "color_match": ("drops", "magenta"), "blast": ("bolt", "amber"),
-         "time_rush": ("clock", "cyan"), "campaign": ("flag", "green"), "daily": ("calendar", "magenta"),
-         "weekly": ("constellation", "violet")}
-files |= {f"mode_{k}.svg": tile(g, t) for k, (g, t) in MODES.items()}
-files |= {"hud_pill.svg": pill(), "slot_now.svg": slot("#7ff3ff"), "slot_next.svg": slot("#8c94a3"),
-          "progress_track_60.svg": progress(.6), "progress_time.svg": progress(.35, "amber"),
-          "toggle_on.svg": toggle(True), "toggle_off.svg": toggle(False),
-          "node_done.svg": node("done"), "node_current.svg": node("current"), "node_locked.svg": node("locked"),
-          "stamp_on.svg": stamp(True), "stamp_off.svg": stamp(False), "ribbon.svg": ribbon(), "combo_burst.svg": combo_burst()}
-BADGES = {"streak": "bolt", "campaign": "flag", "stamps": "calendar", "row_col": "cross",
-          "endless": "infinity", "blaster": "star", "rush": "clock", "collector": "trophy"}
-files |= {f"badge_{k}.svg": badge(g) for k, g in BADGES.items()}
-files |= {"badge_locked.svg": badge("lock", False)}
+if __name__ == "__main__":
+    files = {f"icon_{n}.svg": icon_button(n) for n in
+             ("home", "pause", "settings", "sound", "sound_off", "music", "haptics", "share", "back", "close", "swap", "shop", "trophy")}
+    files |= {"icon_play_green.svg": icon_button("play", "green"), "icon_check_green.svg": icon_button("check", "green"),
+              "icon_close_red.svg": icon_button("close", "red"), "btn_fire.svg": icon_button("fire", "cyan")}
+    MODES = {"endless": ("infinity", "violet"), "color_match": ("drops", "magenta"), "blast": ("bolt", "amber"),
+             "time_rush": ("clock", "cyan"), "campaign": ("flag", "green"), "daily": ("calendar", "magenta"),
+             "weekly": ("constellation", "violet")}
+    files |= {f"mode_{k}.svg": tile(g, t) for k, (g, t) in MODES.items()}
+    files |= {"hud_pill.svg": pill(), "slot_now.svg": slot("#7ff3ff"), "slot_next.svg": slot("#8c94a3"),
+              "progress_track_60.svg": progress(.6), "progress_time.svg": progress(.35, "amber"),
+              "toggle_on.svg": toggle(True), "toggle_off.svg": toggle(False),
+              "node_done.svg": node("done"), "node_current.svg": node("current"), "node_locked.svg": node("locked"),
+              "stamp_on.svg": stamp(True), "stamp_off.svg": stamp(False), "ribbon.svg": ribbon(), "combo_burst.svg": combo_burst()}
+    BADGES = {"streak": "bolt", "campaign": "flag", "stamps": "calendar", "row_col": "cross",
+              "endless": "infinity", "blaster": "star", "rush": "clock", "collector": "trophy"}
+    files |= {f"badge_{k}.svg": badge(g) for k, g in BADGES.items()}
+    files |= {"badge_locked.svg": badge("lock", False)}
 
-os.makedirs(OUT, exist_ok=True)
-for n, data in files.items():
-    os.makedirs(os.path.join(OUT, folder_for(n)), exist_ok=True)
-    open(os.path.join(OUT, folder_for(n), n), "w").write(data)
-print(f"wrote {len(files)} UI assets to {os.path.abspath(OUT)}")
+    os.makedirs(OUT, exist_ok=True)
+    for n, data in files.items():
+        os.makedirs(os.path.join(OUT, folder_for(n)), exist_ok=True)
+        open(os.path.join(OUT, folder_for(n), n), "w").write(data)
+    print(f"wrote {len(files)} UI assets to {os.path.abspath(OUT)}")

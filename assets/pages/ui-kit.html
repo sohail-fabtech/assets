@@ -1,0 +1,103 @@
+<!doctype html><html data-theme="graphite"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Edge Pulse – UI kit</title>
+<link rel="stylesheet" href="../motion/themes.css">
+<link rel="stylesheet" href="../motion/anim.css">
+<style>
+body{margin:0;min-height:100vh;background:radial-gradient(120% 80% at 50% 0,var(--surface),var(--bg));color:var(--text);font:600 14px/1.45 var(--font-body);transition:background .3s}
+header{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 24px;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(12px)}
+header h1{font:400 26px/1.2 var(--font-display);margin:0 12px 0 0;letter-spacing:-.01em}
+.chip{border:1px solid color-mix(in srgb,var(--text) 20%,transparent);background:color-mix(in srgb,var(--text) 8%,transparent);color:var(--text);border-radius:99px;padding:6px 12px;cursor:pointer;font:700 13px var(--font-body);display:flex;gap:6px;align-items:center}
+.chip[aria-pressed=true]{background:var(--text);color:var(--bg)}.chip i{width:12px;height:12px;border-radius:50%}
+main{padding:8px 24px 40px;max-width:1180px}
+h2{font:400 24px/1.2 var(--font-display);margin:28px 0 4px}h2+p{margin:0 0 14px;opacity:.7}
+.row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.cap{display:grid;gap:6px;justify-items:center;font-size:12px;opacity:.85}
+.w360{width:240px}.w260{width:200px}.w220{width:150px}.w300{width:230px}.w124{width:84px}.w72{width:48px}.w210{width:160px}.w128{width:72px}.w56{width:40px}.w320{width:260px}
+.slider{position:relative;width:260px;height:40px;cursor:pointer}.slider img{position:absolute;left:0;top:8px;width:260px}
+.slider .thumb{position:absolute;top:0;width:42px;transition:left calc(140ms*var(--dur)) var(--ease)}
+.stepper{position:relative}.stepper b{position:absolute;inset:0 0 8px;display:grid;place-items:center;font:800 22px var(--font-body);font-variant-numeric:tabular-nums;pointer-events:none}
+.stepper .hit{position:absolute;top:0;bottom:0;width:30%;cursor:pointer}.stepper .hit.l{left:0}.stepper .hit.r{right:0}
+.badgewrap{position:relative}.badgewrap .badge{position:absolute;right:-8px;top:-8px;width:34px;display:grid}.badgewrap .badge>*{grid-area:1/1}.badgewrap .badge img{width:100%}
+.badgewrap .badge span{place-self:center;font:900 13px/1 var(--font-body);color:#fff;font-variant-numeric:tabular-nums;margin-top:-2px}
+.spec{display:grid;gap:6px;padding:18px;border-radius:22px;background:color-mix(in srgb,var(--text) 6%,transparent)}
+.spec .d1{font:400 46px/1.15 var(--font-display);letter-spacing:-.02em}.spec .d2{font:400 32px/1.2 var(--font-display)}
+.spec .b1{font:800 22px/1.3 var(--font-button)}.spec .b2{font:600 15px/1.45 var(--font-body)}.spec .b3{font:600 12px/1.45 var(--font-body);opacity:.7}
+.spec .num{font:900 34px var(--font-body);font-variant-numeric:tabular-nums}
+code{font:600 12px ui-monospace,monospace;opacity:.7}
+</style></head><body>
+<header><h1 id="tname">Graphite</h1><span id="chips" style="display:contents"></span></header>
+<main>
+ <h2>Buttons</h2><p>Four roles × normal / pressed / disabled. Tap: ripple + jelly. Disabled: deny shake. The last one shows loading → success.</p>
+ <div class="row" id="pills"></div>
+ <h2>Icon buttons</h2><p>Hover lifts, press squashes, tap glows.</p><div class="row" id="icons"></div>
+ <h2>Controls</h2><p>All live: toggle, checkbox, radio, segmented, tabs, slider, stepper, badge.</p><div class="row" id="controls"></div>
+ <h2>Store &amp; boosters</h2><p>Price and booster buttons with live labels and counts.</p><div class="row" id="store"></div>
+ <h2>Typography</h2><p id="fontnote"></p>
+ <div class="spec"><div class="d1">Edge Pulse</div><div class="d2">Level Complete!</div><div class="b1">Play · Retry · Next</div>
+  <div class="num">12,480</div><div class="b2">Clear three or more pieces of the same color to build a streak.</div><div class="b3">HUD label · 12 px · body font</div></div>
+</main>
+<script type="module">
+import * as A from '../motion/anim.js';
+const $ = s => document.querySelector(s);
+const K = await (await fetch('../data/ui-kit.json')).json();
+let theme = new URLSearchParams(location.search).get('theme') || localStorage.getItem('edgepulse.theme') || 'graphite';  // ?theme= for deep links
+const src = (c, s) => `../${K.pattern.replaceAll('{theme}', theme).replace('{control}', c).replace('{state}', s)}`;
+const ctl = (c, s, cls, label = '', extra = '') => `<div class="ctl ${cls}" data-c="${c}" data-s="${s}" ${extra}><img src="${src(c, s)}" alt="">${label ? `<span class="lbl">${label}</span>` : ''}</div>`;
+
+function render() {
+  const T = K.themes[theme], P = T.palette;
+  document.documentElement.dataset.theme = theme; $('#tname').textContent = T.name;
+  $('#chips').innerHTML = Object.entries(K.themes).map(([id, t]) => `<button class="chip" data-t="${id}" aria-pressed="${id === theme}"><i style="background:${t.palette.primary}"></i>${t.name}</button>`).join('');
+  const lc = { primary: P.onPrimary, secondary: P.onSecondary, danger: P.onDanger, ghost: P.ghost };
+  const LBL = { primary: 'Play', secondary: 'Settings', ghost: 'Later', danger: 'Quit' };
+  $('#pills').innerHTML = ['primary', 'secondary', 'ghost', 'danger'].map(r => ['normal', 'pressed', 'disabled'].map(s =>
+    `<div class="cap">${ctl(`pill-${r}`, s, `w360 ${r === 'primary' && s === 'normal' ? 'idle' : ''}`, LBL[r], `style="--lblc:${s === 'disabled' ? '#e6e8ee' : lc[r]}" ${s === 'disabled' ? 'aria-disabled="true"' : ''} data-fx="${s === 'disabled' ? 'deny' : 'tap'}"`)}<span>${r} · ${s}</span></div>`).join('')).join('')
+    + `<div class="cap">${ctl('pill-primary', 'normal', 'w360', 'Claim reward', `style="--lblc:${P.onPrimary}" data-fx="load"`)}<span>loading → success</span></div>`;
+  $('#icons').innerHTML = Object.keys(K.controls).filter(c => c.startsWith('icon-')).map(c =>
+    `<div class="cap">${ctl(c, 'normal', `w128 ${c === 'icon-fire' ? 'idle' : ''}`, '', 'data-fx="glow"')}<span>${c.slice(5)}</span></div>`).join('');
+  $('#controls').innerHTML =
+    `<div class="cap">${ctl('toggle', 'on', 'w124', '', 'data-fx="toggle"')}<span>toggle</span></div>` +
+    `<div class="cap">${ctl('checkbox', 'on', 'w72', '', 'data-fx="check"')}<span>checkbox</span></div>` +
+    `<div class="cap">${ctl('radio', 'on', 'w72', '', 'data-fx="radio"')}<span>radio</span></div>` +
+    `<div class="cap">${ctl('segmented', 'left', 'w300', '', 'data-fx="seg"')}<span>segmented</span></div>` +
+    `<div class="cap"><div class="row" style="gap:6px">${ctl('tab', 'active', 'w220', 'Daily', `style="--lblc:${P.onPrimary}" data-fx="tab"`)}${ctl('tab', 'inactive', 'w220', 'Weekly', `style="--lblc:${P.onSurface}" data-fx="tab"`)}</div><span>tabs</span></div>` +
+    `<div class="cap"><div class="slider" id="slider"><img src="${src('slider-track', 'normal')}" alt=""><img class="thumb" src="${src('slider-thumb', 'normal')}" style="left:140px" alt=""></div><span>slider (drag or tap)</span></div>` +
+    `<div class="cap"><div class="ctl stepper w210" data-c="stepper" data-s="normal"><img src="${src('stepper', 'normal')}" alt=""><b id="stepv">3</b><span class="hit l" data-step="-1"></span><span class="hit r" data-step="1"></span></div><span>stepper</span></div>` +
+    `<div class="cap"><div class="badgewrap" id="bell">${ctl('icon-trophy', 'normal', 'w128')}<div class="badge"><img src="${src('badge', 'normal')}" alt=""><span id="badgev">2</span></div></div><span>badge (tap)</span></div>`;
+  $('#store').innerHTML =
+    `<div class="cap">${ctl('price', 'normal', 'w260', '<span style="margin-left:30%">250</span>', `style="--lblc:${P.onSecondary}" data-fx="tap"`)}<span>price</span></div>` +
+    `<div class="cap"><div class="badgewrap">${ctl('booster', 'normal', 'w128', '', 'data-fx="pop"')}<div class="badge" style="width:30px;right:-2px;top:-4px"><img src="${src('badge', 'normal')}" alt=""><span id="boostv" style="font-size:12px">3</span></div></div><span>booster</span></div>`;
+  $('#fontnote').innerHTML = `Display: <b>${T.font}</b>${T.fontTitleOnly ? ' (titles only; buttons use Poppins for legibility)' : ''} · Body: <b>Poppins</b> · both SIL OFL, bundled offline <code>assets/fonts/</code>`;
+}
+
+document.addEventListener('pointerdown', e => { const c = e.target.closest('.ctl[data-fx="tap"],.ctl[data-fx="load"]'); if (c) A.ripple(c, e); });
+document.addEventListener('click', async e => {
+  const chip = e.target.closest('.chip'); if (chip) return setTheme(chip.dataset.t);
+  const step = e.target.closest('[data-step]');
+  if (step) { const v = $('#stepv'), n = Math.max(0, Math.min(9, +v.textContent + +step.dataset.step)); v.textContent = n; A.play(v, 'pop'); return; }
+  if (e.target.closest('#bell')) { const b = $('#badgev'); b.textContent = +b.textContent + 1; A.play(b.parentElement, 'pop'); return; }
+  const c = e.target.closest('.ctl'); if (!c) return;
+  const img = c.querySelector('img'), swap = (a, b) => { c.dataset.s = c.dataset.s === a ? b : a; img.src = src(c.dataset.c, c.dataset.s); };
+  switch (c.dataset.fx) {
+    case 'deny': A.play(c, 'deny'); break;
+    case 'tap': A.play(c, 'jelly'); break;
+    case 'glow': A.play(c, 'glow'); break;
+    case 'pop': A.play(c, 'pop'); { const b = $('#boostv'); b.textContent = Math.max(0, +b.textContent - 1); } break;
+    case 'load': A.loadThenSucceed(c); break;
+    case 'toggle': swap('on', 'off'); A.play(c, 'jelly'); break;
+    case 'check': case 'radio': swap('on', 'off'); A.play(c, 'pop'); break;
+    case 'seg': swap('left', 'right'); break;
+    case 'tab': document.querySelectorAll('[data-fx="tab"]').forEach(t => { const on = t === c; t.dataset.s = on ? 'active' : 'inactive';
+      t.querySelector('img').src = src('tab', t.dataset.s); t.style.setProperty('--lblc', on ? K.themes[theme].palette.onPrimary : K.themes[theme].palette.onSurface); }); A.play(c, 'jelly'); break;
+  }
+});
+// slider: drag or tap snaps the thumb (eased)
+document.addEventListener('pointerdown', e => {
+  const s = e.target.closest('#slider'); if (!s) return;
+  const move = ev => { const r = s.getBoundingClientRect(); s.querySelector('.thumb').style.left = Math.max(0, Math.min(r.width - 42, ev.clientX - r.left - 21)) + 'px'; };
+  move(e); s.setPointerCapture(e.pointerId); s.onpointermove = move; s.onpointerup = () => (s.onpointermove = null);
+});
+function setTheme(t) { theme = t; localStorage.setItem('edgepulse.theme', t); render(); }
+addEventListener('message', e => { if (e.data?.type === 'theme' && K.themes[e.data.theme]) setTheme(e.data.theme); });  // from index.html switcher
+render();
+</script></body></html>

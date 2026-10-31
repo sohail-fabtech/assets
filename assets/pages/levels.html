@@ -1,0 +1,73 @@
+<!doctype html><html data-theme="graphite"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Edge Pulse – Level themes</title>
+<link rel="stylesheet" href="../motion/themes.css">
+<link rel="stylesheet" href="../motion/anim.css">
+<style>
+body{margin:0;min-height:100vh;background:radial-gradient(120% 80% at 30% 0,var(--surface),var(--bg));color:var(--text);font:600 14px/1.45 var(--font-body);transition:background .3s}
+header{display:flex;flex-wrap:wrap;gap:8px;padding:12px 24px}
+.chip{border:1px solid color-mix(in srgb,var(--text) 20%,transparent);background:color-mix(in srgb,var(--text) 8%,transparent);color:var(--text);border-radius:99px;padding:6px 12px;cursor:pointer;font:700 13px var(--font-body);display:flex;gap:6px;align-items:center}
+.chip[aria-pressed=true]{background:var(--text);color:var(--bg)}.chip i{width:12px;height:12px;border-radius:50%}
+main{display:grid;grid-template-columns:minmax(300px,540px) 1fr;gap:32px;padding:8px 24px 40px}
+.board{position:relative;aspect-ratio:1;background-size:100%}
+.grid{position:absolute;inset:4.5%;display:grid;grid-template:repeat(7,1fr)/repeat(7,1fr);gap:1.2%}
+.cell{position:relative;background-size:100%}.cell .ep{position:absolute;inset:4%;width:auto;cursor:pointer}
+h1{font:400 38px/1.15 var(--font-display);margin:0;letter-spacing:-.01em}.mood{opacity:.7;margin-bottom:14px}
+h3{font:800 12px var(--font-body);letter-spacing:.08em;text-transform:uppercase;opacity:.6;margin:18px 0 8px}
+.cards{display:flex;flex-wrap:wrap;gap:10px}.card{width:116px;padding:10px;border-radius:18px;background:color-mix(in srgb,var(--text) 7%,transparent);text-align:center;font-size:12px}
+.card .st{display:flex;justify-content:center;gap:2px}.card .st img{width:34px}.card>img{width:64px}
+ul{margin:0;padding-left:18px;opacity:.85}
+#fx{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:8}
+</style></head><body>
+<header id="chips"></header>
+<main><div class="board" id="board"><div class="grid" id="grid"></div></div>
+ <div><h1 id="name"></h1><div class="mood" id="mood"></div>
+  <div style="opacity:.7">Tap an obstacle on the board to hit it: it steps through its damage states, then breaks.</div>
+  <h3>Pieces</h3><div class="cards" id="pieces"></div>
+  <h3>Obstacles</h3><div class="cards" id="obst"></div>
+  <h3>Collectibles</h3><div class="cards" id="coll"></div>
+  <h3>Mechanics</h3><ul id="mech"></ul></div></main>
+<canvas id="fx"></canvas>
+<script type="module">
+import * as A from '../motion/anim.js';
+const $ = s => document.querySelector(s), fx = A.particles($('#fx'));
+const L = await (await fetch('../data/levels.json')).json(), K = await (await fetch('../data/ui-kit.json')).json();
+let theme = new URLSearchParams(location.search).get('theme') || localStorage.getItem('edgepulse.theme') || 'graphite';  // ?theme= for deep links
+// fixed layout (same for every theme so worlds compare like-for-like): o=obstacle k=collectible .=empty digit=piece
+const MAP = '0123.01 1o2k30o 2301.12 3k1o02o 01.3k21 2o30.13 1203o2k'.replace(/ /g, '');
+
+function render() {
+  const lv = L[theme], P = K.themes[theme].palette;
+  document.documentElement.dataset.theme = theme;
+  $('#chips').innerHTML = Object.entries(L).map(([id, t]) => `<button class="chip" data-t="${id}" aria-pressed="${id === theme}"><i style="background:${K.themes[id].palette.primary}"></i>${t.name}</button>`).join('');
+  $('#board').style.backgroundImage = `url(../${lv.board})`;
+  let oi = 0, ki = 0;
+  $('#grid').innerHTML = [...MAP].map((ch, i) => {
+    let inner = '';
+    if (/\d/.test(ch)) inner = `<div class="ep float" style="--d:${(i % 7) * .12}s"><img src="../${lv.pieces[+ch]}" alt=""></div>`;
+    if (ch === 'o') { const o = lv.obstacles[oi++ % lv.obstacles.length]; inner = `<div class="ep obst" data-o="${o.id}" data-hp="${o.hits}"><img src="../${o.states[0]}" alt="${o.name}"></div>`; }
+    if (ch === 'k') { const k = lv.collectibles[ki++ % lv.collectibles.length]; inner = `<div class="ep float coll" style="--d:${i * .1}s"><img src="../${k.file}" alt="${k.name}"></div>`; }
+    return `<div class="cell" style="background-image:url(../${lv.cell})">${inner}</div>`;
+  }).join('');
+  $('#name').textContent = lv.name; $('#mood').textContent = lv.mood;
+  $('#pieces').innerHTML = lv.pieces.map(p => `<div class="card"><img src="../${p}" alt=""></div>`).join('');
+  $('#obst').innerHTML = lv.obstacles.map(o => `<div class="card"><div class="st">${o.states.map(s => `<img src="../${s}" alt="">`).join('')}</div>${o.name}<br><small>${o.hits} hit${o.hits > 1 ? 's' : ''}</small></div>`).join('');
+  $('#coll').innerHTML = lv.collectibles.map(k => `<div class="card"><img src="../${k.file}" alt=""><br>${k.name}</div>`).join('');
+  $('#mech').innerHTML = (lv.mechanics.length ? lv.mechanics : ['classic rules']).map(m => `<li>${m}</li>`).join('');
+  A.stagger(document.querySelectorAll('#grid .ep'), 10);
+}
+document.addEventListener('click', async e => {
+  const chip = e.target.closest('.chip'); if (chip) return setTheme(chip.dataset.t);
+  const ob = e.target.closest('.obst'); if (!ob) return;
+  const o = L[theme].obstacles.find(x => x.id === ob.dataset.o), hp = +ob.dataset.hp - 1, P = K.themes[theme].palette;
+  if (hp <= 0) {  // break: burst in theme colours, a piece drops into the freed cell
+    fx.burst(ob, 22, [P.primary, P.accent, '#fff'], true); ob.classList.remove('obst');
+    const cell = ob.parentElement; cell.innerHTML = `<div class="ep float"><img src="../${L[theme].pieces[Math.random() * 4 | 0]}" alt=""></div>`;
+    A.popIn(cell.firstChild); return;
+  }
+  ob.dataset.hp = hp; ob.querySelector('img').src = `../${o.states[o.hits - hp]}`;
+  fx.burst(ob, 10, [P.accent, '#fff']); A.play(ob, 'jelly');
+});
+function setTheme(t) { theme = t; localStorage.setItem('edgepulse.theme', t); render(); }
+addEventListener('message', e => { if (e.data?.type === 'theme' && L[e.data.theme]) setTheme(e.data.theme); });
+render();
+</script></body></html>
