@@ -179,5 +179,6 @@ if __name__ == "__main__":
             open(os.path.join(d, f), "w").write(fn(tid))
             files.append({"file": f"{folder_for(f)}/{f}", "tier": tid, "tierName": tname, "level": lvl, "light": fxc[0], "color": fxc[1]})
         meta.append({"id": bid, "name": name, "size": size, "blast": blast, "tip": [(tp[0] + 8) / 144, (tp[1] + 8) / 144], "pieces": files})
-    json.dump(meta, open(os.path.join(OUT, "bombs", "bombs.json"), "w"), indent=1)
+    os.makedirs(os.path.join(OUT, "data"), exist_ok=True)
+    json.dump(meta, open(os.path.join(OUT, "data", "bombs.json"), "w"), indent=1)
     print(f"wrote {len(meta) * len(TIERS)} bombs + bombs.json")

@@ -1,0 +1,182 @@
+[
+ {
+  "id": "mini",
+  "name": "Mini Pop",
+  "size": "small",
+  "blast": "tight cross",
+  "tip": [
+   0.6805555555555556,
+   0.2361111111111111
+  ],
+  "pieces": [
+   {
+    "file": "pieces/bombs/colored/mini/bombc_mini_0.svg",
+    "tierName": "Cyan",
+    "light": "#7ff3ff",
+    "color": "#14b8d4"
+   },
+   {
+    "file": "pieces/bombs/colored/mini/bombc_mini_1.svg",
+    "tierName": "Magenta",
+    "light": "#ff9ee8",
+    "color": "#e83fb8"
+   },
+   {
+    "file": "pieces/bombs/colored/mini/bombc_mini_2.svg",
+    "tierName": "Lime",
+    "light": "#d6ff8a",
+    "color": "#7fd420"
+   },
+   {
+    "file": "pieces/bombs/colored/mini/bombc_mini_3.svg",
+    "tierName": "Amber",
+    "light": "#ffe08a",
+    "color": "#ffa51f"
+   }
+  ]
+ },
+ {
+  "id": "classic",
+  "name": "Pulse Bomb",
+  "size": "medium",
+  "blast": "3\u00d73 blast",
+  "tip": [
+   0.7638888888888888,
+   0.09722222222222222
+  ],
+  "pieces": [
+   {
+    "file": "pieces/bombs/colored/classic/bombc_classic_0.svg",
+    "tierName": "Cyan",
+    "light": "#7ff3ff",
+    "color": "#14b8d4"
+   },
+   {
+    "file": "pieces/bombs/colored/classic/bombc_classic_1.svg",
+    "tierName": "Magenta",
+    "light": "#ff9ee8",
+    "color": "#e83fb8"
+   },
+   {
+    "file": "pieces/bombs/colored/classic/bombc_classic_2.svg",
+    "tierName": "Lime",
+    "light": "#d6ff8a",
+    "color": "#7fd420"
+   },
+   {
+    "file": "pieces/bombs/colored/classic/bombc_classic_3.svg",
+    "tierName": "Amber",
+    "light": "#ffe08a",
+    "color": "#ffa51f"
+   }
+  ]
+ },
+ {
+  "id": "mega",
+  "name": "Mega Boomer",
+  "size": "large",
+  "blast": "5\u00d75 blast",
+  "tip": [
+   0.8333333333333334,
+   0.027777777777777776
+  ],
+  "pieces": [
+   {
+    "file": "pieces/bombs/colored/mega/bombc_mega_0.svg",
+    "tierName": "Cyan",
+    "light": "#7ff3ff",
+    "color": "#14b8d4"
+   },
+   {
+    "file": "pieces/bombs/colored/mega/bombc_mega_1.svg",
+    "tierName": "Magenta",
+    "light": "#ff9ee8",
+    "color": "#e83fb8"
+   },
+   {
+    "file": "pieces/bombs/colored/mega/bombc_mega_2.svg",
+    "tierName": "Lime",
+    "light": "#d6ff8a",
+    "color": "#7fd420"
+   },
+   {
+    "file": "pieces/bombs/colored/mega/bombc_mega_3.svg",
+    "tierName": "Amber",
+    "light": "#ffe08a",
+    "color": "#ffa51f"
+   }
+  ]
+ },
+ {
+  "id": "line",
+  "name": "Line Blaster",
+  "size": "medium",
+  "blast": "clears a full row",
+  "tip": [
+   0.5833333333333334,
+   0.1527777777777778
+  ],
+  "pieces": [
+   {
+    "file": "pieces/bombs/colored/line/bombc_line_0.svg",
+    "tierName": "Cyan",
+    "light": "#7ff3ff",
+    "color": "#14b8d4"
+   },
+   {
+    "file": "pieces/bombs/colored/line/bombc_line_1.svg",
+    "tierName": "Magenta",
+    "light": "#ff9ee8",
+    "color": "#e83fb8"
+   },
+   {
+    "file": "pieces/bombs/colored/line/bombc_line_2.svg",
+    "tierName": "Lime",
+    "light": "#d6ff8a",
+    "color": "#7fd420"
+   },
+   {
+    "file": "pieces/bombs/colored/line/bombc_line_3.svg",
+    "tierName": "Amber",
+    "light": "#ffe08a",
+    "color": "#ffa51f"
+   }
+  ]
+ },
+ {
+  "id": "spike",
+  "name": "Spike Mine",
+  "size": "medium",
+  "blast": "clears all around",
+  "tip": [
+   0.5416666666666666,
+   0.08333333333333333
+  ],
+  "pieces": [
+   {
+    "file": "pieces/bombs/colored/spike/bombc_spike_0.svg",
+    "tierName": "Cyan",
+    "light": "#7ff3ff",
+    "color": "#14b8d4"
+   },
+   {
+    "file": "pieces/bombs/colored/spike/bombc_spike_1.svg",
+    "tierName": "Magenta",
+    "light": "#ff9ee8",
+    "color": "#e83fb8"
+   },
+   {
+    "file": "pieces/bombs/colored/spike/bombc_spike_2.svg",
+    "tierName": "Lime",
+    "light": "#d6ff8a",
+    "color": "#7fd420"
+   },
+   {
+    "file": "pieces/bombs/colored/spike/bombc_spike_3.svg",
+    "tierName": "Amber",
+    "light": "#ffe08a",
+    "color": "#ffa51f"
+   }
+  ]
+ }
+]

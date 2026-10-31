@@ -1,0 +1,282 @@
+[
+ {
+  "id": "pumpkin",
+  "name": "Glowkin Patch",
+  "event": "Spooky Pulse",
+  "start": "10-20",
+  "end": "11-03",
+  "story": "Carved by candlelight",
+  "returns": "yearly",
+  "pieces": [
+   {
+    "file": "pieces/events/pumpkin/evt_pumpkin_0.svg",
+    "color": "#14b8d4",
+    "light": "#7ff3ff",
+    "points": 100
+   },
+   {
+    "file": "pieces/events/pumpkin/evt_pumpkin_1.svg",
+    "color": "#e83fb8",
+    "light": "#ff9ee8",
+    "points": 250
+   },
+   {
+    "file": "pieces/events/pumpkin/evt_pumpkin_2.svg",
+    "color": "#7fd420",
+    "light": "#d6ff8a",
+    "points": 450
+   },
+   {
+    "file": "pieces/events/pumpkin/evt_pumpkin_3.svg",
+    "color": "#ffa51f",
+    "light": "#ffe08a",
+    "points": 700
+   }
+  ]
+ },
+ {
+  "id": "snowglobe",
+  "name": "Frost Globes",
+  "event": "Winter Glow Festival",
+  "start": "12-10",
+  "end": "01-05",
+  "story": "A tiny snowfall in every piece",
+  "returns": "yearly",
+  "pieces": [
+   {
+    "file": "pieces/events/snowglobe/evt_snowglobe_0.svg",
+    "color": "#14b8d4",
+    "light": "#7ff3ff",
+    "points": 100
+   },
+   {
+    "file": "pieces/events/snowglobe/evt_snowglobe_1.svg",
+    "color": "#e83fb8",
+    "light": "#ff9ee8",
+    "points": 250
+   },
+   {
+    "file": "pieces/events/snowglobe/evt_snowglobe_2.svg",
+    "color": "#7fd420",
+    "light": "#d6ff8a",
+    "points": 450
+   },
+   {
+    "file": "pieces/events/snowglobe/evt_snowglobe_3.svg",
+    "color": "#ffa51f",
+    "light": "#ffe08a",
+    "points": 700
+   }
+  ]
+ },
+ {
+  "id": "lantern",
+  "name": "Lucky Lanterns",
+  "event": "Lantern Festival",
+  "start": "01-20",
+  "end": "02-20",
+  "story": "Warm paper light for a new year",
+  "returns": "yearly",
+  "pieces": [
+   {
+    "file": "pieces/events/lantern/evt_lantern_0.svg",
+    "color": "#14b8d4",
+    "light": "#7ff3ff",
+    "points": 100
+   },
+   {
+    "file": "pieces/events/lantern/evt_lantern_1.svg",
+    "color": "#e83fb8",
+    "light": "#ff9ee8",
+    "points": 250
+   },
+   {
+    "file": "pieces/events/lantern/evt_lantern_2.svg",
+    "color": "#7fd420",
+    "light": "#d6ff8a",
+    "points": 450
+   },
+   {
+    "file": "pieces/events/lantern/evt_lantern_3.svg",
+    "color": "#ffa51f",
+    "light": "#ffe08a",
+    "points": 700
+   }
+  ]
+ },
+ {
+  "id": "letter",
+  "name": "Sealed With Love",
+  "event": "Heart Week",
+  "start": "02-07",
+  "end": "02-21",
+  "story": "Wax-sealed notes",
+  "returns": "yearly",
+  "pieces": [
+   {
+    "file": "pieces/events/letter/evt_letter_0.svg",
+    "color": "#14b8d4",
+    "light": "#7ff3ff",
+    "points": 100
+   },
+   {
+    "file": "pieces/events/letter/evt_letter_1.svg",
+    "color": "#e83fb8",
+    "light": "#ff9ee8",
+    "points": 250
+   },
+   {
+    "file": "pieces/events/letter/evt_letter_2.svg",
+    "color": "#7fd420",
+    "light": "#d6ff8a",
+    "points": 450
+   },
+   {
+    "file": "pieces/events/letter/evt_letter_3.svg",
+    "color": "#ffa51f",
+    "light": "#ffe08a",
+    "points": 700
+   }
+  ]
+ },
+ {
+  "id": "egg",
+  "name": "Spring Speckles",
+  "event": "Spring Fest",
+  "start": "03-20",
+  "end": "04-20",
+  "story": "Hand-painted eggs",
+  "returns": "yearly",
+  "pieces": [
+   {
+    "file": "pieces/events/egg/evt_egg_0.svg",
+    "color": "#14b8d4",
+    "light": "#7ff3ff",
+    "points": 100
+   },
+   {
+    "file": "pieces/events/egg/evt_egg_1.svg",
+    "color": "#e83fb8",
+    "light": "#ff9ee8",
+    "points": 250
+   },
+   {
+    "file": "pieces/events/egg/evt_egg_2.svg",
+    "color": "#7fd420",
+    "light": "#d6ff8a",
+    "points": 450
+   },
+   {
+    "file": "pieces/events/egg/evt_egg_3.svg",
+    "color": "#ffa51f",
+    "light": "#ffe08a",
+    "points": 700
+   }
+  ]
+ },
+ {
+  "id": "capy",
+  "name": "Chill Capys",
+  "event": "Chill Week \u00b7 trend drop",
+  "start": "05-01",
+  "end": "05-31",
+  "story": "Unbothered. Always.",
+  "returns": "yearly",
+  "pieces": [
+   {
+    "file": "pieces/events/capy/evt_capy_0.svg",
+    "color": "#14b8d4",
+    "light": "#7ff3ff",
+    "points": 100
+   },
+   {
+    "file": "pieces/events/capy/evt_capy_1.svg",
+    "color": "#e83fb8",
+    "light": "#ff9ee8",
+    "points": 250
+   },
+   {
+    "file": "pieces/events/capy/evt_capy_2.svg",
+    "color": "#7fd420",
+    "light": "#d6ff8a",
+    "points": 450
+   },
+   {
+    "file": "pieces/events/capy/evt_capy_3.svg",
+    "color": "#ffa51f",
+    "light": "#ffe08a",
+    "points": 700
+   }
+  ]
+ },
+ {
+  "id": "icepop",
+  "name": "Ice Pops",
+  "event": "Summer Splash",
+  "start": "07-01",
+  "end": "08-31",
+  "story": "Frosty, drippy, sweet",
+  "returns": "yearly",
+  "pieces": [
+   {
+    "file": "pieces/events/icepop/evt_icepop_0.svg",
+    "color": "#14b8d4",
+    "light": "#7ff3ff",
+    "points": 100
+   },
+   {
+    "file": "pieces/events/icepop/evt_icepop_1.svg",
+    "color": "#e83fb8",
+    "light": "#ff9ee8",
+    "points": 250
+   },
+   {
+    "file": "pieces/events/icepop/evt_icepop_2.svg",
+    "color": "#7fd420",
+    "light": "#d6ff8a",
+    "points": 450
+   },
+   {
+    "file": "pieces/events/icepop/evt_icepop_3.svg",
+    "color": "#ffa51f",
+    "light": "#ffe08a",
+    "points": 700
+   }
+  ]
+ },
+ {
+  "id": "grump",
+  "name": "Grumplings",
+  "event": "Ugly-Cute Week \u00b7 trend drop",
+  "start": "09-01",
+  "end": "09-30",
+  "story": "Grumpy outside, soft inside",
+  "returns": "yearly",
+  "pieces": [
+   {
+    "file": "pieces/events/grump/evt_grump_0.svg",
+    "color": "#14b8d4",
+    "light": "#7ff3ff",
+    "points": 100
+   },
+   {
+    "file": "pieces/events/grump/evt_grump_1.svg",
+    "color": "#e83fb8",
+    "light": "#ff9ee8",
+    "points": 250
+   },
+   {
+    "file": "pieces/events/grump/evt_grump_2.svg",
+    "color": "#7fd420",
+    "light": "#d6ff8a",
+    "points": 450
+   },
+   {
+    "file": "pieces/events/grump/evt_grump_3.svg",
+    "color": "#ffa51f",
+    "light": "#ffe08a",
+    "points": 700
+   }
+  ]
+ }
+]

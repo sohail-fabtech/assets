@@ -163,11 +163,13 @@ if __name__ == "__main__":
                 f = f"sea_{sid}_{key}_{i}.svg"
                 os.makedirs(os.path.join(OUT, folder_for(f)), exist_ok=True)
                 open(os.path.join(OUT, folder_for(f), f), "w").write(fn(cols, GLYPHS[SLOTS[i]])); n += 1
-                pieces.append({"file": f, "color": cols[1], "light": cols[0]})
+                pieces.append({"file": f"{folder_for(f)}/{f}", "color": cols[1], "light": cols[0]})
             sets.append({"id": key, "name": name, "tagline": tag, "pieces": pieces})
         for f, data in ((f"sea_{sid}_board.svg", board(S["bg"])), (f"sea_{sid}_emblem.svg", emblem(sid, S["cols"][3 if sid in ("summer", "autumn") else 1], S["accent"]))):
+            os.makedirs(os.path.join(OUT, folder_for(f)), exist_ok=True)
             open(os.path.join(OUT, folder_for(f), f), "w").write(data); n += 1
         meta.append({"id": sid, "months": S["months"], "accent": S["accent"], "bg": S["bg"],
-                     "board": f"sea_{sid}_board.svg", "emblem": f"sea_{sid}_emblem.svg", "sets": sets})
-    json.dump(meta, open(os.path.join(OUT, "seasons", "seasons.json"), "w"), indent=1)
+                     "board": f"board/seasons/sea_{sid}_board.svg", "emblem": f"rewards/seasons/sea_{sid}_emblem.svg", "sets": sets})
+    os.makedirs(os.path.join(OUT, "data"), exist_ok=True)
+    json.dump(meta, open(os.path.join(OUT, "data", "seasons.json"), "w"), indent=1)
     print(f"wrote {n} season assets + seasons.json")

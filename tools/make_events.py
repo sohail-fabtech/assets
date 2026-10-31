@@ -157,8 +157,9 @@ if __name__ == "__main__":
             f = f"evt_{eid}_{i}.svg"
             os.makedirs(os.path.join(OUT, folder_for(f)), exist_ok=True)
             open(os.path.join(OUT, folder_for(f), f), "w").write(fn(cols, GLYPHS[SLOTS[i]]))
-            pieces.append({"file": f, "color": cols[1], "light": cols[0], "points": PATH[i]})
+            pieces.append({"file": f"{folder_for(f)}/{f}", "color": cols[1], "light": cols[0], "points": PATH[i]})
         meta.append({"id": eid, "name": name, "event": event, "start": start, "end": end, "story": story,
                      "returns": "yearly", "pieces": pieces})
-    json.dump(meta, open(os.path.join(OUT, "events", "events.json"), "w"), indent=1)
+    os.makedirs(os.path.join(OUT, "data"), exist_ok=True)
+    json.dump(meta, open(os.path.join(OUT, "data", "events.json"), "w"), indent=1)
     print(f"wrote {len(meta) * 4} event pieces + events.json")

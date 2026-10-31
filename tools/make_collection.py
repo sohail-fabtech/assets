@@ -157,7 +157,8 @@ if __name__ == "__main__":
             f = f"col_{sid}_{i}.svg"
             os.makedirs(os.path.join(OUT, folder_for(f)), exist_ok=True)
             open(os.path.join(OUT, folder_for(f), f), "w").write(fn(cols, GLYPHS[SLOTS[i]]))
-            pieces.append({"file": f, "color": cols[1], "light": cols[0], "price": PRICE[rarity]})
+            pieces.append({"file": f"{folder_for(f)}/{f}", "color": cols[1], "light": cols[0], "price": PRICE[rarity]})
         meta.append({"id": sid, "name": name, "rarity": rarity, "tagline": tag, "pieces": pieces})
-    json.dump(meta, open(os.path.join(OUT, "collection", "collection.json"), "w"), indent=1)
+    os.makedirs(os.path.join(OUT, "data"), exist_ok=True)
+    json.dump(meta, open(os.path.join(OUT, "data", "collection.json"), "w"), indent=1)
     print(f"wrote {len(meta) * 4} collection pieces + collection.json")

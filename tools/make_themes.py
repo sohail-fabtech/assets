@@ -1,9 +1,10 @@
 # Edge Pulse color worlds × piece styles. Run: python3 tools/make_themes.py
 # Slot i always carries the same symbol (drop, heart, leaf, star) so colorblind players keep their cues in every world.
 import json, os
+from layout import folder_for
 from make_assets import svg, layered, BOX, BALL, GLYPHS
 
-OUT = os.path.join(os.path.dirname(__file__), "..", "assets", "themes")
+OUT = os.path.join(os.path.dirname(__file__), "..", "assets")
 SYMBOLS = [GLYPHS[k] for k in ("cyan", "magenta", "lime", "amber")]
 
 # world: 4 piece colours (light, mid, dark) + board (top, bottom, rim light, rim dark) + UI accent
@@ -93,18 +94,21 @@ def cell(bottom):
                f'<rect x="4" y="6" width="120" height="118" rx="28" fill="none" stroke="#fff" stroke-opacity=".07" stroke-width="2"/>', 128, 128, 0)
 
 
+def write(f, data):
+    d = os.path.join(OUT, folder_for(f)); os.makedirs(d, exist_ok=True)
+    open(os.path.join(d, f), "w").write(data)
+    return f"{folder_for(f)}/{f}"
+
+
 if __name__ == "__main__":
-    n = 0
+    out, n = {}, 0
     for w, t in WORLDS.items():
-        d = os.path.join(OUT, w); os.makedirs(d, exist_ok=True)
-        for st, fn in STYLES.items():
-            for i, cols in enumerate(t["pieces"]):
-                open(os.path.join(d, f"piece_{st}_{i}.svg"), "w").write(fn(cols, SYMBOLS[i])); n += 1
-        open(os.path.join(d, "board.svg"), "w").write(board(*t["board"]))
-        open(os.path.join(d, "cell.svg"), "w").write(cell(t["board"][1]))
+        files = {st: [write(f"th_{w}_{st}_{i}.svg", fn(cols, SYMBOLS[i])) for i, cols in enumerate(t["pieces"])] for st, fn in STYLES.items()}
+        n += 4 * len(STYLES)
+        out[w] = {"pieces": [c[1] for c in t["pieces"]], "light": [c[0] for c in t["pieces"]], "board": t["board"], "accent": t["accent"],
+                  "boardFile": write(f"thb_{w}_board.svg", board(*t["board"])), "cellFile": write(f"thb_{w}_cell.svg", cell(t["board"][1])),
+                  "files": files}
         n += 2
-    # theme tokens for game code (colours used by particles, trails, UI accents)
-    json.dump({w: {"pieces": [c[1] for c in t["pieces"]], "light": [c[0] for c in t["pieces"]],
-                   "board": t["board"], "accent": t["accent"]} for w, t in WORLDS.items()},
-              open(os.path.join(OUT, "themes.json"), "w"), indent=1)
-    print(f"wrote {n} theme assets + themes.json to {os.path.abspath(OUT)}")
+    os.makedirs(os.path.join(OUT, "data"), exist_ok=True)
+    json.dump(out, open(os.path.join(OUT, "data", "themes.json"), "w"), indent=1)
+    print(f"wrote {n} theme assets + data/themes.json")

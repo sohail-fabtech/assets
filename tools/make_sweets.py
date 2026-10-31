@@ -168,5 +168,6 @@ if __name__ == "__main__":
                 open(os.path.join(d, f), "w").write(fn(cols, GLYPHS[SLOTS[i]])); n += 1
                 files.append(f"{folder_for(f)}/{f}")
             meta[cat].append({"id": did, "name": name, "pieces": files})
-    json.dump(meta, open(os.path.join(OUT, "sweets", "sweets.json"), "w"), indent=1)
+    os.makedirs(os.path.join(OUT, "data"), exist_ok=True)
+    json.dump(meta, open(os.path.join(OUT, "data", "sweets.json"), "w"), indent=1)
     print(f"wrote {n} sweets in {sum(len(v) for v in SWEETS.values())} design folders + sweets.json")

@@ -1,0 +1,94 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Edge Pulse – Events</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../motion/anim.css">
+<style>
+body{margin:0;min-height:100vh;background:radial-gradient(120% 80% at 50% 0,#2e3340,#12141a);color:#e3e6ee;font:600 14px/1.45 Poppins,sans-serif}
+main{padding:24px 28px 40px;max-width:1200px}
+h1{font:900 28px/1.2 Poppins;letter-spacing:-.02em;margin:0}
+.sub{opacity:.6;margin-bottom:18px}
+.live{position:relative;border-radius:28px;padding:22px;background:linear-gradient(135deg,#3a2a1a,#1b1e26 70%);box-shadow:0 0 0 1.5px #ffa51f,0 18px 40px -16px #000c}
+.chip{display:inline-block;font:900 11px Poppins;letter-spacing:.08em;padding:4px 10px;border-radius:99px;background:#ffa51f;color:#1a1020}
+.live h2{font:900 30px/1.2 Poppins;letter-spacing:-.02em;margin:8px 0 2px}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.left{margin-left:auto;text-align:right;font:800 14px Poppins;font-variant-numeric:tabular-nums}.left b{display:block;font:900 30px Poppins}
+.path{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:20px 0 14px}
+.step{position:relative;border-radius:20px;background:#0e1015;padding:12px 10px 10px;text-align:center}
+.step .ep{width:min(72%,110px);margin:0 auto}
+.step.locked .ep img{filter:brightness(0) opacity(.35)}
+.step small{display:block;font:800 12px Poppins;font-variant-numeric:tabular-nums;opacity:.7;margin-top:4px}
+.step.owned small{color:#9dff6a;opacity:1}
+.track{height:14px;border-radius:99px;background:#0b0c10;overflow:hidden}
+.track i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#ffe08a,#ffa51f);transition:width .6s cubic-bezier(.33,1,.68,1)}
+.pts{font:900 18px Poppins;font-variant-numeric:tabular-nums}
+button.ui{font:800 15px Poppins;color:#1a1020;background:#ffa51f;border:0;border-radius:99px;padding:12px 22px;cursor:pointer}
+button.ghost{background:#ffffff14;color:#fff;border:1px solid #ffffff22;font-size:13px;padding:8px 14px}
+h3{font:800 13px Poppins;letter-spacing:.08em;text-transform:uppercase;opacity:.55;margin:30px 0 12px}
+.cal{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.ev{border-radius:22px;padding:16px;background:#1f232c}
+.ev b{font:800 16px Poppins;display:block}.ev .when{font-size:12px;opacity:.6}
+.ev .mini{display:flex;gap:6px;margin-top:10px}.ev .mini img{width:48px}
+.ev.soon .mini img{filter:brightness(0) opacity(.3)}
+.ev .ret{font-size:12px;color:#7ff3ff;margin-top:8px}
+#fx{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:8}
+</style></head><body><main>
+<h1>Events</h1><div class="sub">Play during an event to fill its prize path. Every event returns next year, so nothing is gone for good.</div>
+<section class="live" id="live"></section>
+<h3>Event calendar</h3><div class="cal" id="cal"></div>
+</main><canvas id="fx"></canvas>
+<script type="module">
+import * as A from '../motion/anim.js';
+const $ = s => document.querySelector(s), fx = A.particles($('#fx'));
+const EV = await (await fetch('../data/events.json')).json();
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const fmt = md => { const [m, d] = md.split('-').map(Number); return `${MON[m - 1]} ${d}`; };
+const today = new Date(); const y = today.getFullYear();
+// window for this cycle: end may wrap into next year (e.g. Dec 10 → Jan 5)
+function win(e) {  // current or next window; end may wrap into next year (Dec 10 → Jan 5)
+  const mk = (yr, md) => new Date(yr, md.slice(0, 2) - 1, +md.slice(3), 23, 59);
+  for (const yr of [y - 1, y, y + 1]) {
+    const s = mk(yr, e.start), en = mk(e.end < e.start ? yr + 1 : yr, e.end);
+    if (today <= en) return { s, en, live: today >= s };
+  }
+}
+const W = EV.map(e => ({ ...e, ...win(e) })).sort((a, b) => (b.live - a.live) || (a.s - b.s));
+const live = W.find(e => e.live) || W[0];
+const KEY = 'edgepulse.events.' + live.id + '.' + live.s.getFullYear();
+let pts = +localStorage.getItem(KEY) || 0;
+
+function renderLive() {
+  const days = Math.max(0, Math.ceil((live.en - today) / 864e5)), max = live.pieces.at(-1).points;
+  $('#live').innerHTML = `<div class="row"><div><span class="chip">${live.live ? 'LIVE NOW' : 'NEXT UP'}</span>
+      <h2>${live.event}</h2><div style="opacity:.7">${live.name} · ${live.story}</div></div>
+      <div class="left">${live.live ? 'ends in' : 'starts'}<b>${live.live ? days + (days === 1 ? ' day' : ' days') : fmt(live.start)}</b></div></div>
+    <div class="path">${live.pieces.map(p => `<div class="step ${pts >= p.points ? 'owned' : 'locked'}">
+      <div class="ep ${pts >= p.points ? 'float' : ''}"><img src="../${p.file}" alt=""></div><small>${pts >= p.points ? '✓ earned' : p.points + ' pts'}</small></div>`).join('')}</div>
+    <div class="row"><div style="flex:1"><div class="track"><i style="width:${Math.min(100, pts / max * 100)}%"></i></div></div>
+      <span class="pts" id="pts">${pts} / ${max}</span>
+      ${live.live ? '<button class="ui" id="play">Play a run · +120 pts</button>' : ''}<button class="ui ghost" id="reset">Reset</button></div>`;
+}
+function renderCal() {
+  $('#cal').innerHTML = W.map(e => `<div class="ev ${e.live ? '' : 'soon'}"><b>${e.name}</b>
+    <div class="when">${e.event} · ${fmt(e.start)} – ${fmt(e.end)}${e.live ? ' · live' : ''}</div>
+    <div class="mini">${e.pieces.map(p => `<img src="../${p.file}" alt="">`).join('')}</div>
+    <div class="ret">↻ Returns every year</div></div>`).join('');
+}
+document.addEventListener('click', async e => {
+  if (e.target.id === 'reset') { pts = 0; localStorage.removeItem(KEY); renderLive(); return; }
+  if (e.target.id !== 'play') return;
+  const before = pts; pts = Math.min(live.pieces.at(-1).points, pts + 120); localStorage.setItem(KEY, pts);
+  A.press(e.target);
+  const won = live.pieces.filter(p => before < p.points && pts >= p.points);
+  const steps = [...document.querySelectorAll('.step')], i0 = live.pieces.findIndex(p => p === won[0]);
+  A.countTo($('#pts'), before, pts, 450).then(() => $('#pts').textContent += ` / ${live.pieces.at(-1).points}`);
+  $('.track i').style.width = pts / live.pieces.at(-1).points * 100 + '%';
+  await new Promise(r => setTimeout(r, 450));
+  for (const [k, p] of won.entries()) {
+    const step = steps[i0 + k], ep = step.querySelector('.ep');
+    step.classList.replace('locked', 'owned'); step.querySelector('small').textContent = '✓ earned';
+    await A.unlock(ep); fx.burst(ep, 22, [p.light, p.color, '#fff3c4']); ep.classList.add('float');
+  }
+  if (won.some(p => p === live.pieces.at(-1))) document.querySelectorAll('.step .ep').forEach(ep => fx.burst(ep, 14, ['#ffa51f', '#fff']));
+});
+renderLive(); renderCal(); A.stagger(document.querySelectorAll('.ev'), 50);
+</script></body></html>

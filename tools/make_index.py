@@ -1,10 +1,10 @@
 # Builds assets/index.html: one preview of every asset, grouped by category. Run after the generators:
-#   python3 make_assets.py && python3 make_ui.py && python3 make_themes.py && python3 make_index.py
-import json, os
+#   see tools/build_all.sh
+import os
 from layout import CATEGORIES
 
 A = os.path.join(os.path.dirname(__file__), "..", "assets")
-WIDE = ("board_", "sea_spring_board", "sea_summer_board", "sea_autumn_board", "sea_winter_board", "panel_", "ribbon", "btn_play", "btn_secondary", "progress_", "hud_pill")
+WIDE = ("board_", "thb_", "sea_spring_board", "sea_summer_board", "sea_autumn_board", "sea_winter_board", "panel_", "ribbon", "btn_play", "btn_secondary", "progress_", "hud_pill")
 nice = lambda n: n[:-4].replace("_", " ")
 
 sections, nav = [], []
@@ -14,7 +14,7 @@ def cards(rel):
                           f'<img src="{rel}/{f}" loading="lazy"><figcaption>{nice(f)}</figcaption></figure>' for f in files)
 
 
-for folder, (title, _) in CATEGORIES.items():
+for folder, title in CATEGORIES.items():
     body, count = "", 0
     for root, dirs, _ in sorted(os.walk(os.path.join(A, folder))):  # nested folders get their own sub-heading
         dirs.sort()
@@ -24,29 +24,22 @@ for folder, (title, _) in CATEGORIES.items():
         count += len(files)
         depth = rel.count("/")
         label = rel.split("/", 1)[1].replace("/", " › ") if depth else ""
-        body += (f'<h3 class="d{depth}">{label} <span>{len(files)}</span></h3>' if label else "") + f'<div class="grid">{html_cards}</div>'
+        anchor = rel.replace("/", "-")
+        body += (f'<h3 id="{anchor}" class="d{depth}">{label} <span>{len(files)}</span></h3>' if label else "") + f'<div class="grid">{html_cards}</div>'
     nav.append(f'<a href="#{folder}">{title} <b>{count}</b></a>')
+    if folder == "pieces":  # quick links into each piece collection
+        for sub in sorted(os.listdir(os.path.join(A, folder))):
+            n = sum(len([f for f in fs if f.endswith(".svg")]) for _, _, fs in os.walk(os.path.join(A, folder, sub)))
+            nav.append(f'<a class="sub" href="#pieces-{sub}">{sub} <b>{n}</b></a>')
     sections.append(f'<section id="{folder}"><h2>{title} <span>{folder}/ · {count}</span></h2>{body}</section>')
 
-themes = json.load(open(os.path.join(A, "themes", "themes.json")))
-styles = ["box", "ball", "pillow", "gem", "bubble"]
-rows, total = [], 0
-for w, t in themes.items():
-    pieces = "".join(f'<img src="themes/{w}/piece_{s}_{i}.svg" data-path="themes/{w}/piece_{s}_{i}.svg" title="{s} {i}" loading="lazy">'
-                     for s in styles for i in range(4))
-    dots = "".join(f'<i style="background:{c}"></i>' for c in t["pieces"])
-    total += len(styles) * 4 + 2
-    rows.append(f'<div class="world" style="--b0:{t["board"][0]};--b1:{t["board"][1]}"><div class="wh"><b>{w.replace("_", " ")}</b>{dots}</div>'
-                f'<div class="wp"><img class="wb" src="themes/{w}/board.svg">{pieces}</div></div>')
-nav.append(f'<a href="#themes">Color worlds <b>{total}</b></a>')
-LIVE = [("bombs-live", "Bombs (live)", "bombs/index.html", "Lit fuses with live sparks · tap a bomb to detonate · Blast all", 900),
-        ("seasons", "Seasons", "seasons/index.html", "Four aura seasons · current season is live · tap pieces", 1000),
-        ("events", "Events", "events/index.html", "Live event prize path + yearly calendar · tap Play a run", 1000),
-        ("vault", "Piece Vault", "collection/index.html", "Unlock pieces with Shards · tap a silhouette", 900),
-        ("board", "Theme board", "themes/index.html", "Switch color worlds and piece styles on a live 7×7 board", 760),
-        ("showcase", "Animated showcase", "motion/showcase.html", "Every asset with idle loops · tap anything", 900),
-        ("demo", "Motion spec demo", "motion/demo.html", "Clear, fall, fire, life loss, score, combo, panel timings", 640)]
-sections.append(f'<section id="themes"><h2>Color worlds <span>themes/ · {len(themes)} worlds × {len(styles)} styles</span></h2>{"".join(rows)}</section>')
+LIVE = [("bombs-live", "Bombs (live)", "pages/bombs.html", "Lit fuses with live sparks · tap a bomb to detonate · Blast all", 900),
+        ("seasons-live", "Seasons", "pages/seasons.html", "Four seasons · current season is live · tap pieces", 1000),
+        ("events-live", "Events", "pages/events.html", "Live event prize path + yearly calendar · tap Play a run", 1000),
+        ("vault", "Piece Vault", "pages/vault.html", "Unlock pieces with Shards · tap a silhouette", 900),
+        ("theme-board", "Theme board", "pages/themes.html", "Switch color worlds and piece styles on a live 7×7 board", 760),
+        ("showcase", "Animated showcase", "pages/showcase.html", "Every asset with idle loops · tap anything", 900),
+        ("demo", "Motion spec demo", "pages/demo.html", "Clear, fall, fire, life loss, score, combo, panel timings", 640)]
 for sid, title, src, sub, h in LIVE:  # interactive pages embedded so this one page shows everything
     nav.append(f'<a href="#{sid}">{title}</a>')
     sections.append(f'<section id="{sid}"><h2>{title} <span>{sub}</span></h2>'
@@ -61,7 +54,7 @@ header{{position:sticky;top:0;z-index:2;background:#12141ae6;backdrop-filter:blu
 h1{{font:900 26px/1.2 Poppins;letter-spacing:-.02em;margin:0 0 10px;display:flex;gap:16px;align-items:center}}
 h1 input{{margin-left:auto;font:600 14px Poppins;color:#fff;background:#ffffff10;border:1px solid #ffffff20;border-radius:99px;padding:8px 16px;width:220px}}
 nav{{display:flex;flex-wrap:wrap;gap:6px}}nav a{{color:#d6dae3;text-decoration:none;font-size:13px;padding:5px 12px;border-radius:99px;background:#ffffff0c}}
-nav a:hover{{background:#ffffff1c}}nav b{{opacity:.5;font-weight:800}}
+nav a:hover{{background:#ffffff1c}}nav a.sub{{text-transform:capitalize;background:#ffffff06;font-size:12px}}nav b{{opacity:.5;font-weight:800}}
 section{{padding:22px 28px 8px;scroll-margin-top:110px}}
 h2{{font:800 20px/1.2 Poppins;letter-spacing:-.01em;margin:0 0 14px}}h2 span{{font-size:13px;font-weight:600;opacity:.5;margin-left:8px}}h2 a{{color:#7ff3ff}}
 .grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px}}

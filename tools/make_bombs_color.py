@@ -77,5 +77,6 @@ if __name__ == "__main__":
             open(os.path.join(d, f), "w").write(fn(cols, GLYPHS[SLOTS[i]]))
             files.append({"file": f"{folder_for(f)}/{f}", "tierName": ["Cyan", "Magenta", "Lime", "Amber"][i], "light": cols[0], "color": cols[1]})
         meta.append({"id": bid, "name": name, "size": size, "blast": blast, "tip": [(tip[0] + 8) / 144, (tip[1] + 8) / 144], "pieces": files})
-    json.dump(meta, open(os.path.join(OUT, "bombs", "bombs_color.json"), "w"), indent=1)
+    os.makedirs(os.path.join(OUT, "data"), exist_ok=True)
+    json.dump(meta, open(os.path.join(OUT, "data", "bombs_color.json"), "w"), indent=1)
     print(f"wrote {len(meta) * 4} colour bombs + bombs_color.json")

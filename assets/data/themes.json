@@ -1,0 +1,332 @@
+{
+ "graphite": {
+  "pieces": [
+   "#14b8d4",
+   "#e83fb8",
+   "#7fd420",
+   "#ffa51f"
+  ],
+  "light": [
+   "#7ff3ff",
+   "#ff9ee8",
+   "#d6ff8a",
+   "#ffe08a"
+  ],
+  "board": [
+   "#3a3f4b",
+   "#16181e",
+   "#d9dde5",
+   "#5b616e"
+  ],
+  "accent": "#7ff3ff",
+  "boardFile": "board/themes/graphite/thb_graphite_board.svg",
+  "cellFile": "board/themes/graphite/thb_graphite_cell.svg",
+  "files": {
+   "box": [
+    "pieces/themes/graphite/box/th_graphite_box_0.svg",
+    "pieces/themes/graphite/box/th_graphite_box_1.svg",
+    "pieces/themes/graphite/box/th_graphite_box_2.svg",
+    "pieces/themes/graphite/box/th_graphite_box_3.svg"
+   ],
+   "ball": [
+    "pieces/themes/graphite/ball/th_graphite_ball_0.svg",
+    "pieces/themes/graphite/ball/th_graphite_ball_1.svg",
+    "pieces/themes/graphite/ball/th_graphite_ball_2.svg",
+    "pieces/themes/graphite/ball/th_graphite_ball_3.svg"
+   ],
+   "pillow": [
+    "pieces/themes/graphite/pillow/th_graphite_pillow_0.svg",
+    "pieces/themes/graphite/pillow/th_graphite_pillow_1.svg",
+    "pieces/themes/graphite/pillow/th_graphite_pillow_2.svg",
+    "pieces/themes/graphite/pillow/th_graphite_pillow_3.svg"
+   ],
+   "gem": [
+    "pieces/themes/graphite/gem/th_graphite_gem_0.svg",
+    "pieces/themes/graphite/gem/th_graphite_gem_1.svg",
+    "pieces/themes/graphite/gem/th_graphite_gem_2.svg",
+    "pieces/themes/graphite/gem/th_graphite_gem_3.svg"
+   ],
+   "bubble": [
+    "pieces/themes/graphite/bubble/th_graphite_bubble_0.svg",
+    "pieces/themes/graphite/bubble/th_graphite_bubble_1.svg",
+    "pieces/themes/graphite/bubble/th_graphite_bubble_2.svg",
+    "pieces/themes/graphite/bubble/th_graphite_bubble_3.svg"
+   ]
+  }
+ },
+ "aurora": {
+  "pieces": [
+   "#19c98f",
+   "#3a8cff",
+   "#8e4dff",
+   "#ff4fb8"
+  ],
+  "light": [
+   "#7dffc8",
+   "#9fd8ff",
+   "#d6b3ff",
+   "#ffb3e6"
+  ],
+  "board": [
+   "#1d3a4a",
+   "#0a1420",
+   "#9ff5d8",
+   "#2a5a6a"
+  ],
+  "accent": "#7dffc8",
+  "boardFile": "board/themes/aurora/thb_aurora_board.svg",
+  "cellFile": "board/themes/aurora/thb_aurora_cell.svg",
+  "files": {
+   "box": [
+    "pieces/themes/aurora/box/th_aurora_box_0.svg",
+    "pieces/themes/aurora/box/th_aurora_box_1.svg",
+    "pieces/themes/aurora/box/th_aurora_box_2.svg",
+    "pieces/themes/aurora/box/th_aurora_box_3.svg"
+   ],
+   "ball": [
+    "pieces/themes/aurora/ball/th_aurora_ball_0.svg",
+    "pieces/themes/aurora/ball/th_aurora_ball_1.svg",
+    "pieces/themes/aurora/ball/th_aurora_ball_2.svg",
+    "pieces/themes/aurora/ball/th_aurora_ball_3.svg"
+   ],
+   "pillow": [
+    "pieces/themes/aurora/pillow/th_aurora_pillow_0.svg",
+    "pieces/themes/aurora/pillow/th_aurora_pillow_1.svg",
+    "pieces/themes/aurora/pillow/th_aurora_pillow_2.svg",
+    "pieces/themes/aurora/pillow/th_aurora_pillow_3.svg"
+   ],
+   "gem": [
+    "pieces/themes/aurora/gem/th_aurora_gem_0.svg",
+    "pieces/themes/aurora/gem/th_aurora_gem_1.svg",
+    "pieces/themes/aurora/gem/th_aurora_gem_2.svg",
+    "pieces/themes/aurora/gem/th_aurora_gem_3.svg"
+   ],
+   "bubble": [
+    "pieces/themes/aurora/bubble/th_aurora_bubble_0.svg",
+    "pieces/themes/aurora/bubble/th_aurora_bubble_1.svg",
+    "pieces/themes/aurora/bubble/th_aurora_bubble_2.svg",
+    "pieces/themes/aurora/bubble/th_aurora_bubble_3.svg"
+   ]
+  }
+ },
+ "orchid_dusk": {
+  "pieces": [
+   "#b84dff",
+   "#ff5c86",
+   "#ff8a4d",
+   "#6f6fff"
+  ],
+  "light": [
+   "#f0b3ff",
+   "#ffb8c8",
+   "#ffd2b0",
+   "#c8c8ff"
+  ],
+  "board": [
+   "#3a2448",
+   "#140a1e",
+   "#f0c8ff",
+   "#5a3a6e"
+  ],
+  "accent": "#f0b3ff",
+  "boardFile": "board/themes/orchid_dusk/thb_orchid_dusk_board.svg",
+  "cellFile": "board/themes/orchid_dusk/thb_orchid_dusk_cell.svg",
+  "files": {
+   "box": [
+    "pieces/themes/orchid_dusk/box/th_orchid_dusk_box_0.svg",
+    "pieces/themes/orchid_dusk/box/th_orchid_dusk_box_1.svg",
+    "pieces/themes/orchid_dusk/box/th_orchid_dusk_box_2.svg",
+    "pieces/themes/orchid_dusk/box/th_orchid_dusk_box_3.svg"
+   ],
+   "ball": [
+    "pieces/themes/orchid_dusk/ball/th_orchid_dusk_ball_0.svg",
+    "pieces/themes/orchid_dusk/ball/th_orchid_dusk_ball_1.svg",
+    "pieces/themes/orchid_dusk/ball/th_orchid_dusk_ball_2.svg",
+    "pieces/themes/orchid_dusk/ball/th_orchid_dusk_ball_3.svg"
+   ],
+   "pillow": [
+    "pieces/themes/orchid_dusk/pillow/th_orchid_dusk_pillow_0.svg",
+    "pieces/themes/orchid_dusk/pillow/th_orchid_dusk_pillow_1.svg",
+    "pieces/themes/orchid_dusk/pillow/th_orchid_dusk_pillow_2.svg",
+    "pieces/themes/orchid_dusk/pillow/th_orchid_dusk_pillow_3.svg"
+   ],
+   "gem": [
+    "pieces/themes/orchid_dusk/gem/th_orchid_dusk_gem_0.svg",
+    "pieces/themes/orchid_dusk/gem/th_orchid_dusk_gem_1.svg",
+    "pieces/themes/orchid_dusk/gem/th_orchid_dusk_gem_2.svg",
+    "pieces/themes/orchid_dusk/gem/th_orchid_dusk_gem_3.svg"
+   ],
+   "bubble": [
+    "pieces/themes/orchid_dusk/bubble/th_orchid_dusk_bubble_0.svg",
+    "pieces/themes/orchid_dusk/bubble/th_orchid_dusk_bubble_1.svg",
+    "pieces/themes/orchid_dusk/bubble/th_orchid_dusk_bubble_2.svg",
+    "pieces/themes/orchid_dusk/bubble/th_orchid_dusk_bubble_3.svg"
+   ]
+  }
+ },
+ "lagoon": {
+  "pieces": [
+   "#1fd1c1",
+   "#ff6b4a",
+   "#f2c230",
+   "#2f6bff"
+  ],
+  "light": [
+   "#a8fff4",
+   "#ffc0a8",
+   "#fff0b0",
+   "#a8c8ff"
+  ],
+  "board": [
+   "#0f4a58",
+   "#06202a",
+   "#b8fff0",
+   "#1a6a70"
+  ],
+  "accent": "#a8fff4",
+  "boardFile": "board/themes/lagoon/thb_lagoon_board.svg",
+  "cellFile": "board/themes/lagoon/thb_lagoon_cell.svg",
+  "files": {
+   "box": [
+    "pieces/themes/lagoon/box/th_lagoon_box_0.svg",
+    "pieces/themes/lagoon/box/th_lagoon_box_1.svg",
+    "pieces/themes/lagoon/box/th_lagoon_box_2.svg",
+    "pieces/themes/lagoon/box/th_lagoon_box_3.svg"
+   ],
+   "ball": [
+    "pieces/themes/lagoon/ball/th_lagoon_ball_0.svg",
+    "pieces/themes/lagoon/ball/th_lagoon_ball_1.svg",
+    "pieces/themes/lagoon/ball/th_lagoon_ball_2.svg",
+    "pieces/themes/lagoon/ball/th_lagoon_ball_3.svg"
+   ],
+   "pillow": [
+    "pieces/themes/lagoon/pillow/th_lagoon_pillow_0.svg",
+    "pieces/themes/lagoon/pillow/th_lagoon_pillow_1.svg",
+    "pieces/themes/lagoon/pillow/th_lagoon_pillow_2.svg",
+    "pieces/themes/lagoon/pillow/th_lagoon_pillow_3.svg"
+   ],
+   "gem": [
+    "pieces/themes/lagoon/gem/th_lagoon_gem_0.svg",
+    "pieces/themes/lagoon/gem/th_lagoon_gem_1.svg",
+    "pieces/themes/lagoon/gem/th_lagoon_gem_2.svg",
+    "pieces/themes/lagoon/gem/th_lagoon_gem_3.svg"
+   ],
+   "bubble": [
+    "pieces/themes/lagoon/bubble/th_lagoon_bubble_0.svg",
+    "pieces/themes/lagoon/bubble/th_lagoon_bubble_1.svg",
+    "pieces/themes/lagoon/bubble/th_lagoon_bubble_2.svg",
+    "pieces/themes/lagoon/bubble/th_lagoon_bubble_3.svg"
+   ]
+  }
+ },
+ "ember_glow": {
+  "pieces": [
+   "#ff5a1f",
+   "#ffb300",
+   "#e0204f",
+   "#2fd47f"
+  ],
+  "light": [
+   "#ffc4a0",
+   "#ffe9a0",
+   "#ff9ab0",
+   "#b8ffd8"
+  ],
+  "board": [
+   "#4a2418",
+   "#1a0a06",
+   "#ffd0a0",
+   "#7a3a20"
+  ],
+  "accent": "#ffb300",
+  "boardFile": "board/themes/ember_glow/thb_ember_glow_board.svg",
+  "cellFile": "board/themes/ember_glow/thb_ember_glow_cell.svg",
+  "files": {
+   "box": [
+    "pieces/themes/ember_glow/box/th_ember_glow_box_0.svg",
+    "pieces/themes/ember_glow/box/th_ember_glow_box_1.svg",
+    "pieces/themes/ember_glow/box/th_ember_glow_box_2.svg",
+    "pieces/themes/ember_glow/box/th_ember_glow_box_3.svg"
+   ],
+   "ball": [
+    "pieces/themes/ember_glow/ball/th_ember_glow_ball_0.svg",
+    "pieces/themes/ember_glow/ball/th_ember_glow_ball_1.svg",
+    "pieces/themes/ember_glow/ball/th_ember_glow_ball_2.svg",
+    "pieces/themes/ember_glow/ball/th_ember_glow_ball_3.svg"
+   ],
+   "pillow": [
+    "pieces/themes/ember_glow/pillow/th_ember_glow_pillow_0.svg",
+    "pieces/themes/ember_glow/pillow/th_ember_glow_pillow_1.svg",
+    "pieces/themes/ember_glow/pillow/th_ember_glow_pillow_2.svg",
+    "pieces/themes/ember_glow/pillow/th_ember_glow_pillow_3.svg"
+   ],
+   "gem": [
+    "pieces/themes/ember_glow/gem/th_ember_glow_gem_0.svg",
+    "pieces/themes/ember_glow/gem/th_ember_glow_gem_1.svg",
+    "pieces/themes/ember_glow/gem/th_ember_glow_gem_2.svg",
+    "pieces/themes/ember_glow/gem/th_ember_glow_gem_3.svg"
+   ],
+   "bubble": [
+    "pieces/themes/ember_glow/bubble/th_ember_glow_bubble_0.svg",
+    "pieces/themes/ember_glow/bubble/th_ember_glow_bubble_1.svg",
+    "pieces/themes/ember_glow/bubble/th_ember_glow_bubble_2.svg",
+    "pieces/themes/ember_glow/bubble/th_ember_glow_bubble_3.svg"
+   ]
+  }
+ },
+ "sapphire": {
+  "pieces": [
+   "#2a5cff",
+   "#5fd8f0",
+   "#9a3dff",
+   "#d4e020"
+  ],
+  "light": [
+   "#a8c4ff",
+   "#d8fbff",
+   "#dcb0ff",
+   "#f8ffa0"
+  ],
+  "board": [
+   "#1a2a5a",
+   "#080e24",
+   "#c8d8ff",
+   "#2a3a7a"
+  ],
+  "accent": "#a8c4ff",
+  "boardFile": "board/themes/sapphire/thb_sapphire_board.svg",
+  "cellFile": "board/themes/sapphire/thb_sapphire_cell.svg",
+  "files": {
+   "box": [
+    "pieces/themes/sapphire/box/th_sapphire_box_0.svg",
+    "pieces/themes/sapphire/box/th_sapphire_box_1.svg",
+    "pieces/themes/sapphire/box/th_sapphire_box_2.svg",
+    "pieces/themes/sapphire/box/th_sapphire_box_3.svg"
+   ],
+   "ball": [
+    "pieces/themes/sapphire/ball/th_sapphire_ball_0.svg",
+    "pieces/themes/sapphire/ball/th_sapphire_ball_1.svg",
+    "pieces/themes/sapphire/ball/th_sapphire_ball_2.svg",
+    "pieces/themes/sapphire/ball/th_sapphire_ball_3.svg"
+   ],
+   "pillow": [
+    "pieces/themes/sapphire/pillow/th_sapphire_pillow_0.svg",
+    "pieces/themes/sapphire/pillow/th_sapphire_pillow_1.svg",
+    "pieces/themes/sapphire/pillow/th_sapphire_pillow_2.svg",
+    "pieces/themes/sapphire/pillow/th_sapphire_pillow_3.svg"
+   ],
+   "gem": [
+    "pieces/themes/sapphire/gem/th_sapphire_gem_0.svg",
+    "pieces/themes/sapphire/gem/th_sapphire_gem_1.svg",
+    "pieces/themes/sapphire/gem/th_sapphire_gem_2.svg",
+    "pieces/themes/sapphire/gem/th_sapphire_gem_3.svg"
+   ],
+   "bubble": [
+    "pieces/themes/sapphire/bubble/th_sapphire_bubble_0.svg",
+    "pieces/themes/sapphire/bubble/th_sapphire_bubble_1.svg",
+    "pieces/themes/sapphire/bubble/th_sapphire_bubble_2.svg",
+    "pieces/themes/sapphire/bubble/th_sapphire_bubble_3.svg"
+   ]
+  }
+ }
+}

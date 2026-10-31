@@ -1,0 +1,114 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Edge Pulse – motion spec demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+body{background:radial-gradient(#3a3f4b,#16181e);color:#ccd;font:600 14px/1.45 Poppins,sans-serif;display:flex;flex-wrap:wrap;gap:36px;padding:40px;margin:0}
+figure{margin:0;text-align:center;width:220px}.stage{height:260px;position:relative}
+figcaption{font-size:14px}small{font-size:12px;opacity:.7}
+img{position:absolute;width:96px;left:62px;top:140px;will-change:transform}
+canvas{position:absolute;inset:0}
+/* text over the board: heavy weight, dark outline, tabular numbers */
+.pop,.combo{position:absolute;left:0;right:0;top:120px;font:900 32px/1.2 Poppins;letter-spacing:-.02em;font-variant-numeric:tabular-nums;
+ color:#fff;-webkit-text-stroke:3px #1a1020;paint-order:stroke fill;text-shadow:0 3px 0 #1a1020,0 0 12px #ffc21f88;opacity:0}
+.combo{font-size:40px;color:#ffe08a}
+.btn{position:absolute;left:10px;top:120px;width:200px}.btn img{position:static;width:200px}
+.btn span{position:absolute;inset:0 0 14px;display:grid;place-items:center;font:800 22px Poppins;letter-spacing:-.01em;color:#fff;
+ -webkit-text-stroke:2px #1a1020;paint-order:stroke fill}
+.panel{position:absolute;left:10px;top:60px;width:200px;opacity:0}.panel img{position:static;width:200px}
+.panel b{position:absolute;inset:20px 0 0;font:900 36px/1.2 Poppins;letter-spacing:-.02em;color:#fff}
+</style></head><body>
+<label style="width:100%;font-size:16px">Speed: <input type="range" min="1" max="8" step="1" value="4" oninput="SLOW=+this.value;o.value=this.value+'× slower'"> <output id="o">4× slower</output></label>
+<figure><div class="stage" id="clear"><canvas width="220" height="260"></canvas><img src="../pieces/core/box/piece_box_amber.svg"></div><figcaption>Clear · 20+160ms outBack</figcaption></figure>
+<figure><div class="stage" id="fall"><img src="../pieces/core/ball/piece_ball_lime.svg"></div><figcaption>Fall · 260ms + land bounce</figcaption></figure>
+<figure><div class="stage" id="fire"><canvas width="220" height="260"></canvas><img class="l" src="../board/launcher.svg" style="top:4px;width:60px;left:80px"><img class="s" src="../pieces/core/ball/piece_ball_cyan.svg"></div><figcaption>Launcher fire · 100ms + 220ms outCubic</figcaption></figure>
+<figure><div class="stage" id="life"><canvas width="220" height="260"></canvas><img src="../hud/life_potion.svg"></div><figcaption>Life loss · 300ms fracture</figcaption></figure>
+<figure><div class="stage" id="score"><div class="pop">+130</div></div><figcaption>Score popup · 500ms outCubic</figcaption></figure>
+<figure><div class="stage" id="combo"><div class="combo">COMBO ×2</div></div><figcaption>Combo · 700ms outBack</figcaption></figure>
+<figure><div class="stage" id="btn"><div class="btn"><img src="../buttons/btn_play.svg"><span>PLAY</span></div></div><figcaption>Button · 100ms press</figcaption></figure>
+<figure><div class="stage" id="panel"><div class="panel"><img src="../panels/panel_glass.svg"><b>Paused</b></div></div><figcaption>Panel · 300ms inOutCubic</figcaption></figure>
+<script>SLOW=4</script>
+<script type="module">
+import {ease, tween, lerp, wait} from '../motion/tween.js';
+const $ = s => document.querySelector(s), T = (el, s) => el.style.transform = s;
+const loop = (fn, gap = 900) => (async () => { for (;;) { await fn(); await wait(gap); } })();
+
+// particles: {x,y,vx,vy,life} + gravity — the same system later drives confetti and splinters
+function burst(cv, x, y, n, colors, shards) {
+  const g = cv.getContext('2d'), ps = [];
+  for (let i = 0; i < n; i++) { const a = i / n * 6.28 + Math.random() * .5, s = 3 + Math.random() * 3;
+    ps.push({x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 2, r: Math.random() * 6, life: 1, c: colors[i % colors.length]}); }
+  return tween(shards ? 320 : 420, ease.outQuad, () => {
+    g.clearRect(0, 0, cv.width, cv.height);
+    for (const p of ps) { p.x += p.vx; p.y += p.vy; p.vy += .35; p.life -= .045; p.r += .15;
+      g.globalAlpha = Math.max(0, p.life); g.fillStyle = p.c; g.beginPath();
+      if (shards) { g.moveTo(p.x, p.y - 8); g.lineTo(p.x + 7, p.y + 5); g.lineTo(p.x - 6, p.y + 4); } // glass shard
+      else g.arc(p.x, p.y, 4 * p.life + 1, 0, 7);
+      g.fill(); }
+  }).then(() => g.clearRect(0, 0, cv.width, cv.height));
+}
+
+loop(async () => { // clear: anticipation → swell 1.15 → 0, burst at peak
+  const el = $('#clear img'); T(el, 'scale(1)'); await wait(400);
+  await tween(20, ease.outQuad, v => T(el, `scale(${lerp(1, .9, v)})`));
+  await tween(60, ease.outBack, v => T(el, `scale(${lerp(.9, 1.15, v)})`));
+  burst($('#clear canvas'), 110, 188, 18, ['#ffe08a', '#ffa51f', '#fff']);
+  await tween(100, ease.outQuad, v => T(el, `scale(${lerp(1.15, 0, v)})`));
+});
+
+loop(async () => { // fall: accelerate, settle, tiny squash 1 → .92 → 1
+  const el = $('#fall img'); el.style.transformOrigin = '50% 100%';
+  await tween(260, ease.fall, v => T(el, `translateY(${lerp(-140, 0, v)}px)`));
+  await tween(50, ease.outQuad, v => T(el, `scale(${lerp(1, 1.06, v)},${lerp(1, .92, v)})`));
+  await tween(80, ease.outBack, v => T(el, `scale(${lerp(1.06, 1, v)},${lerp(.92, 1, v)})`));
+});
+
+loop(async () => { // launcher pulse, then shot travels with a fading trail
+  const l = $('#fire .l'), s = $('#fire .s'), g = $('#fire canvas').getContext('2d');
+  s.style.opacity = 0;
+  await tween(50, ease.outQuad, v => T(l, `scale(${lerp(1, 1.12, v)})`));
+  s.style.opacity = 1;
+  const trail = [];
+  await Promise.all([
+    tween(50, ease.outQuad, v => T(l, `scale(${lerp(1.12, 1, v)})`)),
+    tween(220, ease.outCubic, v => { const y = lerp(-90, 0, v); T(s, `translateY(${y}px) scale(${lerp(.7, 1, v)})`);
+      trail.push(y); g.clearRect(0, 0, 220, 260);
+      trail.slice(-8).forEach((ty, i, a) => { g.globalAlpha = i / a.length * .5; g.fillStyle = '#7ff3ff';
+        g.beginPath(); g.arc(110, 188 + ty, 10 + i * 3, 0, 7); g.fill(); }); }),
+  ]);
+  g.clearRect(0, 0, 220, 260);
+  await tween(110, ease.outBack, v => T(s, `scale(${lerp(.92, 1, v)})`));
+});
+
+loop(async () => { // life: swell + flash, then 6 shards with gravity
+  const el = $('#life img'); el.style.opacity = 1; T(el, 'none'); el.style.filter = ''; await wait(500);
+  await tween(90, ease.outQuad, v => { T(el, `scale(${lerp(1, 1.12, v)})`); el.style.filter = `brightness(${lerp(1, 1.8, v)})`; });
+  el.style.opacity = 0;
+  await burst($('#life canvas'), 110, 188, 6, ['#ff7ad9', '#c9a0ff', '#ffffffcc'], true);
+});
+
+loop(async () => { // score: 0.6 → 1.1 → 1, then rise 50px and fade
+  const el = $('#score .pop');
+  await tween(120, ease.outBack, v => { el.style.opacity = v; T(el, `scale(${lerp(.6, 1.1, v)})`); });
+  await tween(60, ease.outQuad, v => T(el, `scale(${lerp(1.1, 1, v)})`));
+  await tween(380, ease.outCubic, v => { el.style.opacity = 1 - v; T(el, `translateY(${-50 * v}px)`); });
+});
+
+loop(async () => { // combo shout: pop in with overshoot, hold, shrink out
+  const el = $('#combo .combo');
+  await tween(220, ease.outBack, v => { el.style.opacity = Math.min(1, v * 2); T(el, `scale(${lerp(0, 1, v)}) rotate(${lerp(-8, -3, v)}deg)`); });
+  await wait(330);
+  await tween(150, ease.outQuad, v => { el.style.opacity = 1 - v; T(el, `scale(${lerp(1, 1.08, v)}) rotate(-3deg)`); });
+});
+
+loop(async () => { // button: press down, release with small overshoot
+  const el = $('#btn .btn'); await wait(300);
+  await tween(80, ease.outQuad, v => T(el, `translateY(${4 * v}px) scale(${lerp(1, .95, v)})`));
+  await tween(120, ease.outBack, v => T(el, `translateY(${4 - 4 * v}px) scale(${lerp(.95, 1, v)})`));
+});
+
+loop(async () => { // panel open / close
+  const el = $('#panel .panel');
+  await tween(300, ease.inOutCubic, v => { el.style.opacity = v; T(el, `scale(${lerp(.9, 1, v)}) translateY(${lerp(20, 0, v)}px)`); });
+  await wait(700);
+  await tween(250, ease.inOutCubic, v => { el.style.opacity = 1 - v; T(el, `scale(${lerp(1, .95, v)})`); });
+}, 500);
+</script></body></html>
