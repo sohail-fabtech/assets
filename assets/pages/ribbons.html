@@ -1,0 +1,127 @@
+<!doctype html><html data-theme="graphite"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Edge Pulse – Ribbons &amp; result banners</title>
+<link rel="stylesheet" href="../motion/themes.css">
+<link rel="stylesheet" href="../motion/anim.css">
+<link rel="stylesheet" href="../motion/chrome.css">
+<style>
+body{margin:0;min-height:100vh;color:#fff;font:600 14px/1.45 Poppins,sans-serif;background:radial-gradient(100% 60% at 50% 0,#4a2a8a,#1a0e3a 70%)}
+header{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:6px;padding:10px 22px;background:#1a0e3ae6;backdrop-filter:blur(10px)}
+.chip{border:1px solid #ffffff2a;background:#ffffff10;color:#fff;border-radius:99px;padding:5px 11px;cursor:pointer;font:700 12px Poppins;display:flex;gap:6px;align-items:center}
+.chip[aria-pressed=true]{background:#fff;color:#1a0e3a}.chip i{width:11px;height:11px;border-radius:50%}
+main{padding:10px 26px 60px;max-width:1280px;margin:0 auto}
+h2{font:900 26px/1.2 Poppins;margin:40px 0 4px}h2+p{margin:0 0 22px;opacity:.7}
+.row{display:flex;flex-wrap:wrap;gap:30px;align-items:center}
+.rb{position:relative;display:inline-block}.rb>img{display:block;width:100%}
+.rb svg.lab{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.lab text{font:900 46px Poppins;fill:#fff;stroke:var(--ink,#1e0a4a);stroke-width:10px;paint-order:stroke;stroke-linejoin:round;letter-spacing:.02em}
+.lab text.gold{fill:url(#goldtxt)}
+.cmp{position:relative;cursor:pointer}.cmp:active{transform:scale(.97)}
+.abs{position:absolute}
+.g3{font:900 50px/1 Poppins}
+.num{position:absolute;inset:0;display:grid;place-items:center;font:900 54px Poppins;color:#fff;-webkit-text-stroke:9px #8a4000;paint-order:stroke fill;padding-top:14px}
+.bar{display:flex;align-items:center;gap:0;width:420px}
+.bar .cap{width:76px;z-index:2;margin-right:-26px;filter:drop-shadow(0 4px 0 #0005)}
+.bar .track{flex:1}.bar .plus{width:46px;margin-left:-14px;z-index:2;cursor:pointer}
+.bar .pct{position:absolute;inset:0;display:grid;place-items:center;font:900 16px Poppins;-webkit-text-stroke:4px #5a1a00;paint-order:stroke fill;z-index:3}
+.sparkle{position:absolute;width:26px;animation:tw 1.8s ease-in-out infinite}.sparkle:nth-of-type(2n){animation-delay:.6s}
+@keyframes tw{50%{transform:scale(.4) rotate(45deg);opacity:.4}}
+.pop .s{animation:fx-pop 520ms cubic-bezier(.34,1.4,.64,1) both}.pop .s:nth-child(2){animation-delay:.16s}.pop .s:nth-child(3){animation-delay:.32s}
+#fx{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:30}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><defs><linearGradient id="goldtxt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c0"/><stop offset=".5" stop-color="#ffd23a"/><stop offset="1" stop-color="#ff8a1a"/></linearGradient></defs></svg>
+<header id="chips"></header><main id="main"></main><canvas id="fx"></canvas>
+<script type="module">
+import * as A from '../motion/anim.js';
+const $ = s => document.querySelector(s), fx = A.particles($('#fx'));
+const C = await (await fetch('../data/chrome.json')).json(), K = await (await fetch('../data/ui-kit.json')).json();
+let theme = new URLSearchParams(location.search).get('theme') || localStorage.getItem('edgepulse.theme') || 'graphite';
+const SH = k => `../ui/chrome/shared/chr_shared_${k}.svg`;
+const VB = { curved: '0 0 600 230', wave: '0 0 600 240' };
+let uid = 0;
+/** Ribbon with its label laid along the ribbon's own arc (textPath), like the reference banners. */
+function arc(kind, tone, text, w = 420, gold = false, size = 46) {
+  const id = `a${uid++}`, ink = '#2a0a3a';
+  return `<div class="rb" style="width:${w}px;--ink:${ink}"><img src="../${C.tones[tone][kind]}" alt="">
+    <svg class="lab" viewBox="${VB[kind]}"><path id="${id}" d="${C.arcs[kind]}" fill="none"/>
+    <text class="${gold ? 'gold' : ''}" style="font-size:${size}px" text-anchor="middle" dy=".36em"><textPath href="#${id}" startOffset="50%">${text}</textPath></text></svg></div>`;
+}
+const star = (w, face = false, cls = 's') => `<img class="${cls}" src="${SH(face ? 'star-face' : 'star-gold')}" width="${w}" alt="">`;
+const laurels = (h, col = 'gold', gap = 0) => [`<img class="abs" src="${SH('laurel-' + col)}" style="height:${h}px;left:${-gap}px;bottom:0" alt="">`,
+  `<img class="abs" src="${SH('laurel-' + col)}" style="height:${h}px;right:${-gap}px;bottom:0;transform:scaleX(-1)" alt="">`].join('');
+const sparkles = pts => pts.map(([x, y, s = 26]) => `<img class="sparkle" src="${SH('sparkle')}" style="left:${x}%;top:${y}%;width:${s}px" alt="">`).join('');
+
+function render() {
+  const tone = C.tones[theme] ? theme : 'brand', P = K.themes[theme].palette;
+  document.documentElement.dataset.theme = theme;
+  $('#chips').innerHTML = Object.entries(K.themes).map(([id, t]) => `<button class="chip" data-t="${id}" aria-pressed="${id === theme}"><i style="background:${t.palette.primary}"></i>${t.name}</button>`).join('');
+  const tones = Object.keys(C.tones);
+  $('#main').innerHTML = `
+  <h2>Ribbon shapes</h2><p>Curved, wave and bow — every theme colour. Labels follow the ribbon's arc.</p>
+  <div class="row">${arc('curved', tone, 'LEVEL UP', 380)}${arc('wave', tone, 'BONUS', 380)}<div class="rb" style="width:200px"><img src="../${C.tones[tone].bow}" alt=""></div></div>
+  <div class="row" style="margin-top:18px">${tones.map(t => arc('curved', t, t === 'brand' ? 'EDGE PULSE' : K.themes[t].name.split(' ').pop().toUpperCase(), 230, false, 50)).join('')}</div>
+
+  <h2>Level up badges</h2><p>Star with the new level, ribbon, laurels. Tap one to replay its entrance.</p>
+  <div class="row">
+    <div class="cmp pop" style="width:280px;height:250px">${laurels(200, 'gold', -8)}<div class="abs s" style="left:50%;top:0;translate:-50% 0;width:170px">${star(170, false, '')}<div class="num">10</div></div>
+      <div class="abs" style="left:50%;bottom:12px;translate:-50% 0">${arc('curved', tone, 'LEVEL UP', 270, false, 52)}</div></div>
+    <div class="cmp pop" style="width:300px;height:250px"><div class="abs" style="left:50%;top:20px;translate:-50% 0;display:flex;align-items:flex-end">${star(70)}<div class="s" style="position:relative">${star(120, false, '')}<div class="num" style="font-size:40px">10</div></div>${star(70)}</div>
+      <div class="abs" style="left:50%;bottom:10px;translate:-50% 0">${arc('wave', tone, 'LEVEL UP', 300, true, 54)}</div></div>
+    <div class="cmp pop" style="width:300px;height:230px"><div class="abs" style="left:50%;top:6px;translate:-50% 0;display:flex;align-items:flex-end;gap:2px">${star(86, true)}${star(112, true)}${star(86, true)}</div>
+      <div class="abs pill" style="left:50%;bottom:12px;translate:-50% 0;width:260px;--pill-src:url(../${C.tones[tone].pill})"><span class="label-3d" data-text="LEVEL UP" style="font:900 26px Poppins">LEVEL UP</span></div></div>
+    <div class="cmp pop" style="width:240px;height:240px"><div class="abs" style="left:50%;top:0;translate:-50% 0;display:flex;gap:4px">${star(52)}${star(62)}${star(52)}</div>
+      <div class="abs s" style="left:50%;top:52px;translate:-50% 0;width:124px"><img src="../${C.tones[tone].socket}" width="124" alt=""><div class="num" style="font-size:46px;padding:0;-webkit-text-stroke-color:#1e0a4a">10</div></div>
+      <div class="abs" style="left:50%;bottom:6px;translate:-50% 0">${arc('curved', tone, 'LEVEL UP', 250, false, 52)}</div></div>
+  </div>
+
+  <h2>Level completed</h2><p>Big curved ribbon carrying three stars, laurels and gold lettering.</p>
+  <div class="row"><div class="cmp pop" style="width:640px;height:264px">${sparkles([[18, 18], [80, 14, 20], [30, 72, 18], [72, 70, 22]])}
+    <div class="abs" style="left:50%;top:10px;translate:-50% 0">${arc('curved', tone, '', 600)}</div>
+    <div class="abs" style="inset:0 0 auto 0;height:206px">${laurels(176, 'gold', 6)}</div>
+    <div class="abs" style="left:50%;top:30px;translate:-50% 0;display:flex;gap:6px;align-items:flex-end">${star(120)}${star(140)}${star(120)}</div>
+    <div class="abs" style="left:50%;top:196px;translate:-50% 0;text-align:center"><span class="title-3d gold-3d g3" data-text="LEVEL COMPLETED" style="font-size:40px">LEVEL COMPLETED</span></div></div></div>
+
+  <h2>Victory banners</h2><p>Five variants: ribbon, stone plaque, winged trophy crest, laurel crest, pill burst.</p>
+  <div class="row">
+    <div class="cmp pop" style="width:420px;height:210px"><div class="abs" style="left:50%;top:0;translate:-50% 0;display:flex;align-items:flex-end">${star(70)}${star(92)}${star(70)}</div>
+      <div class="abs" style="left:50%;bottom:0;translate:-50% 0">${arc('curved', tone, 'VICTORY', 420, true, 60)}</div></div>
+    <div class="cmp pop" style="width:400px;height:220px"><div class="abs" style="left:50%;top:0;translate:-50% 0;display:flex;align-items:flex-end;z-index:2">${star(66)}${star(84)}${star(66)}</div>
+      <div class="abs" style="left:50%;bottom:0;translate:-50% 0;width:380px"><img src="${SH('plaque')}" width="380" alt=""><div class="abs" style="inset:0;display:grid;place-items:center;font:900 46px Poppins;color:#5a606c;text-shadow:0 -2px 0 #2a2d33,0 2px 0 #e8ecf2">VICTORY</div></div></div>
+    <div class="cmp pop" style="width:440px;height:260px"><img class="abs" src="${SH('wing')}" style="left:40px;top:8px;height:170px" alt=""><img class="abs" src="${SH('wing')}" style="right:40px;top:8px;height:170px;transform:scaleX(-1)" alt="">
+      <img class="abs s" src="${SH('trophy')}" style="left:50%;top:0;translate:-50% 0;height:110px" alt="">
+      <div class="abs pill" style="left:50%;top:110px;translate:-50% 0;width:330px;--pill-src:url(../${C.tones.brand.pill})"><span class="label-3d" data-text="LEVEL COMPLETED" style="font:900 26px Poppins">LEVEL COMPLETED</span></div>
+      <div class="abs" style="left:50%;bottom:0;translate:-50% 0;display:flex;align-items:flex-end">${star(56)}${star(70)}${star(56)}</div></div>
+    <div class="cmp pop" style="width:420px;height:230px">${laurels(170, 'green', 10)}<div class="abs" style="left:50%;top:0;translate:-50% 0;display:flex;align-items:flex-end">${star(66)}${star(86)}${star(66)}</div>
+      <div class="abs" style="left:50%;bottom:6px;translate:-50% 0">${arc('curved', 'volcano', 'VICTORY!', 400, false, 58)}</div></div>
+    <div class="cmp pop" style="width:400px;height:220px"><img class="abs" src="${SH('rays')}" style="left:50%;top:50%;width:360px;translate:-50% -50%;animation:spin 14s linear infinite" alt="">
+      <div class="abs" style="left:50%;top:0;translate:-50% 0;display:flex;align-items:flex-end">${star(66)}${star(86)}${star(66)}</div>
+      <div class="abs" style="left:50%;bottom:6px;translate:-50% 0">${arc('wave', 'nebula', 'VICTORY', 400, true, 60)}</div></div>
+  </div>
+
+  <h2>Icon progress bars</h2><p>Icon cap · track · glossy fill · percentage · plus button. Tap + to fill.</p>
+  <div style="display:grid;gap:18px">
+    ${[['../hud/life_heart.svg', .8, 'fill-orange'], ['../ui/chrome/shared/chr_shared_reward-coin.svg', .8, null], ['../hud/shard.svg', .6, null], ['../ui/chrome/shared/chr_shared_star-gold.svg', .35, 'fill-orange'], ['../hud/life_potion.svg', .15, null]].map(([ic, p, f], i) =>
+      `<div class="bar"><img class="cap" src="${ic}" alt=""><div class="track" style="position:relative"><div class="fill" style="width:${p * 100}%;${f ? '' : `--fill-src:url(../${C.tones[tone].fill})`}"></div><span class="pct">${Math.round(p * 100)}%</span></div><img class="plus" src="${SH('plus')}" data-i="${i}" alt="Add"></div>`).join('')}
+  </div>`;
+}
+document.addEventListener('click', e => {
+  const chip = e.target.closest('.chip'); if (chip) { theme = chip.dataset.t; localStorage.setItem('edgepulse.theme', theme); render(); return fitLabels(); }
+  const plus = e.target.closest('.plus');
+  if (plus) { const bar = plus.parentElement, f = bar.querySelector('.fill'), pct = bar.querySelector('.pct');
+    const v = Math.min(100, parseFloat(f.style.width) + 10); f.style.width = v + '%'; pct.textContent = Math.round(v) + '%'; A.play(plus, 'pop');
+    if (v >= 100) fx.burst(bar, 20, ['#ffd65a', '#fff', '#ff9a1a']); return; }
+  const c = e.target.closest('.cmp');
+  if (c) { c.classList.remove('pop'); void c.offsetWidth; c.classList.add('pop'); fx.burst(c, 22, ['#ffd65a', '#fff', '#ff9ee8']); }
+});
+/** Fit every ribbon label to its band: shrink until it spans ≤ 70% of the centre line (keeps clear of the folds). */
+function fitLabels() {
+  document.querySelectorAll('svg.lab').forEach(svg => {
+    const path = svg.querySelector('path'), text = svg.querySelector('text');
+    if (!text.textContent.trim()) return;
+    const max = path.getTotalLength() * .7;
+    let size = parseFloat(text.style.fontSize);
+    while (text.getComputedTextLength() > max && size > 14) { size -= 1; text.style.fontSize = size + 'px'; }
+  });
+}
+addEventListener('message', e => { if (e.data?.type === 'theme' && K.themes[e.data.theme]) { theme = e.data.theme; render(); fitLabels(); } });
+render(); document.fonts.ready.then(fitLabels);
+</script></body></html>

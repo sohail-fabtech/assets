@@ -55,7 +55,7 @@ for tid, lv in levels.items():
     if tid != "graphite" and not lv.get("scene"): errors.append(f"{tid}: no world scene")
     goal = lv.get("goal", {}).get("item")
     if not any(c["id"] == goal and c.get("hero") for c in lv["collectibles"]): errors.append(f"{tid}: goal item {goal} has no hero render")
-    for part in ("close", "pill", "frame", "ribbon", "fill", "header", "tag", "corner", "burst", "socket"):
+    for part in ("close", "pill", "frame", "ribbon", "fill", "header", "tag", "corner", "burst", "socket", "curved", "wave", "bow"):
         if part not in chrome["tones"].get(tid, {}): errors.append(f"{tid}: chrome part {part} missing")
 
 # 5. every bundled font has its licence beside it

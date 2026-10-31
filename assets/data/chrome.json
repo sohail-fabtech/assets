@@ -10,6 +10,10 @@
   "track": "0 18 fill",
   "fill": "0 18 fill"
  },
+ "arcs": {
+  "curved": "M90 115 Q300 51 510 115",
+  "wave": "M80 117 C210 57 390 167 520 107"
+ },
  "tones": {
   "brand": {
    "close": "ui/chrome/brand/chr_brand_close.svg",
@@ -21,7 +25,10 @@
    "tag": "ui/chrome/brand/chr_brand_tag.svg",
    "corner": "ui/chrome/brand/chr_brand_corner.svg",
    "burst": "ui/chrome/brand/chr_brand_burst.svg",
-   "socket": "ui/chrome/brand/chr_brand_socket.svg"
+   "socket": "ui/chrome/brand/chr_brand_socket.svg",
+   "curved": "ui/chrome/brand/chr_brand_curved.svg",
+   "wave": "ui/chrome/brand/chr_brand_wave.svg",
+   "bow": "ui/chrome/brand/chr_brand_bow.svg"
   },
   "graphite": {
    "close": "ui/chrome/graphite/chr_graphite_close.svg",
@@ -33,7 +40,10 @@
    "tag": "ui/chrome/graphite/chr_graphite_tag.svg",
    "corner": "ui/chrome/graphite/chr_graphite_corner.svg",
    "burst": "ui/chrome/graphite/chr_graphite_burst.svg",
-   "socket": "ui/chrome/graphite/chr_graphite_socket.svg"
+   "socket": "ui/chrome/graphite/chr_graphite_socket.svg",
+   "curved": "ui/chrome/graphite/chr_graphite_curved.svg",
+   "wave": "ui/chrome/graphite/chr_graphite_wave.svg",
+   "bow": "ui/chrome/graphite/chr_graphite_bow.svg"
   },
   "volcano": {
    "close": "ui/chrome/volcano/chr_volcano_close.svg",
@@ -45,7 +55,10 @@
    "tag": "ui/chrome/volcano/chr_volcano_tag.svg",
    "corner": "ui/chrome/volcano/chr_volcano_corner.svg",
    "burst": "ui/chrome/volcano/chr_volcano_burst.svg",
-   "socket": "ui/chrome/volcano/chr_volcano_socket.svg"
+   "socket": "ui/chrome/volcano/chr_volcano_socket.svg",
+   "curved": "ui/chrome/volcano/chr_volcano_curved.svg",
+   "wave": "ui/chrome/volcano/chr_volcano_wave.svg",
+   "bow": "ui/chrome/volcano/chr_volcano_bow.svg"
   },
   "sky": {
    "close": "ui/chrome/sky/chr_sky_close.svg",
@@ -57,7 +70,10 @@
    "tag": "ui/chrome/sky/chr_sky_tag.svg",
    "corner": "ui/chrome/sky/chr_sky_corner.svg",
    "burst": "ui/chrome/sky/chr_sky_burst.svg",
-   "socket": "ui/chrome/sky/chr_sky_socket.svg"
+   "socket": "ui/chrome/sky/chr_sky_socket.svg",
+   "curved": "ui/chrome/sky/chr_sky_curved.svg",
+   "wave": "ui/chrome/sky/chr_sky_wave.svg",
+   "bow": "ui/chrome/sky/chr_sky_bow.svg"
   },
   "forest": {
    "close": "ui/chrome/forest/chr_forest_close.svg",
@@ -69,7 +85,10 @@
    "tag": "ui/chrome/forest/chr_forest_tag.svg",
    "corner": "ui/chrome/forest/chr_forest_corner.svg",
    "burst": "ui/chrome/forest/chr_forest_burst.svg",
-   "socket": "ui/chrome/forest/chr_forest_socket.svg"
+   "socket": "ui/chrome/forest/chr_forest_socket.svg",
+   "curved": "ui/chrome/forest/chr_forest_curved.svg",
+   "wave": "ui/chrome/forest/chr_forest_wave.svg",
+   "bow": "ui/chrome/forest/chr_forest_bow.svg"
   },
   "tundra": {
    "close": "ui/chrome/tundra/chr_tundra_close.svg",
@@ -81,7 +100,10 @@
    "tag": "ui/chrome/tundra/chr_tundra_tag.svg",
    "corner": "ui/chrome/tundra/chr_tundra_corner.svg",
    "burst": "ui/chrome/tundra/chr_tundra_burst.svg",
-   "socket": "ui/chrome/tundra/chr_tundra_socket.svg"
+   "socket": "ui/chrome/tundra/chr_tundra_socket.svg",
+   "curved": "ui/chrome/tundra/chr_tundra_curved.svg",
+   "wave": "ui/chrome/tundra/chr_tundra_wave.svg",
+   "bow": "ui/chrome/tundra/chr_tundra_bow.svg"
   },
   "reef": {
    "close": "ui/chrome/reef/chr_reef_close.svg",
@@ -93,7 +115,10 @@
    "tag": "ui/chrome/reef/chr_reef_tag.svg",
    "corner": "ui/chrome/reef/chr_reef_corner.svg",
    "burst": "ui/chrome/reef/chr_reef_burst.svg",
-   "socket": "ui/chrome/reef/chr_reef_socket.svg"
+   "socket": "ui/chrome/reef/chr_reef_socket.svg",
+   "curved": "ui/chrome/reef/chr_reef_curved.svg",
+   "wave": "ui/chrome/reef/chr_reef_wave.svg",
+   "bow": "ui/chrome/reef/chr_reef_bow.svg"
   },
   "carnival": {
    "close": "ui/chrome/carnival/chr_carnival_close.svg",
@@ -105,7 +130,10 @@
    "tag": "ui/chrome/carnival/chr_carnival_tag.svg",
    "corner": "ui/chrome/carnival/chr_carnival_corner.svg",
    "burst": "ui/chrome/carnival/chr_carnival_burst.svg",
-   "socket": "ui/chrome/carnival/chr_carnival_socket.svg"
+   "socket": "ui/chrome/carnival/chr_carnival_socket.svg",
+   "curved": "ui/chrome/carnival/chr_carnival_curved.svg",
+   "wave": "ui/chrome/carnival/chr_carnival_wave.svg",
+   "bow": "ui/chrome/carnival/chr_carnival_bow.svg"
   },
   "crystal": {
    "close": "ui/chrome/crystal/chr_crystal_close.svg",
@@ -117,7 +145,10 @@
    "tag": "ui/chrome/crystal/chr_crystal_tag.svg",
    "corner": "ui/chrome/crystal/chr_crystal_corner.svg",
    "burst": "ui/chrome/crystal/chr_crystal_burst.svg",
-   "socket": "ui/chrome/crystal/chr_crystal_socket.svg"
+   "socket": "ui/chrome/crystal/chr_crystal_socket.svg",
+   "curved": "ui/chrome/crystal/chr_crystal_curved.svg",
+   "wave": "ui/chrome/crystal/chr_crystal_wave.svg",
+   "bow": "ui/chrome/crystal/chr_crystal_bow.svg"
   },
   "desert": {
    "close": "ui/chrome/desert/chr_desert_close.svg",
@@ -129,7 +160,10 @@
    "tag": "ui/chrome/desert/chr_desert_tag.svg",
    "corner": "ui/chrome/desert/chr_desert_corner.svg",
    "burst": "ui/chrome/desert/chr_desert_burst.svg",
-   "socket": "ui/chrome/desert/chr_desert_socket.svg"
+   "socket": "ui/chrome/desert/chr_desert_socket.svg",
+   "curved": "ui/chrome/desert/chr_desert_curved.svg",
+   "wave": "ui/chrome/desert/chr_desert_wave.svg",
+   "bow": "ui/chrome/desert/chr_desert_bow.svg"
   },
   "steampunk": {
    "close": "ui/chrome/steampunk/chr_steampunk_close.svg",
@@ -141,7 +175,10 @@
    "tag": "ui/chrome/steampunk/chr_steampunk_tag.svg",
    "corner": "ui/chrome/steampunk/chr_steampunk_corner.svg",
    "burst": "ui/chrome/steampunk/chr_steampunk_burst.svg",
-   "socket": "ui/chrome/steampunk/chr_steampunk_socket.svg"
+   "socket": "ui/chrome/steampunk/chr_steampunk_socket.svg",
+   "curved": "ui/chrome/steampunk/chr_steampunk_curved.svg",
+   "wave": "ui/chrome/steampunk/chr_steampunk_wave.svg",
+   "bow": "ui/chrome/steampunk/chr_steampunk_bow.svg"
   },
   "nebula": {
    "close": "ui/chrome/nebula/chr_nebula_close.svg",
@@ -153,7 +190,10 @@
    "tag": "ui/chrome/nebula/chr_nebula_tag.svg",
    "corner": "ui/chrome/nebula/chr_nebula_corner.svg",
    "burst": "ui/chrome/nebula/chr_nebula_burst.svg",
-   "socket": "ui/chrome/nebula/chr_nebula_socket.svg"
+   "socket": "ui/chrome/nebula/chr_nebula_socket.svg",
+   "curved": "ui/chrome/nebula/chr_nebula_curved.svg",
+   "wave": "ui/chrome/nebula/chr_nebula_wave.svg",
+   "bow": "ui/chrome/nebula/chr_nebula_bow.svg"
   }
  },
  "shared": {
@@ -171,6 +211,14 @@
   "bubble": "ui/chrome/shared/chr_shared_bubble.svg",
   "tail": "ui/chrome/shared/chr_shared_tail.svg",
   "rays": "ui/chrome/shared/chr_shared_rays.svg",
-  "divider": "ui/chrome/shared/chr_shared_divider.svg"
+  "divider": "ui/chrome/shared/chr_shared_divider.svg",
+  "laurel-gold": "ui/chrome/shared/chr_shared_laurel-gold.svg",
+  "laurel-green": "ui/chrome/shared/chr_shared_laurel-green.svg",
+  "star-gold": "ui/chrome/shared/chr_shared_star-gold.svg",
+  "star-face": "ui/chrome/shared/chr_shared_star-face.svg",
+  "plaque": "ui/chrome/shared/chr_shared_plaque.svg",
+  "plus": "ui/chrome/shared/chr_shared_plus.svg",
+  "wing": "ui/chrome/shared/chr_shared_wing.svg",
+  "trophy": "ui/chrome/shared/chr_shared_trophy.svg"
  }
 }

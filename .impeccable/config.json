@@ -38,6 +38,15 @@
         ],
         "createdAt": "2026-10-31T08:10:42.252Z",
         "reason": "User's reference mockups specify gradient 3D game lettering for titles and reward numbers"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "assets/pages/ribbons.html"
+        ],
+        "createdAt": "2026-10-31T08:21:15.193Z",
+        "reason": "User's ribbon/level-up/victory references specify gold gradient game lettering"
       }
     ]
   }

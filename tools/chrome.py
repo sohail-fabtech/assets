@@ -258,6 +258,140 @@ def socket(c):
                + '<path d="M22 44 A48 48 0 0 1 70 12" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" opacity=".55"/>')
 
 
+# ---- ribbon collection: curved / wave / bow (per tone) + laurels, stars, plaque, wings, trophy ------
+# Each curved ribbon exposes its text arc (ARCS) so pages can lay labels along the curve with <textPath>.
+# centre line of each band (midway between its top and bottom edges); labels sit on it with dy=.36em
+ARCS = {"curved": "M90 115 Q300 51 510 115", "wave": "M80 117 C210 57 390 167 520 107"}
+
+
+def _tails(c, y, flip=False):
+    """Folded ribbon tail + the darker fold triangle that sells the 3D twist."""
+    l, m, d = c
+    dk, back = mix(d, "#000", .45), mix(m, d, .7)
+    t = (f'<path d="M110 {y - 8} L18 {y + 6} L46 {y + 44} L14 {y + 84} L112 {y + 76} Z" fill="{back}" stroke="{dk}" stroke-width="3.5" stroke-linejoin="round"/>'
+         f'<path d="M30 {y + 12} L100 {y + 4}" stroke="#fff" stroke-opacity=".25" stroke-width="3"/>'
+         f'<path d="M92 {y + 58} L112 {y + 76} L112 {y + 46} Z" fill="{mix(d, "#000", .3)}" stroke="{dk}" stroke-width="3" stroke-linejoin="round"/>')
+    return f'<g transform="translate(600 0) scale(-1 1)">{t}</g>' if flip else t
+
+
+def curved(c):
+    l, m, d = c
+    dk = mix(d, "#000", .45)
+    band = "M90 70 Q300 6 510 70 L510 160 Q300 96 90 160 Z"
+    return doc(600, 230, vgrad("cv", (0, l), (.5, m), (1, mix(m, d, .55))).join(["<defs>", "</defs>"])
+               + _tails(c, 96) + _tails(c, 96, True)
+               + f'<path d="{band}" fill="{d}" transform="translate(0 7)"/><path d="{band}" fill="url(#cv)"/>'
+               + '<path d="M104 84 Q300 24 496 84 L496 104 Q300 46 104 104 Z" fill="#fff" opacity=".28"/>'
+               + '<path d="M100 76 Q300 14 500 76" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2.5"/>'
+               + f'<path d="M96 150 Q300 88 504 150" fill="none" stroke="{dk}" stroke-opacity=".35" stroke-width="4"/>'
+               + f'<path d="{band}" fill="none" stroke="{dk}" stroke-width="4" stroke-linejoin="round"/>')
+
+
+def wave(c):
+    l, m, d = c
+    dk = mix(d, "#000", .45)
+    band = "M80 74 C210 14 390 124 520 64 L520 150 C390 210 210 100 80 160 Z"
+    return doc(600, 240, vgrad("wv", (0, l), (.5, m), (1, mix(m, d, .55))).join(["<defs>", "</defs>"])
+               + _tails(c, 100) + _tails(c, 70, True)
+               + f'<path d="{band}" fill="{d}" transform="translate(0 7)"/><path d="{band}" fill="url(#wv)"/>'
+               + '<path d="M92 84 C220 28 384 136 508 76 L508 96 C384 156 220 48 92 104 Z" fill="#fff" opacity=".26"/>'
+               + f'<path d="{band}" fill="none" stroke="{dk}" stroke-width="4" stroke-linejoin="round"/>')
+
+
+def bow(c):
+    l, m, d = c
+    dk = mix(d, "#000", .45)
+    g = vgrad("bw", (0, l), (.5, m), (1, mix(m, d, .6))).join(["<defs>", "</defs>"])
+    loop = lambda sx: (f'<g transform="translate(150 0) scale({sx} 1) translate(-150 0)">'
+                       f'<path d="M140 92 C110 40 40 30 34 70 C28 110 96 118 140 104 Z" fill="url(#bw)" stroke="{dk}" stroke-width="4" stroke-linejoin="round"/>'
+                       f'<path d="M126 92 C104 64 70 60 60 78 C78 74 104 84 124 98 Z" fill="{mix(d, "#000", .2)}" opacity=".6"/>'
+                       '<path d="M52 62 C64 50 90 50 104 60" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".5"/></g>')
+    tail = lambda sx: (f'<g transform="translate(150 0) scale({sx} 1) translate(-150 0)">'
+                       f'<path d="M138 108 L94 196 L112 188 L118 210 L156 112 Z" fill="{mix(m, d, .45)}" stroke="{dk}" stroke-width="4" stroke-linejoin="round"/></g>')
+    return doc(300, 220, g + tail(1) + tail(-1) + loop(1) + loop(-1)
+               + f'<rect x="126" y="78" width="48" height="40" rx="14" fill="url(#bw)" stroke="{dk}" stroke-width="4"/>'
+               + '<rect x="134" y="84" width="32" height="10" rx="5" fill="#fff" opacity=".45"/>')
+
+
+def laurel(col=("#fff2a0", "#f2b81f", "#9a5a00")):
+    """One laurel branch (left side); mirror it for the right. Paired leaves along a sweeping stem."""
+    l, m, d = col
+    stem = lambda t: (96 - 70 * math.sin(t * 1.75), 208 - 186 * t)   # sweeping curve bottom-right → top-left
+    leaves = ""
+    for i in range(9):
+        t = .08 + i / 9.4
+        x, y = stem(t)
+        x2, y2 = stem(t + .01)
+        ang = math.degrees(math.atan2(y2 - y, x2 - x))
+        size = 1.15 - t * .45
+        for side in (-1, 1):
+            a = math.radians(ang + side * 52)
+            cx, cy = x + math.cos(a) * 15 * size, y + math.sin(a) * 15 * size
+            leaves += (f'<ellipse cx="{cx:.1f}" cy="{cy:.1f}" rx="{20 * size:.1f}" ry="{8.5 * size:.1f}" fill="url(#lf)" stroke="{d}" stroke-width="2.4" '
+                       f'transform="rotate({ang + side * 52:.0f} {cx:.1f} {cy:.1f})"/>'
+                       f'<path d="M{x:.1f} {y:.1f} L{cx:.1f} {cy:.1f}" stroke="{d}" stroke-width="1.4" opacity=".6"/>')
+    tip_x, tip_y = stem(1)
+    path = "M" + " L".join(f"{stem(i / 30)[0]:.1f} {stem(i / 30)[1]:.1f}" for i in range(31))
+    return doc(140, 224, f'<defs><linearGradient id="lf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{l}"/><stop offset=".55" stop-color="{m}"/><stop offset="1" stop-color="{d}"/></linearGradient></defs>'
+               + f'<path d="{path}" stroke="{d}" stroke-width="6" fill="none" stroke-linecap="round"/>' + leaves
+               + f'<ellipse cx="{tip_x:.1f}" cy="{tip_y:.1f}" rx="9" ry="16" fill="url(#lf)" stroke="{d}" stroke-width="2.4" transform="rotate(-20 {tip_x:.1f} {tip_y:.1f})"/>')
+
+
+STAR5 = " ".join(f"{100 + (92 if i % 2 == 0 else 42) * math.cos(i * math.pi / 5 - math.pi / 2):.1f},{104 + (92 if i % 2 == 0 else 42) * math.sin(i * math.pi / 5 - math.pi / 2):.1f}" for i in range(10))
+
+
+def big_star(face=False):
+    """Chunky glossy gold star with a 3D lip; optional original cute face."""
+    f = ('<ellipse cx="80" cy="108" rx="7" ry="10" fill="#3a1a00"/><ellipse cx="120" cy="108" rx="7" ry="10" fill="#3a1a00"/>'
+         '<circle cx="82" cy="104" r="3" fill="#fff"/><circle cx="122" cy="104" r="3" fill="#fff"/>'
+         '<path d="M88 126 Q100 138 112 126" stroke="#3a1a00" stroke-width="5" fill="none" stroke-linecap="round"/>'
+         '<ellipse cx="66" cy="124" rx="9" ry="5" fill="#ff7a5a" opacity=".5"/><ellipse cx="134" cy="124" rx="9" ry="5" fill="#ff7a5a" opacity=".5"/>') if face else ""
+    return doc(200, 210, '<defs><radialGradient id="sg" cx="40%" cy="30%" r="75%"><stop offset="0" stop-color="#fff8c0"/><stop offset=".45" stop-color="#ffcc2a"/><stop offset="1" stop-color="#e07a00"/></radialGradient></defs>'
+               + f'<polygon points="{STAR5}" fill="#a85200" stroke="#a85200" stroke-width="14" stroke-linejoin="round" transform="translate(0 8)"/>'
+               + f'<polygon points="{STAR5}" fill="url(#sg)" stroke="#8a4000" stroke-width="12" stroke-linejoin="round"/>'
+               + f'<polygon points="{STAR5}" fill="url(#sg)"/>'
+               + '<path d="M100 30 L116 72 L160 74 M100 30 L84 72" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/>' + f)
+
+
+def plaque():
+    """Carved stone plaque with cracks, moss and bolts (VICTORY slab)."""
+    return doc(420, 170, vgrad("st", (0, "#c8ccd6"), (.5, "#8a909c"), (1, "#5a606c")).join(["<defs>", "</defs>"])
+               + '<path d="M30 30 Q60 12 210 16 Q370 10 394 34 Q414 84 398 130 Q360 156 210 152 Q50 158 24 132 Q8 84 30 30 Z" fill="#3a3e46" transform="translate(0 8)"/>'
+               + '<path d="M30 30 Q60 12 210 16 Q370 10 394 34 Q414 84 398 130 Q360 156 210 152 Q50 158 24 132 Q8 84 30 30 Z" fill="url(#st)" stroke="#2a2d33" stroke-width="4"/>'
+               + '<path d="M44 34 Q210 22 380 38 L376 56 Q210 40 46 54 Z" fill="#fff" opacity=".25"/>'
+               + '<path d="M70 120 L88 100 L84 86 M330 40 L340 60 L358 66" stroke="#2a2d33" stroke-width="3" fill="none" stroke-linecap="round"/>'
+               + "".join(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#5fa83a"/>' for x, y, r in ((30, 60, 9), (40, 50, 6), (390, 120, 8), (380, 132, 6), (24, 110, 5)))
+               + "".join(f'<circle cx="{x}" cy="{y}" r="7" fill="url(#mt2)" stroke="#2a2d33" stroke-width="2"/>' for x, y in ((52, 84), (368, 84))).replace("url(#mt2)", "#a8aeb8"))
+
+
+def plus_btn():
+    return doc(64, 64, '<defs><radialGradient id="pb" cx="40%" cy="30%" r="75%"><stop offset="0" stop-color="#9ff8ff"/><stop offset=".6" stop-color="#1fb8d8"/><stop offset="1" stop-color="#0a5a7a"/></radialGradient></defs>'
+               '<circle cx="32" cy="35" r="28" fill="#063a50"/><circle cx="32" cy="32" r="28" fill="url(#pb)" stroke="#063a50" stroke-width="3"/>'
+               '<path d="M32 18 V46 M18 32 H46" stroke="#fff" stroke-width="7" stroke-linecap="round"/><ellipse cx="24" cy="20" rx="9" ry="5" fill="#fff" opacity=".5"/>')
+
+
+def wing():
+    """One gold wing (left; mirror for the right): five layered feathers fanning up from the root."""
+    feathers = ""
+    for i, (ang, ln) in enumerate(((198, 96), (214, 118), (232, 132), (252, 128), (272, 104))):
+        a = math.radians(ang); tx, ty = 150 + ln * math.cos(a), 170 + ln * math.sin(a)
+        n = math.radians(ang + 90); w = 17
+        feathers += (f'<path d="M150 170 Q{150 + w * math.cos(n) + ln * .5 * math.cos(a):.0f} {170 + w * math.sin(n) + ln * .5 * math.sin(a):.0f} {tx:.0f} {ty:.0f} '
+                     f'Q{150 - w * math.cos(n) + ln * .55 * math.cos(a):.0f} {170 - w * math.sin(n) + ln * .55 * math.sin(a):.0f} 150 170 Z" fill="url(#wg)" stroke="#8a4a00" stroke-width="3" stroke-linejoin="round"/>'
+                     f'<path d="M150 170 L{150 + ln * .8 * math.cos(a):.0f} {170 + ln * .8 * math.sin(a):.0f}" stroke="#fff6c0" stroke-width="2" opacity=".6"/>')
+    return doc(170, 190, '<defs><linearGradient id="wg" x1="1" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#c06a00"/><stop offset=".45" stop-color="#ffb81f"/><stop offset="1" stop-color="#fff2a0"/></linearGradient></defs>'
+               + feathers + '<circle cx="150" cy="170" r="12" fill="#f2b81f" stroke="#8a4a00" stroke-width="3"/>')
+
+
+def trophy():
+    return doc(160, 170, vgrad("tp", (0, "#fff4a0"), (.5, "#f2b81f"), (1, "#a05a00")).join(["<defs>", "</defs>"])
+               + '<path d="M44 22 H116 V60 A36 36 0 0 1 44 60 Z" fill="url(#tp)" stroke="#6a3a00" stroke-width="4"/>'
+               + '<path d="M44 34 H22 Q14 70 50 84 M116 34 H138 Q146 70 110 84" stroke="url(#tp)" stroke-width="10" fill="none" stroke-linecap="round"/>'
+               + '<path d="M44 34 H22 Q14 70 50 84 M116 34 H138 Q146 70 110 84" stroke="#6a3a00" stroke-width="3" fill="none" opacity=".5"/>'
+               + '<rect x="70" y="96" width="20" height="28" fill="url(#tp)" stroke="#6a3a00" stroke-width="3"/><rect x="46" y="122" width="68" height="24" rx="6" fill="url(#tp)" stroke="#6a3a00" stroke-width="4"/>'
+               + '<path d="M58 30 V58" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".6"/>')
+
+
 def write(f, data):
     d = os.path.join(OUT, folder_for(f)); os.makedirs(d, exist_ok=True)
     open(os.path.join(d, f), "w").write(data)
@@ -265,15 +399,18 @@ def write(f, data):
 
 
 if __name__ == "__main__":
-    out = {"slice": SLICE, "tones": {}}
+    out = {"slice": SLICE, "arcs": ARCS, "tones": {}}
     for tid in ["brand", *THEMES]:
         c = tone(tid)
         parts = {"close": close_btn(c), "pill": pill(c), "frame": frame(c), "ribbon": ribbon(c), "fill": fill(c),
-                 "header": header(c), "tag": tag(c), "corner": corner(c), "burst": burst(c), "socket": socket(c)}
+                 "header": header(c), "tag": tag(c), "corner": corner(c), "burst": burst(c), "socket": socket(c),
+                 "curved": curved(c), "wave": wave(c), "bow": bow(c)}
         out["tones"][tid] = {k: write(f"chr_{tid}_{k}.svg", v) for k, v in parts.items()}
     shared = {"plate-cream": plate_cream(), "plate-dark": plate_dark(), "track": track(), "fill-orange": fill(ORANGE), "crown": crown(),
               "sparkle": sparkle(), "arrow": arrow(), "chest": chest(), "reward-coin": reward("coin"), "reward-orb": reward("orb"), "reward-ticket": reward("ticket"),
-              "bubble": bubble(), "tail": tail(), "rays": rays(), "divider": divider()}
+              "bubble": bubble(), "tail": tail(), "rays": rays(), "divider": divider(),
+              "laurel-gold": laurel(), "laurel-green": laurel(("#d8ffa0", "#4fc23a", "#1f6a12")), "star-gold": big_star(), "star-face": big_star(True),
+              "plaque": plaque(), "plus": plus_btn(), "wing": wing(), "trophy": trophy()}
     out["shared"] = {k: write(f"chr_shared_{k}.svg", v) for k, v in shared.items()}
     os.makedirs(os.path.join(OUT, "data"), exist_ok=True)
     json.dump(out, open(os.path.join(OUT, "data", "chrome.json"), "w"), indent=1)
