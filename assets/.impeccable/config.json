@@ -1,0 +1,23 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "bounce-easing",
+        "value": "cubic-bezier(.34, 1.4, .64, 1)",
+        "createdAt": "2026-10-31T06:01:44.307Z",
+        "reason": "User's pasted motion spec mandates EaseOutBack with 5-12% overshoot; this curve is ~8%"
+      },
+      {
+        "rule": "marquee",
+        "value": "*",
+        "files": [
+          "assets/ui/showcase.html"
+        ],
+        "createdAt": "2026-10-31T06:01:44.335Z",
+        "reason": "Game shine/shimmer sweeps on decorative assets, not scrolling content; required by user's request for animated assets"
+      }
+    ]
+  }
+}

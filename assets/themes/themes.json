@@ -1,0 +1,128 @@
+{
+ "graphite": {
+  "pieces": [
+   "#14b8d4",
+   "#e83fb8",
+   "#7fd420",
+   "#ffa51f"
+  ],
+  "light": [
+   "#7ff3ff",
+   "#ff9ee8",
+   "#d6ff8a",
+   "#ffe08a"
+  ],
+  "board": [
+   "#3a3f4b",
+   "#16181e",
+   "#d9dde5",
+   "#5b616e"
+  ],
+  "accent": "#7ff3ff"
+ },
+ "aurora": {
+  "pieces": [
+   "#19c98f",
+   "#3a8cff",
+   "#8e4dff",
+   "#ff4fb8"
+  ],
+  "light": [
+   "#7dffc8",
+   "#9fd8ff",
+   "#d6b3ff",
+   "#ffb3e6"
+  ],
+  "board": [
+   "#1d3a4a",
+   "#0a1420",
+   "#9ff5d8",
+   "#2a5a6a"
+  ],
+  "accent": "#7dffc8"
+ },
+ "orchid_dusk": {
+  "pieces": [
+   "#b84dff",
+   "#ff5c86",
+   "#ff8a4d",
+   "#6f6fff"
+  ],
+  "light": [
+   "#f0b3ff",
+   "#ffb8c8",
+   "#ffd2b0",
+   "#c8c8ff"
+  ],
+  "board": [
+   "#3a2448",
+   "#140a1e",
+   "#f0c8ff",
+   "#5a3a6e"
+  ],
+  "accent": "#f0b3ff"
+ },
+ "lagoon": {
+  "pieces": [
+   "#1fd1c1",
+   "#ff6b4a",
+   "#f2c230",
+   "#2f6bff"
+  ],
+  "light": [
+   "#a8fff4",
+   "#ffc0a8",
+   "#fff0b0",
+   "#a8c8ff"
+  ],
+  "board": [
+   "#0f4a58",
+   "#06202a",
+   "#b8fff0",
+   "#1a6a70"
+  ],
+  "accent": "#a8fff4"
+ },
+ "ember_glow": {
+  "pieces": [
+   "#ff5a1f",
+   "#ffb300",
+   "#e0204f",
+   "#2fd47f"
+  ],
+  "light": [
+   "#ffc4a0",
+   "#ffe9a0",
+   "#ff9ab0",
+   "#b8ffd8"
+  ],
+  "board": [
+   "#4a2418",
+   "#1a0a06",
+   "#ffd0a0",
+   "#7a3a20"
+  ],
+  "accent": "#ffb300"
+ },
+ "sapphire": {
+  "pieces": [
+   "#2a5cff",
+   "#5fd8f0",
+   "#9a3dff",
+   "#d4e020"
+  ],
+  "light": [
+   "#a8c4ff",
+   "#d8fbff",
+   "#dcb0ff",
+   "#f8ffa0"
+  ],
+  "board": [
+   "#1a2a5a",
+   "#080e24",
+   "#c8d8ff",
+   "#2a3a7a"
+  ],
+  "accent": "#a8c4ff"
+ }
+}

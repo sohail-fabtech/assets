@@ -1,0 +1,66 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Edge Pulse – color worlds</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../motion/anim.css">
+<style>
+body{margin:0;min-height:100vh;color:#e6e9f0;font:600 14px/1.45 Poppins,sans-serif;background:var(--bg);transition:background .35s}
+main{display:grid;grid-template-columns:minmax(300px,560px) 1fr;gap:40px;padding:32px;align-items:start}
+h1{font:900 30px/1.2 Poppins;letter-spacing:-.02em;margin:0 0 4px}h2{font:800 12px Poppins;letter-spacing:.08em;text-transform:uppercase;opacity:.55;margin:22px 0 10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:800 13px Poppins;color:#fff;background:#ffffff12;border:1px solid #ffffff20;border-radius:99px;padding:8px 14px;cursor:pointer;display:flex;gap:8px;align-items:center}
+.chip[aria-pressed=true]{background:#fff;color:#16181e}
+.dot{width:12px;height:12px;border-radius:50%}
+.board{position:relative;aspect-ratio:1;background-size:100%}
+.grid{position:absolute;inset:4.5%;display:grid;grid-template:repeat(7,1fr)/repeat(7,1fr);gap:1.2%}
+.cell{position:relative;background-size:100%}.cell .ep{position:absolute;inset:4%;width:auto}
+.set{display:flex;gap:14px}.set .ep{width:84px}
+.styles{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;max-width:560px}
+.styles figure{margin:0;text-align:center;font-size:12px;opacity:.75;cursor:pointer}.styles img{width:100%}
+</style></head><body>
+<main>
+ <div class="board" id="board"><div class="grid" id="grid"></div></div>
+ <div>
+  <h1 id="title">Graphite</h1><div style="opacity:.6">Tap a piece on the board to pop it.</div>
+  <h2>Color world</h2><div class="chips" id="worlds"></div>
+  <h2>Piece style</h2><div class="chips" id="styles"></div>
+  <h2>Pieces</h2><div class="set" id="set"></div>
+  <h2>All styles in this world</h2><div class="styles" id="all"></div>
+ </div>
+</main>
+<canvas id="fx" style="position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none"></canvas>
+<script type="module">
+import * as A from '../motion/anim.js';
+const $ = s => document.querySelector(s), fx = A.particles($('#fx'));
+const T = await (await fetch('themes.json')).json();
+const STYLES = ['box', 'ball', 'pillow', 'gem', 'bubble'];
+let world = 'graphite', style = 'box';
+const name = s => s.replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase());
+// fixed layout so switching themes compares like-for-like: -1 empty, 0-3 piece slot
+const LAYOUT = Array.from({length: 49}, (_, i) => ((i * 7919) % 11) < 3 ? -1 : (i * 31 + (i >> 3)) % 4);
+
+function chips(el, items, cur, label, dot) {
+  el.innerHTML = items.map(k => `<button class="chip" data-k="${k}" aria-pressed="${k === cur}">${dot ? `<span class="dot" style="background:${dot(k)}"></span>` : ''}${label(k)}</button>`).join('');
+}
+function render() {
+  const t = T[world], b = t.board;
+  document.body.style.setProperty('--bg', `radial-gradient(120% 90% at 30% 0, ${b[0]}, ${b[1]})`);
+  $('#title').textContent = name(world);
+  chips($('#worlds'), Object.keys(T), world, name, k => `conic-gradient(${T[k].pieces.join(',')})`);
+  chips($('#styles'), STYLES, style, name);
+  $('#board').style.backgroundImage = `url(${world}/board.svg)`;
+  $('#grid').innerHTML = LAYOUT.map((p, i) => `<div class="cell" style="background-image:url(${world}/cell.svg)">${p < 0 ? '' :
+    `<div class="ep tap float" data-p="${p}" style="--d:${(i % 7) * .15 + (i / 7 | 0) * .1}s"><img src="${world}/piece_${style}_${p}.svg"></div>`}</div>`).join('');
+  $('#set').innerHTML = [0, 1, 2, 3].map(i => `<div class="ep float shine" style="--d:${i * .3}s;--r:30%"><img src="${world}/piece_${style}_${i}.svg"></div>`).join('');
+  $('#all').innerHTML = STYLES.map(s => `<figure data-s="${s}"><img src="${world}/piece_${s}_0.svg"><figcaption>${name(s)}</figcaption></figure>`).join('');
+  A.stagger(document.querySelectorAll('#grid .ep'), 12);
+  A.stagger(document.querySelectorAll('#set .ep'), 60);
+}
+document.addEventListener('click', async e => {
+  const w = e.target.closest('#worlds .chip'), s = e.target.closest('#styles .chip'), f = e.target.closest('#all figure');
+  if (w) { world = w.dataset.k; render(); }
+  if (s || f) { style = (s || f).dataset.k || f.dataset.s; render(); }
+  const p = e.target.closest('#grid .ep');
+  if (p) { fx.burst(p, 14, [T[world].light[p.dataset.p], T[world].pieces[p.dataset.p], '#fff']); await A.press(p); await A.popIn(p); }
+});
+render();
+</script></body></html>

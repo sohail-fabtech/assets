@@ -1,0 +1,59 @@
+/* Edge Pulse ambient motion. Loops are slow and small; feedback (anim.js) is fast. */
+:root {
+  --out-back: cubic-bezier(.34, 1.4, .64, 1);   /* ~8% overshoot */
+  --out-cubic: cubic-bezier(.33, 1, .68, 1);
+  --in-out: cubic-bezier(.65, 0, .35, 1);
+}
+.ep { position: relative; display: inline-block; transform-origin: 50% 50%; will-change: transform }
+.ep > img { display: block; width: 100%; pointer-events: none; user-select: none }
+
+/* hover lift (pointer devices only) */
+@media (hover: hover) { .ep.tap:hover { transform: translateY(-3px); transition: transform 160ms var(--out-cubic) } }
+
+/* idle float — pieces & tokens, offset per item with --d */
+.float > img { animation: float 3.2s var(--in-out) infinite; animation-delay: var(--d, 0s) }
+@keyframes float { 50% { transform: translateY(-3px) } }
+
+/* breathe — primary CTA (Play, Fire) */
+.breathe { isolation: isolate }
+.breathe > img { animation: breathe 1.8s var(--in-out) infinite }
+@keyframes breathe { 50% { transform: scale(1.04) } }
+.breathe::before { content: ""; position: absolute; inset: 8%; border-radius: 50%; background: currentColor;
+  filter: blur(18px); opacity: .0; animation: glow 1.8s var(--in-out) infinite; z-index: -1 }
+@keyframes glow { 50% { opacity: .55 } }
+
+/* shine sweep — clipped light band, every ~4s */
+.shine { overflow: hidden; border-radius: var(--r, 30%) }
+.shine::after { content: ""; position: absolute; inset: -10%; pointer-events: none;
+  background: linear-gradient(105deg, transparent 38%, #ffffff70 50%, transparent 62%);
+  transform: translateX(-130%); animation: sweep 4.2s var(--in-out) infinite; animation-delay: var(--d, 0s) }
+@keyframes sweep { 0%, 70% { transform: translateX(-130%) } 100% { transform: translateX(130%) } }
+
+/* halo — current map node, charged piece */
+.halo > img { animation: halo 1.4s var(--in-out) infinite alternate }
+@keyframes halo { to { filter: drop-shadow(0 0 14px var(--c, #7ff3ff)) brightness(1.12) } }
+.spin-ring::before { content: ""; position: absolute; inset: -6%; border-radius: 50%;
+  border: 3px dashed var(--c, #7ff3ff); opacity: .7; animation: spin 6s linear infinite }
+@keyframes spin { to { rotate: 360deg } }   /* linear is right for constant rotation (not gameplay feedback) */
+
+/* slow rotate — combo burst backdrop */
+.rotate > img { animation: spin 14s linear infinite }
+
+/* twinkle — life tokens, earned stars, shards */
+.twinkle::after { content: ""; position: absolute; width: 18%; aspect-ratio: 1; top: 12%; right: 14%;
+  background: radial-gradient(#fff 0 20%, transparent 60%); animation: twinkle 2.6s var(--in-out) infinite;
+  animation-delay: var(--d, 0s) }
+@keyframes twinkle { 0%, 60%, 100% { transform: scale(0); opacity: 0 } 75% { transform: scale(1.4) rotate(45deg); opacity: 1 } }
+
+/* progress fill shimmer */
+.bar { overflow: hidden; border-radius: 99px }
+.bar::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, #ffffff55, transparent);
+  width: 40%; transform: translateX(-120%); animation: bar 2.4s var(--in-out) infinite }
+@keyframes bar { to { transform: translateX(320%) } }
+
+/* locked items: no ambient motion, dimmed */
+.locked { filter: saturate(.4) brightness(.85) }
+
+/* Gentle motion setting + OS preference: kill loops, keep instant feedback */
+.gentle .ep, .gentle .ep::before, .gentle .ep::after, .gentle .ep > img { animation: none !important }
+@media (prefers-reduced-motion: reduce) { .ep, .ep::before, .ep::after, .ep > img { animation: none !important } }

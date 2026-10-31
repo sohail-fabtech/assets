@@ -1,0 +1,136 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Edge Pulse – animated asset showcase</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="anim.css">
+<style>
+body{margin:0;background:radial-gradient(120% 80% at 50% 0,#3a3f4b,#16181e);color:#d6dae3;font:600 14px/1.45 Poppins,sans-serif;min-height:100vh}
+header{position:sticky;top:0;z-index:5;display:flex;gap:20px;align-items:center;padding:14px 28px;background:#16181ecc;backdrop-filter:blur(14px)}
+header h1{font:900 24px/1.2 Poppins;letter-spacing:-.02em;margin:0;flex:1}
+button.ui{font:800 14px Poppins;color:#fff;background:#ffffff14;border:1px solid #ffffff22;border-radius:99px;padding:8px 16px;cursor:pointer}
+section{padding:18px 28px}h2{font:800 13px Poppins;letter-spacing:.08em;text-transform:uppercase;opacity:.55;margin:0 0 14px}
+.row{display:flex;flex-wrap:wrap;gap:22px;align-items:center}
+.ep{cursor:pointer}.s96{width:96px}.s80{width:80px}.s140{width:140px}.s64{width:64px}
+.num{font:900 26px Poppins;font-variant-numeric:tabular-nums;letter-spacing:-.02em;color:#fff;text-shadow:0 2px 8px #0008}
+.pill{position:relative;width:240px}.pill .num{position:absolute;inset:0 0 8px;display:grid;place-items:center}
+.pill small{position:absolute;left:26px;top:50%;translate:0 -60%;font:800 11px Poppins;opacity:.6;letter-spacing:.08em}
+.btnwrap{position:relative;width:240px}.btnwrap span{position:absolute;inset:0 0 14px;display:grid;place-items:center;font:800 22px Poppins;letter-spacing:-.01em;color:#fff;text-shadow:0 2px 6px #0005}
+.toggle{position:relative;width:90px}.toggle img{position:absolute;inset:0}.toggle .off{position:static}
+.ribbon{position:relative;width:340px;opacity:0}.ribbon span{position:absolute;inset:0 0 34px;display:grid;place-items:center;font:900 26px Poppins;letter-spacing:-.02em;color:#fff;text-shadow:0 2px 6px #9a4a00}
+.combo{position:relative;width:150px}.combo span{position:absolute;inset:0;display:grid;place-items:center;font:900 30px Poppins;color:#fff;text-shadow:0 2px 6px #9a4a00;rotate:-6deg}
+.panel{position:fixed;left:50%;top:50%;width:min(480px,90vw);translate:-50% -50%;opacity:0;pointer-events:none;z-index:9}
+.panel.open{pointer-events:auto}.panel b{position:absolute;top:44px;left:0;right:0;text-align:center;font:900 38px Poppins;letter-spacing:-.02em}
+.panel .acts{position:absolute;bottom:70px;left:0;right:0;display:flex;justify-content:center;gap:18px}
+#fx{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:10}
+.hint{font-size:12px;opacity:.5;margin-left:6px;text-transform:none;letter-spacing:0;font-weight:600}
+</style></head><body>
+<canvas id="fx"></canvas>
+<header><h1>Edge Pulse · Motion</h1>
+ <label>Speed <input id="slow" type="range" min="1" max="6" value="1"> <output id="so">1×</output></label>
+ <button class="ui" id="gentle">Gentle motion: off</button><button class="ui" id="replay">Replay all</button></header>
+
+<section><h2>Pieces <span class="hint">idle float + shine · tap = pop</span></h2><div class="row" id="pieces"></div></section>
+
+<section><h2>Buttons <span class="hint">CTA breathes · tap = press</span></h2><div class="row">
+ <div class="ep tap breathe btnwrap" style="color:#6aff3a" data-act="press"><img src="../buttons/btn_play.svg"><span>PLAY</span></div>
+ <div class="ep tap breathe halo s96" style="color:#14b8d4;--c:#7ff3ff" data-act="press"><img src="../buttons/btn_fire.svg"></div>
+ <span id="icons" class="row"></span></div></section>
+
+<section><h2>Modes <span class="hint">staggered entrance + shine</span></h2><div class="row" id="modes"></div></section>
+
+<section><h2>HUD <span class="hint">tap score · tap bar · tap toggle · tap swap</span></h2><div class="row">
+ <div class="ep pill" id="score"><img src="../hud/hud_pill.svg"><small>SCORE</small><span class="num">0</span></div>
+ <div class="ep pill" id="shards"><img src="../hud/hud_pill.svg"><small>SHARDS</small><span class="num">0</span></div>
+ <div class="ep" style="width:280px" id="bar"><div class="bar ep" style="width:100%"><img src="../hud/progress_track_60.svg" id="fill"></div></div>
+ <div class="ep toggle tap" id="tog"><img class="off" src="../buttons/toggle_off.svg"><img class="on" src="../buttons/toggle_on.svg" style="opacity:0"></div>
+ <div class="ep tap s80" id="now"><img src="../hud/slot_now.svg"></div><div class="ep tap s64" data-act="swap"><img src="../buttons/icon_swap.svg"></div><div class="ep tap s80" id="next"><img src="../hud/slot_next.svg"></div>
+</div></section>
+
+<section><h2>Campaign map <span class="hint">current pulses · locked wiggles</span></h2><div class="row">
+ <div class="ep tap s80" data-act="press"><img src="../map/node_done.svg"></div>
+ <div class="ep tap s80" data-act="press"><img src="../map/node_done.svg"></div>
+ <div class="ep tap halo spin-ring s96" data-act="press"><img src="../map/node_current.svg"></div>
+ <div class="ep tap locked s80" data-act="wiggle"><img src="../map/node_locked.svg"></div>
+ <div class="ep tap locked s80" data-act="wiggle"><img src="../map/node_locked.svg"></div></div></section>
+
+<section><h2>Rewards <span class="hint">tap any to replay</span></h2><div class="row">
+ <span class="row" id="badges"></span>
+ <div class="ep tap s96" id="stamp" style="opacity:0"><img src="../rewards/stamp_on.svg"></div>
+ <span class="row" id="stars"></span>
+ <div class="ep twinkle s64" style="--d:.4s"><img src="../hud/shard.svg"></div>
+ <div class="ep ribbon tap" id="ribbon"><img src="../panels/ribbon.svg"><span>NEW RECORD</span></div>
+ <div class="ep combo rotate tap" id="combo"><img src="../hud/combo_burst.svg"><span>×3</span></div></div></section>
+
+<section><h2>Lives <span class="hint">glitter · tap = fracture</span></h2><div class="row" id="lives"></div>
+ <button class="ui" id="openPanel" style="margin-top:18px">Open pause panel</button></section>
+
+<div class="ep panel" id="panel"><img src="../panels/panel_glass.svg"><b>Paused</b>
+ <div class="acts"><div class="ep tap s80" data-act="close"><img src="../buttons/icon_home.svg"></div><div class="ep tap breathe s96" style="color:#6aff3a" data-act="close"><img src="../buttons/icon_play_green.svg"></div><div class="ep tap s80" data-act="close"><img src="../buttons/icon_settings.svg"></div></div></div>
+
+<script type="module">
+import * as A from './anim.js';
+const $ = s => document.querySelector(s), fx = A.particles($('#fx'));
+const el = (html) => { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstChild; };
+const add = (sel, html) => $(sel).appendChild(el(html));
+
+const COLORS = ['cyan', 'magenta', 'lime', 'amber'], HEX = {cyan: '#7ff3ff', magenta: '#ff9ee8', lime: '#d6ff8a', amber: '#ffe08a'};
+COLORS.forEach((c, i) => {
+  add('#pieces', `<div class="ep tap float shine s80" data-act="pop" data-c="${c}" style="--d:${i * .35}s;--r:32%"><img src="../pieces/piece_box_${c}.svg"></div>`);
+  add('#pieces', `<div class="ep tap float s80" data-act="pop" data-c="${c}" style="--d:${i * .35 + .2}s"><img src="../pieces/piece_ball_${c}.svg"></div>`);
+});
+add('#pieces', `<div class="ep tap halo spin-ring s80" style="--c:#7ff3ff" data-act="pop" data-c="cyan"><img src="../pieces/piece_charged_cyan.svg"></div>`);
+add('#pieces', `<div class="ep tap s80" data-act="crate"><img src="../board/crate.svg"></div>`);
+'home pause settings sound music haptics share back close shop trophy'.split(' ')
+  .forEach(n => add('#icons', `<div class="ep tap s64" data-act="press"><img src="../buttons/icon_${n}.svg"></div>`));
+'endless color_match blast time_rush campaign daily weekly'.split(' ')
+  .forEach((m, i) => add('#modes', `<div class="ep tap shine s140" data-act="press" style="--d:${i * .3}s;--r:30%"><img src="../modes/mode_${m}.svg"></div>`));
+'streak campaign stamps row_col endless blaster rush collector'.split(' ')
+  .forEach(b => add('#badges', `<div class="ep tap shine s80" data-act="unlock" style="--r:20%"><img src="../rewards/badge_${b}.svg"></div>`));
+add('#badges', `<div class="ep tap locked s80" data-act="wiggle"><img src="../rewards/badge_locked.svg"></div>`);
+[1, 2, 3].forEach(i => add('#stars', `<div class="ep tap twinkle s64" data-act="unlock" style="--d:${i * .5}s"><img src="../hud/star_on.svg"></div>`));
+[0, 1, 2].forEach(i => add('#lives', `<div class="ep tap twinkle float s64" data-act="life" style="--d:${i * .6}s"><img src="../hud/life_potion.svg"></div>`));
+[0, 1, 2].forEach(i => add('#lives', `<div class="ep tap twinkle float s64" data-act="life" style="--d:${i * .6 + .3}s"><img src="../hud/life_heart.svg"></div>`));
+
+// interactions
+let score = 0, shards = 0, pct = .6, on = false;
+const acts = {
+  press: e => A.press(e),
+  wiggle: e => A.wiggle(e),
+  unlock: e => A.unlock(e, fx),
+  crate: async e => { fx.burst(e, 10, ['#b97a3c', '#d29a5a', '#6b3f17'], true); await A.wiggle(e); },
+  pop: async e => { await A.press(e); fx.burst(e, 16, [HEX[e.dataset.c], '#fff']); },
+  life: async e => { await A.lifeLost(e, fx); await A.popIn(e); },
+  swap: async e => { A.press(e); const n = $('#now img'), x = $('#next img'); await Promise.all([A.bump($('#now')), A.bump($('#next'))]); [n.src, x.src] = [x.src, n.src]; },
+  close: async e => { await A.press(e); await A.panelClose($('#panel')); $('#panel').classList.remove('open'); },
+};
+document.addEventListener('click', ev => {
+  const e = ev.target.closest('[data-act]'); if (e) return acts[e.dataset.act](e);
+  const t = ev.target.closest('.ep');
+  if (!t) return;
+  if (t.id === 'score') { A.countTo(t.querySelector('.num'), score, score += 250); A.bump(t); }
+  if (t.id === 'shards') { A.countTo(t.querySelector('.num'), shards, shards += 25); A.bump(t); fx.burst(t, 10, ['#c9d6ff', '#7f9bff', '#fff']); }
+  if (t.id === 'bar') { const to = pct >= 1 ? .15 : Math.min(1, pct + .2); A.fillTo($('#fill'), pct, to); pct = to; }
+  if (t.closest('#tog')) { on = !on; A.flip($('#tog .on'), on); }
+  if (t.id === 'stamp') { t.style.opacity = 0; A.stampDown(t, fx); }
+  if (t.id === 'ribbon') { t.style.opacity = 0; A.unfurl(t); }
+  if (t.id === 'combo') { A.unlock(t, fx); }
+});
+$('#openPanel').onclick = async () => { const p = $('#panel'); p.classList.add('open'); await A.panelOpen(p); };
+
+// entrance choreography: sections stagger in, then rewards play in sequence
+async function intro() {
+  A.stagger(document.querySelectorAll('#pieces .ep'), 50);
+  A.stagger(document.querySelectorAll('#modes .ep'), 70);
+  A.stagger(document.querySelectorAll('#icons .ep'), 35);
+  $('#fill').style.clipPath = 'inset(0 100% 0 0 round 99px)'; A.fillTo($('#fill'), 0, pct);
+  A.countTo($('#score .num'), 0, score = 1340, 700); A.countTo($('#shards .num'), 0, shards = 125, 700);
+  await A.stagger(document.querySelectorAll('#badges .ep'), 80);
+  $('#stamp').style.opacity = 0; await A.stampDown($('#stamp'), fx);
+  await A.starsIn(document.querySelectorAll('#stars .ep'));
+  $('#ribbon').style.opacity = 0; await A.unfurl($('#ribbon'));
+  A.unlock($('#combo'), fx);
+}
+intro();
+$('#replay').onclick = intro;
+$('#slow').oninput = e => { globalThis.SLOW = +e.target.value; $('#so').value = e.target.value + '×'; };
+$('#gentle').onclick = e => { const g = document.body.classList.toggle('gentle'); e.target.textContent = `Gentle motion: ${g ? 'on' : 'off'}`; };
+</script></body></html>

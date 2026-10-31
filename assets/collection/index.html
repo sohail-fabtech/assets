@@ -1,0 +1,108 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Edge Pulse – Piece Vault</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../motion/anim.css">
+<style>
+:root{--common:#a9b1c2;--rare:#5fb4ff;--epic:#c07bff;--legendary:#ffc21f}
+body{margin:0;min-height:100vh;background:radial-gradient(120% 80% at 50% 0,#2e3340,#12141a);color:#e3e6ee;font:600 14px/1.45 Poppins,sans-serif}
+header{position:sticky;top:0;z-index:3;display:flex;gap:18px;align-items:center;padding:14px 28px;background:#12141ad9;backdrop-filter:blur(14px)}
+h1{font:900 26px/1.2 Poppins;letter-spacing:-.02em;margin:0}
+.total{flex:1;max-width:340px}.total small{opacity:.6}
+.track{height:12px;border-radius:99px;background:#0b0c10;overflow:hidden;margin-top:4px}
+.track i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#7ff3ff,#c07bff,#ffc21f);transition:width .6s cubic-bezier(.33,1,.68,1)}
+.shards{margin-left:auto;display:flex;align-items:center;gap:8px;font:900 22px Poppins;font-variant-numeric:tabular-nums;padding:6px 16px 6px 8px;border-radius:99px;background:#0b0c10aa}
+.shards img{width:34px}
+button.ui{font:800 13px Poppins;color:#fff;background:#ffffff12;border:1px solid #ffffff22;border-radius:99px;padding:8px 14px;cursor:pointer}
+main{padding:10px 28px 40px}
+h2{font:800 13px Poppins;letter-spacing:.08em;text-transform:uppercase;margin:26px 0 12px;color:var(--c)}
+.sets{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px}
+.set{position:relative;border-radius:24px;padding:16px;background:linear-gradient(#1f232c,#181b22) padding-box,linear-gradient(140deg,var(--c),transparent 60%) border-box;border:1.5px solid transparent}
+.set.legendary{background:linear-gradient(#211e18,#181b22) padding-box,conic-gradient(from var(--a),#ffc21f,#ff7ad9,#7ff3ff,#ffc21f) border-box;animation:spinb 5s linear infinite}
+@property --a{syntax:'<angle>';initial-value:0deg;inherits:false}@keyframes spinb{to{--a:360deg}}
+.set.done{box-shadow:0 0 0 1.5px var(--c),0 14px 30px -12px #000c}
+.top{display:flex;align-items:baseline;gap:8px}.top b{font:800 17px Poppins;letter-spacing:-.01em}
+.rar{font:800 11px Poppins;letter-spacing:.06em;text-transform:uppercase;color:var(--c);margin-left:auto}
+.tag{opacity:.55;font-size:13px;margin:2px 0 12px}
+.slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.slot{position:relative;aspect-ratio:1;border-radius:18px;background:#0e1015;display:grid;place-items:center;cursor:pointer}
+.slot .ep{width:82%}
+.slot.locked .ep img{filter:brightness(0) opacity(.35)}
+.price{position:absolute;bottom:4px;left:0;right:0;text-align:center;font:800 12px Poppins;font-variant-numeric:tabular-nums;color:#c9d6ff}
+.price.no{color:#ff8a9a}
+.slot.locked:hover .ep img{filter:brightness(0) opacity(.5)}
+.prog{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:12px}
+.prog .track{flex:1;height:8px;margin:0}.prog .track i{background:var(--c)}
+.nudge{color:var(--c);font-weight:800}
+.badge{position:absolute;top:-10px;right:14px;font:900 12px Poppins;color:#16181e;background:var(--c);padding:3px 10px;border-radius:99px;letter-spacing:.04em}
+.toast{position:fixed;left:50%;top:84px;translate:-50%;z-index:9;opacity:0;pointer-events:none;text-align:center}
+.toast b{display:block;font:900 34px/1.2 Poppins;letter-spacing:-.02em;color:#fff;text-shadow:0 3px 14px #000b}
+.toast span{opacity:.8}
+#fx{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:8}
+</style></head><body>
+<header><h1>Piece Vault</h1>
+ <div class="total"><small id="tl">0 / 40 pieces</small><div class="track"><i id="tbar" style="width:0"></i></div></div>
+ <div class="shards ep" id="shards"><img src="../hud/shard.svg" alt=""><span id="sv">0</span></div>
+ <button class="ui" id="earn">+100 Shards (demo)</button><button class="ui" id="reset">Reset</button></header>
+<main id="main"></main>
+<div class="toast" id="toast"><b></b><span></span></div>
+<canvas id="fx"></canvas>
+<script type="module">
+import * as A from '../motion/anim.js';
+const $ = s => document.querySelector(s), fx = A.particles($('#fx'));
+const SETS = await (await fetch('collection.json')).json();
+const TIERS = ['common', 'rare', 'epic', 'legendary'];
+const KEY = 'edgepulse.vault';
+// Endowed progress: every common set starts with its first piece owned, so no set begins at 0.
+const fresh = () => ({ shards: 300, owned: SETS.filter(s => s.rarity === 'common').map(s => s.pieces[0].file) });
+let st = JSON.parse(localStorage.getItem(KEY) || 'null') || fresh();
+const save = () => localStorage.setItem(KEY, JSON.stringify(st));
+const has = f => st.owned.includes(f);
+
+function render() {
+  $('#main').innerHTML = TIERS.map(t => `<h2 style="--c:var(--${t})">${t}</h2><div class="sets">${
+    SETS.filter(s => s.rarity === t).map(s => {
+      const n = s.pieces.filter(p => has(p.file)).length;
+      return `<div class="set ${t} ${n === 4 ? 'done' : ''}" style="--c:var(--${t})" data-set="${s.id}">
+        ${n === 4 ? '<span class="badge">COMPLETE</span>' : ''}
+        <div class="top"><b>${s.name}</b><span class="rar">${t}</span></div><div class="tag">${s.tagline}</div>
+        <div class="slots">${s.pieces.map((p, i) => `<div class="slot ${has(p.file) ? '' : 'locked'}" data-f="${p.file}">
+          <div class="ep ${has(p.file) ? 'float' : ''}" style="--d:${i * .3}s"><img src="${p.file}" alt=""></div>
+          ${has(p.file) ? '' : `<span class="price ${st.shards < p.price ? 'no' : ''}">◆ ${p.price}</span>`}</div>`).join('')}</div>
+        <div class="prog"><div class="track"><i style="width:${n * 25}%"></i></div><span>${n}/4</span>
+          ${n === 3 ? '<span class="nudge">1 to go!</span>' : ''}</div></div>`;
+    }).join('')}</div>`).join('');
+  const total = st.owned.length;
+  $('#tl').textContent = `${total} / 40 pieces`; $('#tbar').style.width = total / 40 * 100 + '%';
+  $('#sv').textContent = st.shards;
+}
+
+async function celebrate(title, sub, color) {
+  const t = $('#toast'); t.style.setProperty('--c', color);
+  t.querySelector('b').textContent = title; t.querySelector('span').textContent = sub;
+  await A.popIn(t); await new Promise(r => setTimeout(r, 1300)); await A.panelClose(t);
+}
+
+document.addEventListener('click', async e => {
+  const slot = e.target.closest('.slot.locked');
+  if (!slot) return;
+  const set = SETS.find(s => s.id === slot.closest('.set').dataset.set);
+  const p = set.pieces.find(p => p.file === slot.dataset.f), piece = slot.querySelector('.ep');
+  if (st.shards < p.price) { A.wiggle(piece); A.wiggle($('#shards')); return; }
+  // unlock: pay → reveal silhouette → pop with burst in the piece's own colour
+  A.countTo($('#sv'), st.shards, st.shards - p.price, 350); A.bump($('#shards'));
+  st.shards -= p.price; st.owned.push(p.file); save();
+  slot.classList.remove('locked'); slot.querySelector('.price')?.remove();
+  await A.unlock(piece);
+  fx.burst(piece, set.rarity === 'legendary' ? 30 : 18, [p.light, p.color, '#fff']);
+  const n = set.pieces.filter(q => has(q.file)).length, color = getComputedStyle(document.body).getPropertyValue(`--${set.rarity}`);
+  if (n === 4) {
+    const card = slot.closest('.set');
+    for (const s of card.querySelectorAll('.slot .ep')) fx.burst(s, 16, [color, '#fff']);
+    render(); A.unlock(document.querySelector(`[data-set="${set.id}"]`));
+    celebrate(`${set.name} complete!`, 'New piece style unlocked for every mode', color);
+  } else render();
+});
+$('#earn').onclick = () => { A.countTo($('#sv'), st.shards, st.shards += 100, 450); A.bump($('#shards')); fx.burst($('#shards'), 12, ['#c9d6ff', '#7f9bff', '#fff']); save(); setTimeout(render, 460); };
+$('#reset').onclick = () => { st = fresh(); save(); render(); A.stagger(document.querySelectorAll('.set'), 50); };
+render(); A.stagger(document.querySelectorAll('.set'), 50);
+</script></body></html>
