@@ -1,0 +1,82 @@
+[
+ {
+  "id": "crate",
+  "name": "Wooden Crate",
+  "hits": 3,
+  "overlay": false,
+  "rule": "Breaks into splinters after 3 adjacent clears",
+  "states": [
+   {
+    "hp": 3,
+    "file": "pieces/blockers/crate/blk_crate_3.svg"
+   },
+   {
+    "hp": 2,
+    "file": "pieces/blockers/crate/blk_crate_2.svg"
+   },
+   {
+    "hp": 1,
+    "file": "pieces/blockers/crate/blk_crate_1.svg"
+   }
+  ]
+ },
+ {
+  "id": "ice",
+  "name": "Ice Block",
+  "hits": 3,
+  "overlay": false,
+  "rule": "Cracks, chips, then shatters after 3 adjacent clears",
+  "states": [
+   {
+    "hp": 3,
+    "file": "pieces/blockers/ice/blk_ice_3.svg"
+   },
+   {
+    "hp": 2,
+    "file": "pieces/blockers/ice/blk_ice_2.svg"
+   },
+   {
+    "hp": 1,
+    "file": "pieces/blockers/ice/blk_ice_1.svg"
+   }
+  ]
+ },
+ {
+  "id": "stone",
+  "name": "Stone Block",
+  "hits": 3,
+  "overlay": false,
+  "rule": "Crumbles stone by stone after 3 adjacent clears",
+  "states": [
+   {
+    "hp": 3,
+    "file": "pieces/blockers/stone/blk_stone_3.svg"
+   },
+   {
+    "hp": 2,
+    "file": "pieces/blockers/stone/blk_stone_2.svg"
+   },
+   {
+    "hp": 1,
+    "file": "pieces/blockers/stone/blk_stone_1.svg"
+   }
+  ]
+ },
+ {
+  "id": "chain",
+  "name": "Chain Lock",
+  "hits": 2,
+  "overlay": true,
+  "rule": "Locks the piece under it; clear it twice to free",
+  "states": [
+   {
+    "hp": 2,
+    "file": "pieces/blockers/chain/blk_chain_2.svg"
+   },
+   {
+    "hp": 1,
+    "file": "pieces/blockers/chain/blk_chain_1.svg"
+   }
+  ]
+ }
+]
