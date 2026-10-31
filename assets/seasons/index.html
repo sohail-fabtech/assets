@@ -1,0 +1,65 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Edge Pulse – Seasons</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../motion/anim.css">
+<style>
+body{margin:0;min-height:100vh;color:#f2f3f7;font:600 14px/1.45 Poppins,sans-serif;background:#12141a center/cover no-repeat;background-image:var(--bg);transition:background-image .4s}
+main{padding:24px 28px 40px;max-width:1200px}
+.tabs{display:flex;gap:8px;margin-bottom:22px}
+.tab{font:800 14px Poppins;color:#fff;background:#ffffff14;border:1px solid #ffffff26;border-radius:99px;padding:8px 16px;cursor:pointer;text-transform:capitalize;backdrop-filter:blur(10px)}
+.tab[aria-pressed=true]{background:#fff;color:#12141a}.tab .live{font-size:10px;letter-spacing:.06em;margin-left:6px;color:var(--a)}
+.hero{display:flex;gap:22px;align-items:center;padding:22px;border-radius:30px;background:#ffffff10;border:1px solid #ffffff22;backdrop-filter:blur(18px)}
+.hero .ep{width:120px;flex:none}
+.hero h1{font:900 40px/1.2 Poppins;letter-spacing:-.02em;margin:0;text-transform:capitalize}
+.hero p{margin:2px 0 0;opacity:.8}
+.when{margin-left:auto;text-align:right;font:800 13px Poppins;font-variant-numeric:tabular-nums}.when b{display:block;font:900 28px Poppins}
+.sets{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:16px;margin-top:16px}
+.set{padding:18px;border-radius:26px;background:#0b0c1066;border:1px solid #ffffff1c;backdrop-filter:blur(18px)}
+.set b{font:800 18px Poppins;letter-spacing:-.01em}.set .tag{opacity:.7;font-size:13px;margin-bottom:12px}
+.row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.row .ep{width:100%}
+.mini{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:16px;padding:14px;border-radius:26px;background:#0b0c1055;border:1px solid #ffffff1c}
+.mini .ep{width:100%}
+#fx{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:8}
+</style></head><body><main>
+<div class="tabs" id="tabs"></div>
+<section class="hero" id="hero"></section>
+<div class="sets" id="sets"></div>
+<div class="mini" id="mini"></div>
+</main><canvas id="fx"></canvas>
+<script type="module">
+import * as A from '../motion/anim.js';
+const $ = s => document.querySelector(s), fx = A.particles($('#fx'));
+const SE = await (await fetch('seasons.json')).json();
+const now = new Date(), month = now.getMonth() + 1;
+const current = SE.find(s => s.months.includes(month));
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+let cur = current.id;
+
+function daysLeft(s) {  // last day of the season's final month (winter ends Feb in the next year)
+  const last = s.months.at(-1), yr = now.getFullYear() + (last < month ? 1 : 0);
+  return Math.ceil((new Date(yr, last, 0, 23, 59) - now) / 864e5);
+}
+function render() {
+  const s = SE.find(x => x.id === cur), live = s === current;
+  document.body.style.setProperty('--bg', `url(${s.board})`);
+  document.documentElement.style.setProperty('--a', s.accent);
+  $('#tabs').innerHTML = SE.map(x => `<button class="tab" data-s="${x.id}" aria-pressed="${x.id === cur}">${x.id}${x === current ? '<span class="live">● LIVE</span>' : ''}</button>`).join('');
+  $('#hero').innerHTML = `<div class="ep float"><img src="${s.emblem}" alt=""></div>
+    <div><h1>${s.id}</h1><p>${s.sets.map(x => x.name).join(' · ')}</p></div>
+    <div class="when">${live ? 'season ends in' : 'arrives'}<b>${live ? daysLeft(s) + ' days' : MON[s.months[0] - 1]}</b>${MON[s.months[0] - 1]} – ${MON[s.months.at(-1) - 1]}</div>`;
+  $('#sets').innerHTML = s.sets.map(x => `<div class="set"><b>${x.name}</b><div class="tag">${x.tagline}</div>
+    <div class="row">${x.pieces.map((p, i) => `<div class="ep tap float" data-c="${p.color}" data-l="${p.light}" style="--d:${i * .3}s"><img src="${p.file}" alt=""></div>`).join('')}</div></div>`).join('');
+  const all = s.sets.flatMap(x => x.pieces);
+  $('#mini').innerHTML = Array.from({length: 24}, (_, i) => all[(i * 5 + (i >> 3)) % all.length])
+    .map((p, i) => `<div class="ep tap float" data-c="${p.color}" data-l="${p.light}" style="--d:${(i % 8) * .12}s"><img src="${p.file}" alt=""></div>`).join('');
+  A.popIn($('#hero .ep'));
+  A.stagger(document.querySelectorAll('.set .ep'), 50);
+  A.stagger(document.querySelectorAll('#mini .ep'), 18);
+}
+document.addEventListener('click', async e => {
+  const t = e.target.closest('.tab'); if (t) { cur = t.dataset.s; render(); return; }
+  const p = e.target.closest('.ep[data-c]');
+  if (p) { fx.burst(p, 16, [p.dataset.l, p.dataset.c, '#fff']); await A.press(p); }
+});
+render();
+</script></body></html>
