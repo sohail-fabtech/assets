@@ -33,6 +33,8 @@ def folder_for(name):
     if name.startswith("ui_"):      return f"buttons/{p[1]}"                          # ui_volcano_pill-primary_normal
     if name.startswith("lv_"):      return f"pieces/levels/{p[1]}/{p[2]}"             # lv_volcano_obstacles_lava_2
     if name.startswith("lvb_"):     return f"board/levels/{p[1]}"                     # lvb_volcano_board
+    if name.startswith("chr_"):     return f"ui/chrome/{p[1]}"                        # chr_brand_close, chr_shared_chest
+    if name.startswith("scn_"):     return f"scenes/{p[1]}"                           # scn_volcano_card
     if name.startswith("th_"):      return f"pieces/themes/{'_'.join(p[1:-2])}/{p[-2]}"  # th_orchid_dusk_gem_0
     if name.startswith("thb_"):     return f"board/themes/{'_'.join(p[1:-1])}"        # thb_lagoon_board
     if name.startswith("sea_"):                                                        # sea_autumn_acorn_0 / _board / _emblem
@@ -57,5 +59,7 @@ if __name__ == "__main__":  # self-check
     assert folder_for("ui_volcano_pill-primary_pressed.svg") == "buttons/volcano"
     assert folder_for("lv_reef_collectibles_pearl_0.svg") == "pieces/levels/reef/collectibles"
     assert folder_for("lvb_nebula_board.svg") == "board/levels/nebula"
+    assert folder_for("chr_brand_ribbon.svg") == "ui/chrome/brand"
+    assert folder_for("scn_reef_card.svg") == "scenes/reef"
     assert folder_for("icon_home.svg") == "buttons"
     print("layout ok")

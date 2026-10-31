@@ -2,7 +2,7 @@
 #   assets/buttons/<theme>/ui_<theme>_<control>_<state>.svg  + data/ui-kit.json + assets/motion/themes.css
 # Labels are never baked in: the game draws them live in the theme's font (crisp, localisable).
 import itertools, json, os
-from level_themes import THEMES, FONTS, FONT_SOURCE, lum, contrast
+from level_themes import THEMES, FONTS, FONT_SOURCE, NEON_GLASS, lum, contrast
 from make_ui import glyph
 from layout import folder_for
 
@@ -79,7 +79,7 @@ def face(x, y, w, h, l, m, dk, mat, depth=6, r=None, outline=False, state="norma
     d, dd = rr(x, y, w, h, r), rr(x, y + depth, w, h, r)
     if mat == "neon" and state != "disabled":  # neon: dark glass with glowing tube outline
         return (f'<path d="{dd}" fill="#000" opacity=".5" filter="url(#sh)"/>'
-                f'<path d="{d}" fill="#140a22"/><path d="{d}" fill="none" stroke="{m}" stroke-width="8" filter="url(#glow)" opacity=".9"/>'
+                f'<path d="{d}" fill="{NEON_GLASS}"/><path d="{d}" fill="none" stroke="{m}" stroke-width="8" filter="url(#glow)" opacity=".9"/>'
                 f'<path d="{d}" fill="none" stroke="{l}" stroke-width="3"/>')
     grad = (f'<linearGradient id="f{k}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{l}"/>'
             f'<stop offset=".55" stop-color="{m}"/><stop offset="1" stop-color="{mix(m, dk, .5)}"/></linearGradient>'
@@ -92,8 +92,10 @@ def face(x, y, w, h, l, m, dk, mat, depth=6, r=None, outline=False, state="norma
             f'<path d="{d}" fill="{fill}" {"stroke=" + chr(34) + m + chr(34) + " stroke-width=" + chr(34) + "4" + chr(34) if outline else ""}/>')
     if not outline:
         body += (f'<g clip-path="url(#c{k})">{material(mat, d, x, y, w, h, l, m, dk) if state != "disabled" and w >= 140 else ""}'
-                 f'<rect x="{x + r * .4}" y="{y + 3}" width="{w - r * .8}" height="{h * .34}" rx="{h * .17}" fill="#fff" opacity="{gloss}"/></g>'
-                 f'<path d="{d}" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="2"/>')
+                 f'<rect x="{x}" y="{y + h * .55}" width="{w}" height="{h * .45}" fill="{dk}" opacity=".18"/>'                    # bottom inner shade
+                 f'<rect x="{x + r * .4}" y="{y + 3}" width="{w - r * .8}" height="{h * .36}" rx="{h * .18}" fill="#fff" opacity="{gloss}"/></g>'
+                 f'<path d="{rr(x + 1.5, y + 1.5, w - 3, h - 3, max(1, r - 1.5))}" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="1.6"/>'  # rim light
+                 f'<path d="{rr(x, y, w, h + depth, r)}" fill="none" stroke="{mix(dk, "#000", .5)}" stroke-width="3"/>')  # chunky dark outline (reference look)
     return body
 
 

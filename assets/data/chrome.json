@@ -1,0 +1,110 @@
+{
+ "slice": {
+  "frame": "44 fill",
+  "ribbon": "0 92 fill",
+  "pill": "0 48 fill",
+  "plate-cream": "0 40 fill",
+  "plate-dark": "0 34 fill",
+  "track": "0 18 fill",
+  "fill": "0 18 fill"
+ },
+ "tones": {
+  "brand": {
+   "close": "ui/chrome/brand/chr_brand_close.svg",
+   "pill": "ui/chrome/brand/chr_brand_pill.svg",
+   "frame": "ui/chrome/brand/chr_brand_frame.svg",
+   "ribbon": "ui/chrome/brand/chr_brand_ribbon.svg",
+   "fill": "ui/chrome/brand/chr_brand_fill.svg"
+  },
+  "graphite": {
+   "close": "ui/chrome/graphite/chr_graphite_close.svg",
+   "pill": "ui/chrome/graphite/chr_graphite_pill.svg",
+   "frame": "ui/chrome/graphite/chr_graphite_frame.svg",
+   "ribbon": "ui/chrome/graphite/chr_graphite_ribbon.svg",
+   "fill": "ui/chrome/graphite/chr_graphite_fill.svg"
+  },
+  "volcano": {
+   "close": "ui/chrome/volcano/chr_volcano_close.svg",
+   "pill": "ui/chrome/volcano/chr_volcano_pill.svg",
+   "frame": "ui/chrome/volcano/chr_volcano_frame.svg",
+   "ribbon": "ui/chrome/volcano/chr_volcano_ribbon.svg",
+   "fill": "ui/chrome/volcano/chr_volcano_fill.svg"
+  },
+  "sky": {
+   "close": "ui/chrome/sky/chr_sky_close.svg",
+   "pill": "ui/chrome/sky/chr_sky_pill.svg",
+   "frame": "ui/chrome/sky/chr_sky_frame.svg",
+   "ribbon": "ui/chrome/sky/chr_sky_ribbon.svg",
+   "fill": "ui/chrome/sky/chr_sky_fill.svg"
+  },
+  "forest": {
+   "close": "ui/chrome/forest/chr_forest_close.svg",
+   "pill": "ui/chrome/forest/chr_forest_pill.svg",
+   "frame": "ui/chrome/forest/chr_forest_frame.svg",
+   "ribbon": "ui/chrome/forest/chr_forest_ribbon.svg",
+   "fill": "ui/chrome/forest/chr_forest_fill.svg"
+  },
+  "tundra": {
+   "close": "ui/chrome/tundra/chr_tundra_close.svg",
+   "pill": "ui/chrome/tundra/chr_tundra_pill.svg",
+   "frame": "ui/chrome/tundra/chr_tundra_frame.svg",
+   "ribbon": "ui/chrome/tundra/chr_tundra_ribbon.svg",
+   "fill": "ui/chrome/tundra/chr_tundra_fill.svg"
+  },
+  "reef": {
+   "close": "ui/chrome/reef/chr_reef_close.svg",
+   "pill": "ui/chrome/reef/chr_reef_pill.svg",
+   "frame": "ui/chrome/reef/chr_reef_frame.svg",
+   "ribbon": "ui/chrome/reef/chr_reef_ribbon.svg",
+   "fill": "ui/chrome/reef/chr_reef_fill.svg"
+  },
+  "carnival": {
+   "close": "ui/chrome/carnival/chr_carnival_close.svg",
+   "pill": "ui/chrome/carnival/chr_carnival_pill.svg",
+   "frame": "ui/chrome/carnival/chr_carnival_frame.svg",
+   "ribbon": "ui/chrome/carnival/chr_carnival_ribbon.svg",
+   "fill": "ui/chrome/carnival/chr_carnival_fill.svg"
+  },
+  "crystal": {
+   "close": "ui/chrome/crystal/chr_crystal_close.svg",
+   "pill": "ui/chrome/crystal/chr_crystal_pill.svg",
+   "frame": "ui/chrome/crystal/chr_crystal_frame.svg",
+   "ribbon": "ui/chrome/crystal/chr_crystal_ribbon.svg",
+   "fill": "ui/chrome/crystal/chr_crystal_fill.svg"
+  },
+  "desert": {
+   "close": "ui/chrome/desert/chr_desert_close.svg",
+   "pill": "ui/chrome/desert/chr_desert_pill.svg",
+   "frame": "ui/chrome/desert/chr_desert_frame.svg",
+   "ribbon": "ui/chrome/desert/chr_desert_ribbon.svg",
+   "fill": "ui/chrome/desert/chr_desert_fill.svg"
+  },
+  "steampunk": {
+   "close": "ui/chrome/steampunk/chr_steampunk_close.svg",
+   "pill": "ui/chrome/steampunk/chr_steampunk_pill.svg",
+   "frame": "ui/chrome/steampunk/chr_steampunk_frame.svg",
+   "ribbon": "ui/chrome/steampunk/chr_steampunk_ribbon.svg",
+   "fill": "ui/chrome/steampunk/chr_steampunk_fill.svg"
+  },
+  "nebula": {
+   "close": "ui/chrome/nebula/chr_nebula_close.svg",
+   "pill": "ui/chrome/nebula/chr_nebula_pill.svg",
+   "frame": "ui/chrome/nebula/chr_nebula_frame.svg",
+   "ribbon": "ui/chrome/nebula/chr_nebula_ribbon.svg",
+   "fill": "ui/chrome/nebula/chr_nebula_fill.svg"
+  }
+ },
+ "shared": {
+  "plate-cream": "ui/chrome/shared/chr_shared_plate-cream.svg",
+  "plate-dark": "ui/chrome/shared/chr_shared_plate-dark.svg",
+  "track": "ui/chrome/shared/chr_shared_track.svg",
+  "fill-orange": "ui/chrome/shared/chr_shared_fill-orange.svg",
+  "crown": "ui/chrome/shared/chr_shared_crown.svg",
+  "sparkle": "ui/chrome/shared/chr_shared_sparkle.svg",
+  "arrow": "ui/chrome/shared/chr_shared_arrow.svg",
+  "chest": "ui/chrome/shared/chr_shared_chest.svg",
+  "reward-coin": "ui/chrome/shared/chr_shared_reward-coin.svg",
+  "reward-orb": "ui/chrome/shared/chr_shared_reward-orb.svg",
+  "reward-ticket": "ui/chrome/shared/chr_shared_reward-ticket.svg"
+ }
+}

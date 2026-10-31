@@ -1,0 +1,66 @@
+<!doctype html><html data-theme="graphite"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Edge Pulse – Worlds</title>
+<link rel="stylesheet" href="../motion/themes.css">
+<link rel="stylesheet" href="../motion/anim.css">
+<link rel="stylesheet" href="../motion/chrome.css">
+<style>
+:root{--brand-font:"Lilita One",Impact,sans-serif}
+body{margin:0;min-height:100vh;background:radial-gradient(120% 70% at 50% 0,#4a3aa8,#1a1250 60%,#0e0a30);color:#fff;font:600 14px/1.45 Poppins,sans-serif}
+header{display:grid;place-items:center;padding:26px 0 6px}
+.logo{font:400 64px/1 var(--brand-font);letter-spacing:.01em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:22px;padding:18px 28px 40px;max-width:1320px;margin:0 auto}
+.card{position:relative;aspect-ratio:3/4.5;cursor:pointer;transition:transform calc(180ms*var(--dur,1)) cubic-bezier(.33,1,.68,1)}
+.card:hover{transform:translateY(-6px) scale(1.015)}.card:active{transform:translateY(2px) scale(.98)}
+.card.frame{border-width:22px;border-image-width:22px;padding:0}
+.scene{position:absolute;inset:-6px;border-radius:14px;background-size:cover;background-position:center;overflow:hidden}
+.scene::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%,rgba(0,0,0,.45))}
+.ttl{position:absolute;left:50%;top:-34px;translate:-50% 0;width:108%;z-index:3}
+.ttl .ribbon{height:76px;border-width:0 48px;border-image-width:0 48px;padding-bottom:10px}
+.ttl .label-3d{font:400 clamp(14px,1.45vw,19px)/1.05 var(--brand-font);text-align:center;white-space:normal;max-width:9.5em}
+.board{position:absolute;left:13%;right:13%;top:30%;aspect-ratio:1;z-index:2}
+.ring{position:absolute;inset:0;border-radius:22px;background:rgba(10,6,30,.55);box-shadow:inset 0 0 0 3px rgba(255,255,255,.18),0 10px 24px rgba(0,0,0,.45)}
+.bead{position:absolute;width:12.5%;translate:-50% -50%}
+.cells{position:absolute;inset:16%;display:grid;grid-template:repeat(5,1fr)/repeat(5,1fr);gap:4%}
+.cells div{border-radius:18%;background:rgba(0,0,0,.32);box-shadow:inset 0 2px 0 rgba(0,0,0,.35);position:relative}
+.cells img{position:absolute;inset:2%;width:96%}
+.launcher{position:absolute;left:50%;bottom:-11%;width:20%;translate:-50% 0}
+.plate{position:absolute;left:12%;right:12%;bottom:-24px;z-index:3}
+.plate .plate-cream{flex-direction:column;gap:0;min-height:76px;padding:4px 0 10px}
+.plate small{font:800 13px Poppins;color:#5a3410;line-height:1}
+.plate b{display:flex;align-items:center;gap:6px;font:400 28px/1 var(--brand-font);color:#3a1a00}.plate b img{width:34px}
+#fx{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9}
+</style></head><body>
+<header><span class="title-3d gold-3d logo" data-text="Edge Pulse">Edge Pulse</span></header>
+<div class="grid" id="grid"></div><canvas id="fx"></canvas>
+<script type="module">
+import * as A from '../motion/anim.js';
+const $ = s => document.querySelector(s), fx = A.particles($('#fx'));
+const L = await (await fetch('../data/levels.json')).json(), C = await (await fetch('../data/chrome.json')).json();
+const WORLDS = Object.keys(L).filter(t => L[t].scene);  // the 10 level worlds (graphite has no world card)
+// 24 edge positions (spec: launcher circles the board) — beads sit on that ring; cell layout uses obstacles + pieces
+const ring = Array.from({ length: 20 }, (_, i) => { const s = Math.floor(i / 5), f = (i % 5) / 5;
+  return [[f, 0], [1, f], [1 - f, 1], [0, 1 - f]][s].map(v => 6 + v * 88); });
+const LAYOUT = 'p0o1p o2p3p p1p0o p3o2p 1p0p3'.replace(/ /g, '');
+
+$('#grid').innerHTML = WORLDS.map((t, n) => {
+  const lv = L[t], g = lv.goal, item = lv.collectibles.find(c => c.id === g.item), tone = C.tones[t];
+  let pi = 0, oi = 0;
+  const cells = [...LAYOUT].map(ch => {
+    if (ch === 'o') { const o = lv.obstacles[oi++ % lv.obstacles.length]; return `<div><img src="../${o.states[0]}" alt=""></div>`; }
+    if (ch === 'p') return '<div></div>';
+    return `<div><img src="../${lv.pieces[+ch]}" alt=""></div>`;
+  }).join('');
+  const beads = ring.map(([x, y], i) => `<img class="bead" src="../${lv.pieces[(i * 7 + n) % 4]}" style="left:${x}%;top:${y}%" alt="">`).join('');
+  return `<div class="card frame" data-t="${t}" data-theme="${t}" style="--frame-src:url(../${tone.frame})">
+    <div class="scene" style="background-image:url(../${lv.scene})"></div>
+    <div class="ttl"><div class="ribbon" style="--ribbon-src:url(../${tone.ribbon})"><span class="label-3d" data-text="${n + 1}. ${lv.name}">${n + 1}.&nbsp;${lv.name}</span></div></div>
+    <div class="board"><div class="ring"></div>${beads}<div class="cells">${cells}</div><img class="launcher" src="../board/launcher.svg" alt=""></div>
+    <div class="plate"><div class="plate-cream"><small>Collect:</small><b><img src="../${item.file}" alt="">${g.count}</b></div></div></div>`;
+}).join('');
+if (!location.search.includes('static')) A.stagger(document.querySelectorAll('.card'), 60);  // ?static = no entrance (screenshots)
+document.addEventListener('click', e => {
+  const c = e.target.closest('.card'); if (!c) return;
+  A.play(c, 'jelly'); fx.burst(c.querySelector('.plate'), 18, ['#ffd65a', '#fff', '#ff9a1a']);
+  parent.postMessage({ type: 'world', theme: c.dataset.t }, '*');   // index.html can switch theme to the tapped world
+});
+</script></body></html>

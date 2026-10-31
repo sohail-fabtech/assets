@@ -15,7 +15,7 @@ OUT = os.path.join(os.path.dirname(__file__), "..", "assets")
 _id = itertools.count()
 BOX = "M64 8 C110 8 120 18 120 64 C120 110 110 120 64 120 C18 120 8 110 8 64 C8 18 18 8 64 8 Z"
 HEX = rounded_poly([(64 + 58 * math.cos(a), 64 + 58 * math.sin(a)) for a in (i * math.pi / 3 + math.pi / 6 for i in range(6))])
-STAR = polar(lambda t: 40 + 18 * ((math.cos(5 * t) + 1) / 2) ** 1.5)
+STAR = polar(lambda t: 26 + 32 * ((math.cos(5 * t) + 1) / 2) ** 2.6, 240)  # crisp rounded 5-point star
 FX = ('<filter id="soft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>'
       '<filter id="glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="3"/></filter>'
       '<filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2"/>'
@@ -256,6 +256,40 @@ def collectible(tid, cid):
     raise ValueError(f"no collectible drawer for {cid}")
 
 
+GROUND = {  # theme-specific base the hero item sits on (rgb glow colour, base art)
+    "volcano": ("#ff6a1a", '<path d="M30 220 L60 180 L100 196 L128 170 L160 192 L200 178 L228 220 Z" fill="#2a0e08"/><path d="M60 214 L96 200 L128 210 L170 198 L204 214" stroke="#ff8a1a" stroke-width="4" fill="none" filter="url(#glow)"/>'),
+    "sky": ("#bfe4ff", '<g fill="#fff"><circle cx="70" cy="206" r="30"/><circle cx="110" cy="194" r="38"/><circle cx="156" cy="200" r="34"/><circle cx="192" cy="210" r="24"/><rect x="60" y="206" width="140" height="26" rx="13"/></g>'),
+    "forest": ("#7fffb0", '<ellipse cx="128" cy="214" rx="96" ry="22" fill="#1f6a2a"/><ellipse cx="128" cy="208" rx="86" ry="14" fill="#3aa84a"/><path d="M60 206 l4 -14 l4 14 M180 206 l4 -12 l4 12 M100 210 l3 -10 l3 10" stroke="#7fe08a" stroke-width="3"/>'),
+    "tundra": ("#bfeeff", '<ellipse cx="128" cy="214" rx="100" ry="24" fill="#a8d0f0"/><ellipse cx="128" cy="206" rx="90" ry="16" fill="#f4fbff"/>'),
+    "reef": ("#a8fff4", '<path d="M40 214 Q128 120 216 214 Z" fill="#ffd8c8" stroke="#c87a5a" stroke-width="3"/><path d="M128 214 L80 150 M128 214 L104 136 M128 214 L152 136 M128 214 L176 150" stroke="#e8a890" stroke-width="3"/><ellipse cx="128" cy="218" rx="100" ry="14" fill="#e8c890"/>'),
+    "carnival": ("#b04aff", '<ellipse cx="128" cy="214" rx="104" ry="22" fill="#c8b0ff" opacity=".35" filter="url(#soft)"/>'),
+    "crystal": ("#c06aff", '<path d="M40 222 L70 196 L110 206 L150 190 L200 204 L220 222 Z" fill="#2a1450"/><path d="M70 196 L84 168 L98 202 Z M180 200 L190 176 L202 204 Z" fill="#7a4aff"/>'),
+    "desert": ("#ffd27a", '<path d="M20 222 Q90 180 150 200 T236 222 Z" fill="#f0b860"/><path d="M40 216 Q100 196 150 206" stroke="#fff4d0" stroke-width="3" fill="none" opacity=".7"/>'),
+    "steampunk": ("#ffc86a", '<rect x="44" y="196" width="168" height="26" rx="8" fill="url(#gold)" stroke="#3a2008" stroke-width="3"/>' + "".join(f'<circle cx="{x}" cy="209" r="4" fill="#3a2008"/>' for x in (60, 196))),
+    "nebula": ("#ff4ab8", '<ellipse cx="128" cy="210" rx="104" ry="20" fill="none" stroke="#ffb0f0" stroke-width="5" opacity=".7" filter="url(#glow)"/><ellipse cx="128" cy="210" rx="104" ry="20" fill="none" stroke="#fff" stroke-width="1.5"/>'),
+    "graphite": ("#7ff3ff", '<ellipse cx="128" cy="214" rx="90" ry="18" fill="#2a2f3a"/><ellipse cx="128" cy="208" rx="80" ry="12" fill="#5b616e"/>'),
+}
+
+
+def hero(tid, cid):
+    """Showcase render (256²) for collection tiles: glow halo + rays + themed base + the item, large + sparkles."""
+    col, base = GROUND[tid]
+    inner = collectible(tid, cid)
+    rays = "".join(f'<path d="M128 110 L{128 + 140 * math.cos(a / 8 * 6.283):.0f} {110 + 140 * math.sin(a / 8 * 6.283):.0f} L{128 + 140 * math.cos((a + .35) / 8 * 6.283):.0f} {110 + 140 * math.sin((a + .35) / 8 * 6.283):.0f} Z" fill="{col}" opacity=".14"/>' for a in range(8))
+    sparks = "".join(f'<path d="M{x} {y - r} C{x + r * .15} {y - r * .15} {x + r * .15} {y - r * .15} {x + r} {y} C{x + r * .15} {y + r * .15} {x + r * .15} {y + r * .15} {x} {y + r} C{x - r * .15} {y + r * .15} {x - r * .15} {y + r * .15} {x - r} {y} C{x - r * .15} {y - r * .15} {x - r * .15} {y - r * .15} {x} {y - r} Z" fill="#fff"/>'
+                     for x, y, r in ((44, 60, 10), (214, 84, 8), (196, 36, 6), (60, 150, 6)))
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256"><defs>{FX}{STEEL_GOLD}</defs>'
+            f'{rays}<circle cx="128" cy="110" r="96" fill="{col}" opacity=".35" filter="url(#soft)"/>{base}'
+            f'<svg x="38" y="18" width="180" height="180" viewBox="-8 -8 144 144">{inner[inner.index(">") + 1:inner.rindex("</svg>")]}</svg>{sparks}</svg>')
+
+
+# world collection goal: (collectible id, how many, tile title) — drives the world cards + Collection screen
+GOALS = {"graphite": ("shard", 20, "Pulse Shards"), "volcano": ("firecrystal", 20, "Volcano Gems"), "sky": ("feather", 20, "Sky Feathers"),
+         "forest": ("glowshroom", 18, "Fairy Mushrooms"), "tundra": ("snowflake", 20, "Ice Flakes"), "reef": ("pearl", 18, "Pearls"),
+         "carnival": ("ticket", 18, "Ghost Tickets"), "crystal": ("rarecrystal", 20, "Crystals"), "desert": ("waterdrop", 20, "Oasis Drops"),
+         "steampunk": ("cog", 18, "Gears"), "nebula": ("starfrag", 20, "Star Fragments")}
+
+
 def board(t):
     p = t["palette"]
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024"><defs>'
@@ -287,11 +321,13 @@ if __name__ == "__main__":
         obstacles = [{"id": oid, "name": name, "hits": hits,
                       "states": [write(f"lv_{tid}_obstacles_{oid}_{hp}.svg", obstacle(tid, oid, hp, hits)) for hp in range(hits, 0, -1)]}
                      for oid, name, hits in t["obstacles"]]
-        collectibles = [{"id": cid, "name": name, "file": write(f"lv_{tid}_collectibles_{cid}_0.svg", collectible(tid, cid))} for cid, name in t["collectibles"]]
-        n += 4 + sum(len(o["states"]) for o in obstacles) + len(collectibles) + 2
+        collectibles = [{"id": cid, "name": name, "file": write(f"lv_{tid}_collectibles_{cid}_0.svg", collectible(tid, cid)),
+                         "hero": write(f"lv_{tid}_hero_{cid}_0.svg", hero(tid, cid))} for cid, name in t["collectibles"]]
+        n += 4 + sum(len(o["states"]) for o in obstacles) + 2 * len(collectibles) + 2
         levels[tid] = {"name": t["name"], "mood": t["mood"], "material": t["material"], "pieces": pieces, "obstacles": obstacles,
                        "collectibles": collectibles, "mechanics": t["mechanics"],
-                       "board": write(f"lvb_{tid}_board.svg", board(t)), "cell": write(f"lvb_{tid}_cell.svg", cell(t))}
+                       "board": write(f"lvb_{tid}_board.svg", board(t)), "cell": write(f"lvb_{tid}_cell.svg", cell(t)),
+                       "goal": dict(zip(("item", "count", "title"), GOALS[tid]))}
     os.makedirs(os.path.join(OUT, "data"), exist_ok=True)
     json.dump(levels, open(os.path.join(OUT, "data", "levels.json"), "w"), indent=1)
     print(f"wrote {n} level assets for {len(levels)} themes + data/levels.json")

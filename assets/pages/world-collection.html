@@ -1,0 +1,115 @@
+<!doctype html><html data-theme="graphite"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Edge Pulse – Collection</title>
+<link rel="stylesheet" href="../motion/themes.css">
+<link rel="stylesheet" href="../motion/anim.css">
+<link rel="stylesheet" href="../motion/chrome.css">
+<style>
+:root{--brand-font:"Lilita One",Impact,sans-serif}
+body{margin:0;min-height:100vh;color:#fff;font:600 14px/1.45 Poppins,sans-serif;
+  background:radial-gradient(90% 60% at 50% 0,#5a46c0,transparent 70%),radial-gradient(120% 80% at 50% 100%,#2a1470,#120a36)}
+.wrap{max-width:1240px;margin:0 auto;padding:18px 28px 40px}
+.top{display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
+.logo{font:400 46px/1 var(--brand-font)}
+.head{position:relative;padding-top:30px}.head .crown{position:absolute;left:50%;top:-4px;width:54px;translate:-50% 0;z-index:2}
+.head .ribbon{width:min(470px,60vw)}.head .sub{display:block;font:700 13px Poppins;margin-top:2px}
+.head .sp{position:absolute;width:22px}.close{justify-self:end;width:62px;cursor:pointer}
+.tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;margin-top:26px}
+.tile{position:relative;aspect-ratio:1/1.02;cursor:pointer;transition:transform calc(160ms*var(--dur,1)) cubic-bezier(.33,1,.68,1)}
+.tile.frame{border-width:16px;border-image-width:16px}
+.tile:hover{transform:translateY(-4px)}.tile.sel{transform:translateY(-6px) scale(1.04)}
+.tile.sel::after{content:"";position:absolute;inset:-22px;border-radius:30px;box-shadow:0 0 0 4px #fff8;pointer-events:none}
+.tile .scene{position:absolute;inset:-4px;border-radius:12px;background-size:cover;background-position:center 40%;filter:saturate(1.1)}
+.tile .hero{position:absolute;left:12%;right:12%;top:12%;width:76%}
+.tile .name{position:absolute;left:50%;top:-30px;translate:-50% 0;width:86%;z-index:2}
+.tile .name .pill{min-height:46px;border-width:0 24px;border-image-width:0 24px}
+.tile .name .label-3d{font:400 clamp(13px,1.3vw,18px)/1 var(--brand-font)}
+.tile .cnt{position:absolute;left:14%;right:14%;bottom:-6px}
+.tile .cnt .plate-dark b{font:800 17px Poppins;font-variant-numeric:tabular-nums}.tile .cnt img{width:22px}
+.bottom{display:grid;grid-template-columns:1.55fr auto 1fr;gap:18px;align-items:center;margin-top:34px}
+.feat{position:relative;display:grid;grid-template-columns:170px 1fr auto;gap:16px;align-items:center;min-height:170px}
+.feat.frame{border-width:20px;border-image-width:20px}
+.feat .thumb{align-self:stretch;border-radius:14px;background-size:cover;background-position:center}
+.feat .pill{position:absolute;top:-34px;left:150px;min-width:260px}.feat .pill .label-3d{font:400 22px var(--brand-font)}
+.feat p{margin:18px 0 0;font:700 14px Poppins;opacity:.92;max-width:230px}
+.feat .count{display:grid;gap:8px;justify-items:start;padding-right:8px}
+.feat .count .row{display:flex;align-items:center;gap:10px}.feat .count img{width:64px}
+.feat .count .title-3d{font:400 44px var(--brand-font);font-variant-numeric:tabular-nums}
+.feat .track{width:230px}
+.chestbox{display:grid;place-items:center;position:relative}.chestbox .arrow{position:absolute;left:-44px;width:34px;animation:nudge 1.2s ease-in-out infinite}
+@keyframes nudge{50%{translate:6px 0}}
+.chest{width:220px;cursor:pointer;animation:breathe 2s ease-in-out infinite}.chest.ready{animation:ready .9s ease-in-out infinite}
+@keyframes ready{50%{transform:scale(1.06) rotate(-2deg);filter:drop-shadow(0 0 24px #ffd65a)}}
+.bubble{position:relative;padding:4px 6px}.bubble.frame{border-width:18px;border-image-width:18px}
+.bubble b{display:block;font:400 19px/1.2 var(--brand-font);text-align:center}.bubble b span{color:#ffd65a}
+.bubble .rw{display:flex;justify-content:center;gap:12px;margin-top:8px}.bubble .rw img{width:46px}
+.demo{margin-top:18px;font:800 13px Poppins;color:#fff;background:#ffffff1a;border:1px solid #ffffff33;border-radius:99px;padding:8px 16px;cursor:pointer}
+#fx{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9}
+@media (max-width:900px){.tiles{grid-template-columns:repeat(2,1fr)}.bottom{grid-template-columns:1fr}}
+</style></head><body><div class="wrap" data-tone="brand">
+ <div class="top"><span class="title-3d gold-3d logo" data-text="Edge Pulse">Edge Pulse</span>
+  <div class="head"><img class="crown" src="../ui/chrome/shared/chr_shared_crown.svg" alt="">
+   <img class="sp" src="../ui/chrome/shared/chr_shared_sparkle.svg" style="left:-18px;top:44px" alt=""><img class="sp" src="../ui/chrome/shared/chr_shared_sparkle.svg" style="right:-14px;top:36px;width:16px" alt="">
+   <div class="ribbon" style="--ribbon-src:url(../ui/chrome/brand/chr_brand_ribbon.svg)"><div style="text-align:center">
+    <span class="title-3d" data-text="Collection" style="font:400 42px var(--brand-font)">Collection</span>
+    <span class="label-3d sub" data-text="Collect all items across different worlds!">Collect all items across different worlds!</span></div></div></div>
+  <img class="close" src="../ui/chrome/brand/chr_brand_close.svg" alt="Close"></div>
+ <div class="tiles" id="tiles"></div>
+ <div class="bottom">
+  <div class="feat frame" id="feat" style="--frame-src:url(../ui/chrome/brand/chr_brand_frame.svg)"></div>
+  <div class="chestbox"><img class="arrow" src="../ui/chrome/shared/chr_shared_arrow.svg" alt=""><img class="chest" id="chest" src="../ui/chrome/shared/chr_shared_chest.svg" alt="Reward chest"></div>
+  <div class="bubble frame" style="--frame-src:url(../ui/chrome/brand/chr_brand_frame.svg)"><b>Complete the collection<br><span>and get amazing rewards!</span></b>
+   <div class="rw"><img src="../ui/chrome/shared/chr_shared_reward-orb.svg" alt=""><img src="../ui/chrome/shared/chr_shared_reward-coin.svg" alt=""><img src="../ui/chrome/shared/chr_shared_reward-ticket.svg" alt=""></div></div>
+ </div>
+ <button class="demo" id="demo">+1 item (demo)</button> <button class="demo" id="reset">Reset</button>
+</div><canvas id="fx"></canvas>
+<script type="module">
+import * as A from '../motion/anim.js';
+const $ = s => document.querySelector(s), fx = A.particles($('#fx'));
+const L = await (await fetch('../data/levels.json')).json(), C = await (await fetch('../data/chrome.json')).json();
+const WORLDS = Object.keys(L).filter(t => L[t].scene);
+const KEY = 'edgepulse.worldcollection';
+const seed = { volcano: 12, sky: 8, forest: 10, tundra: 14, reef: 7, carnival: 9, crystal: 11, desert: 13, steampunk: 10, nebula: 12 };  // demo starting progress
+let got = JSON.parse(localStorage.getItem(KEY) || 'null') || seed;
+let sel = new URLSearchParams(location.search).get('theme');
+if (!WORLDS.includes(sel)) sel = 'volcano';
+const item = t => L[t].collectibles.find(c => c.id === L[t].goal.item);
+const save = () => localStorage.setItem(KEY, JSON.stringify(got));
+
+function tiles() {
+  $('#tiles').innerHTML = WORLDS.map(t => { const g = L[t].goal, it = item(t);
+    return `<div class="tile frame ${t === sel ? 'sel' : ''}" data-t="${t}" data-theme="${t}" style="--frame-src:url(../${C.tones[t].frame})">
+      <div class="scene" style="background-image:url(../${L[t].scene})"></div><img class="hero" src="../${it.hero}" alt="${it.name}">
+      <div class="name"><div class="pill" style="--pill-src:url(../${C.tones[t].pill})"><span class="label-3d" data-text="${g.title}">${g.title}</span></div></div>
+      <div class="cnt"><div class="plate-dark"><img src="../${it.file}" alt=""><b>${Math.min(got[t] || 0, g.count)} / ${g.count}</b></div></div></div>`; }).join('');
+}
+function feat() {
+  const t = sel, g = L[t].goal, it = item(t), n = Math.min(got[t] || 0, g.count);
+  $('#feat').innerHTML = `<div class="thumb" style="background-image:url(../${L[t].scene})"></div>
+    <div class="pill" style="--pill-src:url(../${C.tones[t].pill})"><span class="label-3d" data-text="${L[t].name}">${L[t].name}</span></div>
+    <p>Collect ${g.count} ${g.title} to unlock the next reward!</p>
+    <div class="count"><div class="row"><img src="../${it.hero}" alt=""><span class="title-3d gold-3d" id="big" data-text="${n} / ${g.count}">${n} / ${g.count}</span></div>
+      <div class="track"><div class="fill" id="fill" style="width:${Math.max(12, n / g.count * 100)}%"></div></div></div>`;
+  $('#chest').classList.toggle('ready', n >= g.count);
+}
+function render() { tiles(); feat(); }
+
+document.addEventListener('click', e => {
+  const tl = e.target.closest('.tile');
+  if (tl) { sel = tl.dataset.t; render(); A.play(document.querySelector(`.tile[data-t="${sel}"]`), 'jelly'); parent.postMessage({ type: 'world', theme: sel }, '*'); }
+  if (e.target.closest('.close')) A.play(e.target.closest('.close'), 'jelly');
+});
+$('#demo').onclick = () => {
+  const g = L[sel].goal; if ((got[sel] || 0) >= g.count) return;
+  got[sel] = (got[sel] || 0) + 1; save();
+  const n = got[sel], big = $('#big'); big.textContent = `${n} / ${g.count}`; big.dataset.text = big.textContent; A.play(big, 'pop');
+  $('#fill').style.width = Math.max(12, n / g.count * 100) + '%';
+  const tile = document.querySelector(`.tile[data-t="${sel}"] .plate-dark b`); tile.textContent = `${n} / ${g.count}`;
+  fx.burst(document.querySelector(`.tile[data-t="${sel}"] .hero`), 14, ['#ffd65a', '#fff', '#ff9a1a']);
+  if (n >= g.count) { $('#chest').classList.add('ready'); fx.burst($('#chest'), 40, ['#ffd65a', '#fff6c0', '#b07aff', '#fff']); }
+};
+$('#reset').onclick = () => { got = { ...seed }; save(); render(); };
+$('#chest').onclick = () => { if ($('#chest').classList.contains('ready')) { fx.burst($('#chest'), 50, ['#ffd65a', '#fff', '#7ff3ff', '#ff9ee8']); A.play($('#chest'), 'jelly'); } else A.play($('#chest'), 'deny'); };
+addEventListener('message', e => { if (e.data?.type === 'theme' && WORLDS.includes(e.data.theme)) { sel = e.data.theme; render(); } });
+render();
+if (!location.search.includes('static')) A.stagger(document.querySelectorAll('.tile'), 50);  // ?static = no entrance (screenshots)
+</script></body></html>

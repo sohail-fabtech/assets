@@ -1,0 +1,40 @@
+/* Edge Pulse chrome: 9-slice / 3-slice frames from ui/chrome/<tone>/ + 3D lettering.
+   Set a tone with data-tone="brand|volcano|…" on any ancestor (defaults to brand).                      */
+:root, [data-tone="brand"] { --tone: brand }
+
+/* ---- stretchable parts (border-image: corners/tails never distort) ---- */
+.frame   { border: 30px solid transparent; border-image: var(--frame-src) 44 fill / 30px stretch; border-radius: 24px }
+.ribbon  { border-style: solid; border-color: transparent; border-width: 0 64px; border-image: var(--ribbon-src) 0 92 fill / 0 64px stretch;
+           height: 98px; display: grid; place-items: center; padding-bottom: 14px; box-sizing: border-box }
+.pill    { border-style: solid; border-color: transparent; border-width: 0 34px; border-image: var(--pill-src) 0 48 fill / 0 34px stretch;
+           min-height: 62px; display: grid; place-items: center; padding: 0 0 6px; box-sizing: border-box }
+.plate-cream { border-style: solid; border-color: transparent; border-width: 0 28px; border-image: url(../ui/chrome/shared/chr_shared_plate-cream.svg) 0 40 fill / 0 28px stretch;
+           min-height: 66px; display: flex; align-items: center; justify-content: center; gap: 8px; padding-bottom: 6px; box-sizing: border-box }
+.plate-dark  { border-style: solid; border-color: transparent; border-width: 0 22px; border-image: url(../ui/chrome/shared/chr_shared_plate-dark.svg) 0 34 fill / 0 22px stretch;
+           min-height: 44px; display: flex; align-items: center; justify-content: center; gap: 8px; box-sizing: border-box }
+.track   { position: relative; height: 34px; border-style: solid; border-color: transparent; border-width: 0 16px;
+           border-image: url(../ui/chrome/shared/chr_shared_track.svg) 0 18 fill / 0 16px stretch; box-sizing: border-box }
+.track > .fill { position: absolute; left: -16px; top: 0; bottom: 0; min-width: 34px; border-style: solid; border-color: transparent; border-width: 0 16px;
+           border-image: var(--fill-src, url(../ui/chrome/shared/chr_shared_fill-orange.svg)) 0 18 fill / 0 16px stretch; box-sizing: border-box;
+           transition: width calc(600ms * var(--dur, 1)) cubic-bezier(.33, 1, .68, 1) }
+.track > .fill::after { content: ""; position: absolute; right: -10px; top: 50%; width: 22px; height: 22px; translate: 0 -50%; border-radius: 50%;
+           background: radial-gradient(#fff 0 25%, #ffd27a 45%, transparent 70%); filter: blur(1px) }   /* glowing leading edge */
+
+/* tone sources (generated tone folders) */
+[data-tone], :root { --frame-src: url(../ui/chrome/brand/chr_brand_frame.svg); --ribbon-src: url(../ui/chrome/brand/chr_brand_ribbon.svg);
+           --pill-src: url(../ui/chrome/brand/chr_brand_pill.svg) }
+
+/* ---- 3D lettering: dark outline + colour outline + gradient fill + drop shadow (live text, any font) ----
+   usage: <span class="title-3d" data-text="Collection">Collection</span>                                    */
+/* layers: ::before = thick dark outline + drop shadow (behind) · text = colour rim · ::after = gradient fill (on top) */
+.title-3d, .label-3d { position: relative; display: inline-block; isolation: isolate; white-space: nowrap; font-family: var(--font-display, Poppins); line-height: 1.05;
+           color: var(--t-rim, #8a4aff); -webkit-text-stroke: .1em var(--t-rim, #8a4aff) }
+.title-3d::before, .title-3d::after, .label-3d::before, .label-3d::after { content: attr(data-text); position: absolute; inset: 0; pointer-events: none }
+.title-3d::before, .label-3d::before { z-index: -1; color: var(--t-ink, #1e0a4a); -webkit-text-stroke: .22em var(--t-ink, #1e0a4a);
+           text-shadow: 0 .1em 0 var(--t-ink, #1e0a4a), 0 .18em .16em rgba(0,0,0,.45) }
+.title-3d::after, .label-3d::after { z-index: 1; -webkit-text-stroke: 0; color: transparent;
+           background: linear-gradient(#fff 0 46%, var(--t-fill2, #ece2ff) 56%, var(--t-fill3, #fff6e0)); -webkit-background-clip: text; background-clip: text }
+.label-3d { --t-rim: var(--t-ink, #1e0a4a); -webkit-text-stroke: .05em var(--t-ink, #1e0a4a) }
+.label-3d::before { -webkit-text-stroke: .14em var(--t-ink, #1e0a4a); text-shadow: 0 .07em 0 var(--t-ink, #1e0a4a) }
+.label-3d::after { background: linear-gradient(#fff 0 55%, #f2eaff) ; -webkit-background-clip: text; background-clip: text }
+.gold-3d { --t-fill2: #ffd65a; --t-fill3: #ff9a1a; --t-rim: #c06a00; --t-ink: #3a1400 }

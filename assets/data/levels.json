@@ -44,17 +44,24 @@
    {
     "id": "shard",
     "name": "Pulse Shard",
-    "file": "pieces/levels/graphite/collectibles/lv_graphite_collectibles_shard_0.svg"
+    "file": "pieces/levels/graphite/collectibles/lv_graphite_collectibles_shard_0.svg",
+    "hero": "pieces/levels/graphite/hero/lv_graphite_hero_shard_0.svg"
    },
    {
     "id": "star",
     "name": "Gold Star",
-    "file": "pieces/levels/graphite/collectibles/lv_graphite_collectibles_star_0.svg"
+    "file": "pieces/levels/graphite/collectibles/lv_graphite_collectibles_star_0.svg",
+    "hero": "pieces/levels/graphite/hero/lv_graphite_hero_star_0.svg"
    }
   ],
   "mechanics": [],
   "board": "board/levels/graphite/lvb_graphite_board.svg",
-  "cell": "board/levels/graphite/lvb_graphite_cell.svg"
+  "cell": "board/levels/graphite/lvb_graphite_cell.svg",
+  "goal": {
+   "item": "shard",
+   "count": 20,
+   "title": "Pulse Shards"
+  }
  },
  "volcano": {
   "name": "Dangerous Volcano",
@@ -100,12 +107,14 @@
    {
     "id": "firecrystal",
     "name": "Fire Crystal",
-    "file": "pieces/levels/volcano/collectibles/lv_volcano_collectibles_firecrystal_0.svg"
+    "file": "pieces/levels/volcano/collectibles/lv_volcano_collectibles_firecrystal_0.svg",
+    "hero": "pieces/levels/volcano/hero/lv_volcano_hero_firecrystal_0.svg"
    },
    {
     "id": "magmagem",
     "name": "Volcanic Gem",
-    "file": "pieces/levels/volcano/collectibles/lv_volcano_collectibles_magmagem_0.svg"
+    "file": "pieces/levels/volcano/collectibles/lv_volcano_collectibles_magmagem_0.svg",
+    "hero": "pieces/levels/volcano/hero/lv_volcano_hero_magmagem_0.svg"
    }
   ],
   "mechanics": [
@@ -113,7 +122,13 @@
    "rocks fall each 5 moves"
   ],
   "board": "board/levels/volcano/lvb_volcano_board.svg",
-  "cell": "board/levels/volcano/lvb_volcano_cell.svg"
+  "cell": "board/levels/volcano/lvb_volcano_cell.svg",
+  "goal": {
+   "item": "firecrystal",
+   "count": 20,
+   "title": "Volcano Gems"
+  },
+  "scene": "scenes/volcano/scn_volcano_card.svg"
  },
  "sky": {
   "name": "Sky Islands",
@@ -158,12 +173,14 @@
    {
     "id": "feather",
     "name": "Cloud Feather",
-    "file": "pieces/levels/sky/collectibles/lv_sky_collectibles_feather_0.svg"
+    "file": "pieces/levels/sky/collectibles/lv_sky_collectibles_feather_0.svg",
+    "hero": "pieces/levels/sky/hero/lv_sky_hero_feather_0.svg"
    },
    {
     "id": "skycrystal",
     "name": "Sky Crystal",
-    "file": "pieces/levels/sky/collectibles/lv_sky_collectibles_skycrystal_0.svg"
+    "file": "pieces/levels/sky/collectibles/lv_sky_collectibles_skycrystal_0.svg",
+    "hero": "pieces/levels/sky/hero/lv_sky_hero_skycrystal_0.svg"
    }
   ],
   "mechanics": [
@@ -171,7 +188,13 @@
    "platforms drift"
   ],
   "board": "board/levels/sky/lvb_sky_board.svg",
-  "cell": "board/levels/sky/lvb_sky_cell.svg"
+  "cell": "board/levels/sky/lvb_sky_cell.svg",
+  "goal": {
+   "item": "feather",
+   "count": 20,
+   "title": "Sky Feathers"
+  },
+  "scene": "scenes/sky/scn_sky_card.svg"
  },
  "forest": {
   "name": "Enchanted Forest",
@@ -217,19 +240,27 @@
    {
     "id": "glowshroom",
     "name": "Glowing Mushroom",
-    "file": "pieces/levels/forest/collectibles/lv_forest_collectibles_glowshroom_0.svg"
+    "file": "pieces/levels/forest/collectibles/lv_forest_collectibles_glowshroom_0.svg",
+    "hero": "pieces/levels/forest/hero/lv_forest_hero_glowshroom_0.svg"
    },
    {
     "id": "fairydust",
     "name": "Fairy Dust",
-    "file": "pieces/levels/forest/collectibles/lv_forest_collectibles_fairydust_0.svg"
+    "file": "pieces/levels/forest/collectibles/lv_forest_collectibles_fairydust_0.svg",
+    "hero": "pieces/levels/forest/hero/lv_forest_hero_fairydust_0.svg"
    }
   ],
   "mechanics": [
    "vines grow over a tile each turn"
   ],
   "board": "board/levels/forest/lvb_forest_board.svg",
-  "cell": "board/levels/forest/lvb_forest_cell.svg"
+  "cell": "board/levels/forest/lvb_forest_cell.svg",
+  "goal": {
+   "item": "glowshroom",
+   "count": 18,
+   "title": "Fairy Mushrooms"
+  },
+  "scene": "scenes/forest/scn_forest_card.svg"
  },
  "tundra": {
   "name": "Frozen Tundra",
@@ -274,19 +305,27 @@
    {
     "id": "icediamond",
     "name": "Ice Diamond",
-    "file": "pieces/levels/tundra/collectibles/lv_tundra_collectibles_icediamond_0.svg"
+    "file": "pieces/levels/tundra/collectibles/lv_tundra_collectibles_icediamond_0.svg",
+    "hero": "pieces/levels/tundra/hero/lv_tundra_hero_icediamond_0.svg"
    },
    {
     "id": "snowflake",
     "name": "Snowflake",
-    "file": "pieces/levels/tundra/collectibles/lv_tundra_collectibles_snowflake_0.svg"
+    "file": "pieces/levels/tundra/collectibles/lv_tundra_collectibles_snowflake_0.svg",
+    "hero": "pieces/levels/tundra/hero/lv_tundra_hero_snowflake_0.svg"
    }
   ],
   "mechanics": [
    "sliding ice moves pieces one tile"
   ],
   "board": "board/levels/tundra/lvb_tundra_board.svg",
-  "cell": "board/levels/tundra/lvb_tundra_cell.svg"
+  "cell": "board/levels/tundra/lvb_tundra_cell.svg",
+  "goal": {
+   "item": "snowflake",
+   "count": 20,
+   "title": "Ice Flakes"
+  },
+  "scene": "scenes/tundra/scn_tundra_card.svg"
  },
  "reef": {
   "name": "Coral Reef",
@@ -331,12 +370,14 @@
    {
     "id": "pearl",
     "name": "Pearl",
-    "file": "pieces/levels/reef/collectibles/lv_reef_collectibles_pearl_0.svg"
+    "file": "pieces/levels/reef/collectibles/lv_reef_collectibles_pearl_0.svg",
+    "hero": "pieces/levels/reef/hero/lv_reef_hero_pearl_0.svg"
    },
    {
     "id": "shell",
     "name": "Sea Shell",
-    "file": "pieces/levels/reef/collectibles/lv_reef_collectibles_shell_0.svg"
+    "file": "pieces/levels/reef/collectibles/lv_reef_collectibles_shell_0.svg",
+    "hero": "pieces/levels/reef/hero/lv_reef_hero_shell_0.svg"
    }
   ],
   "mechanics": [
@@ -344,7 +385,13 @@
    "bubbles float upward"
   ],
   "board": "board/levels/reef/lvb_reef_board.svg",
-  "cell": "board/levels/reef/lvb_reef_cell.svg"
+  "cell": "board/levels/reef/lvb_reef_cell.svg",
+  "goal": {
+   "item": "pearl",
+   "count": 18,
+   "title": "Pearls"
+  },
+  "scene": "scenes/reef/scn_reef_card.svg"
  },
  "carnival": {
   "name": "Haunted Carnival",
@@ -389,12 +436,14 @@
    {
     "id": "ticket",
     "name": "Ghost Ticket",
-    "file": "pieces/levels/carnival/collectibles/lv_carnival_collectibles_ticket_0.svg"
+    "file": "pieces/levels/carnival/collectibles/lv_carnival_collectibles_ticket_0.svg",
+    "hero": "pieces/levels/carnival/hero/lv_carnival_hero_ticket_0.svg"
    },
    {
     "id": "token",
     "name": "Haunted Token",
-    "file": "pieces/levels/carnival/collectibles/lv_carnival_collectibles_token_0.svg"
+    "file": "pieces/levels/carnival/collectibles/lv_carnival_collectibles_token_0.svg",
+    "hero": "pieces/levels/carnival/hero/lv_carnival_hero_token_0.svg"
    }
   ],
   "mechanics": [
@@ -402,7 +451,13 @@
    "broken lights hide tiles"
   ],
   "board": "board/levels/carnival/lvb_carnival_board.svg",
-  "cell": "board/levels/carnival/lvb_carnival_cell.svg"
+  "cell": "board/levels/carnival/lvb_carnival_cell.svg",
+  "goal": {
+   "item": "ticket",
+   "count": 18,
+   "title": "Ghost Tickets"
+  },
+  "scene": "scenes/carnival/scn_carnival_card.svg"
  },
  "crystal": {
   "name": "Crystal Caves",
@@ -448,19 +503,27 @@
    {
     "id": "rarecrystal",
     "name": "Rare Crystal",
-    "file": "pieces/levels/crystal/collectibles/lv_crystal_collectibles_rarecrystal_0.svg"
+    "file": "pieces/levels/crystal/collectibles/lv_crystal_collectibles_rarecrystal_0.svg",
+    "hero": "pieces/levels/crystal/hero/lv_crystal_hero_rarecrystal_0.svg"
    },
    {
     "id": "prism",
     "name": "Prism Shard",
-    "file": "pieces/levels/crystal/collectibles/lv_crystal_collectibles_prism_0.svg"
+    "file": "pieces/levels/crystal/collectibles/lv_crystal_collectibles_prism_0.svg",
+    "hero": "pieces/levels/crystal/hero/lv_crystal_hero_prism_0.svg"
    }
   ],
   "mechanics": [
    "barriers break only to special matches"
   ],
   "board": "board/levels/crystal/lvb_crystal_board.svg",
-  "cell": "board/levels/crystal/lvb_crystal_cell.svg"
+  "cell": "board/levels/crystal/lvb_crystal_cell.svg",
+  "goal": {
+   "item": "rarecrystal",
+   "count": 20,
+   "title": "Crystals"
+  },
+  "scene": "scenes/crystal/scn_crystal_card.svg"
  },
  "desert": {
   "name": "Desert Oasis",
@@ -505,12 +568,14 @@
    {
     "id": "jewel",
     "name": "Desert Jewel",
-    "file": "pieces/levels/desert/collectibles/lv_desert_collectibles_jewel_0.svg"
+    "file": "pieces/levels/desert/collectibles/lv_desert_collectibles_jewel_0.svg",
+    "hero": "pieces/levels/desert/hero/lv_desert_hero_jewel_0.svg"
    },
    {
     "id": "waterdrop",
     "name": "Oasis Drop",
-    "file": "pieces/levels/desert/collectibles/lv_desert_collectibles_waterdrop_0.svg"
+    "file": "pieces/levels/desert/collectibles/lv_desert_collectibles_waterdrop_0.svg",
+    "hero": "pieces/levels/desert/hero/lv_desert_hero_waterdrop_0.svg"
    }
   ],
   "mechanics": [
@@ -518,7 +583,13 @@
    "mirages fake a match"
   ],
   "board": "board/levels/desert/lvb_desert_board.svg",
-  "cell": "board/levels/desert/lvb_desert_cell.svg"
+  "cell": "board/levels/desert/lvb_desert_cell.svg",
+  "goal": {
+   "item": "waterdrop",
+   "count": 20,
+   "title": "Oasis Drops"
+  },
+  "scene": "scenes/desert/scn_desert_card.svg"
  },
  "steampunk": {
   "name": "Steampunk Factory",
@@ -563,19 +634,27 @@
    {
     "id": "cog",
     "name": "Brass Cog",
-    "file": "pieces/levels/steampunk/collectibles/lv_steampunk_collectibles_cog_0.svg"
+    "file": "pieces/levels/steampunk/collectibles/lv_steampunk_collectibles_cog_0.svg",
+    "hero": "pieces/levels/steampunk/hero/lv_steampunk_hero_cog_0.svg"
    },
    {
     "id": "steamcore",
     "name": "Steam Core",
-    "file": "pieces/levels/steampunk/collectibles/lv_steampunk_collectibles_steamcore_0.svg"
+    "file": "pieces/levels/steampunk/collectibles/lv_steampunk_collectibles_steamcore_0.svg",
+    "hero": "pieces/levels/steampunk/hero/lv_steampunk_hero_steamcore_0.svg"
    }
   ],
   "mechanics": [
    "gears rotate a row each turn"
   ],
   "board": "board/levels/steampunk/lvb_steampunk_board.svg",
-  "cell": "board/levels/steampunk/lvb_steampunk_cell.svg"
+  "cell": "board/levels/steampunk/lvb_steampunk_cell.svg",
+  "goal": {
+   "item": "cog",
+   "count": 18,
+   "title": "Gears"
+  },
+  "scene": "scenes/steampunk/scn_steampunk_card.svg"
  },
  "nebula": {
   "name": "Cosmic Nebula",
@@ -621,12 +700,14 @@
    {
     "id": "starfrag",
     "name": "Star Fragment",
-    "file": "pieces/levels/nebula/collectibles/lv_nebula_collectibles_starfrag_0.svg"
+    "file": "pieces/levels/nebula/collectibles/lv_nebula_collectibles_starfrag_0.svg",
+    "hero": "pieces/levels/nebula/hero/lv_nebula_hero_starfrag_0.svg"
    },
    {
     "id": "planetcore",
     "name": "Planet Core",
-    "file": "pieces/levels/nebula/collectibles/lv_nebula_collectibles_planetcore_0.svg"
+    "file": "pieces/levels/nebula/collectibles/lv_nebula_collectibles_planetcore_0.svg",
+    "hero": "pieces/levels/nebula/hero/lv_nebula_hero_planetcore_0.svg"
    }
   ],
   "mechanics": [
@@ -634,6 +715,12 @@
    "gravity flips each 10 moves"
   ],
   "board": "board/levels/nebula/lvb_nebula_board.svg",
-  "cell": "board/levels/nebula/lvb_nebula_cell.svg"
+  "cell": "board/levels/nebula/lvb_nebula_cell.svg",
+  "goal": {
+   "item": "starfrag",
+   "count": 20,
+   "title": "Star Fragments"
+  },
+  "scene": "scenes/nebula/scn_nebula_card.svg"
  }
 }

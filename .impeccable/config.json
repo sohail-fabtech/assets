@@ -1,0 +1,35 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "assets/motion/chrome.css"
+        ],
+        "createdAt": "2026-10-31T07:48:41.725Z",
+        "reason": "User's reference mockups (Edge Pulse logo, Collection ribbon, world titles) specify gradient 3D game lettering; scoped to the chrome lettering file"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "assets/pages/worlds.html"
+        ],
+        "createdAt": "2026-10-31T07:54:29.708Z",
+        "reason": "User's reference mockups specify the gradient 3D Edge Pulse logo and world titles"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "assets/pages/world-collection.html"
+        ],
+        "createdAt": "2026-10-31T07:56:19.913Z",
+        "reason": "User's Collection reference mockup specifies gradient 3D logo, ribbon title and gold counters"
+      }
+    ]
+  }
+}

@@ -37,7 +37,9 @@ for folder, title in CATEGORIES.items():
             nav.append(f'<a class="sub" href="#pieces-{sub}">{sub} <b>{n}</b></a>')
     sections.append(f'<section id="{folder}"><h2>{title} <span>{folder}/ · {count}</span></h2>{body}</section>')
 
-LIVE = [("ui-kit", "UI kit (live)", "pages/ui-kit.html", "Every themed control, live labels in the theme font, animations, typography", 1500),
+LIVE = [("worlds", "World select (live)", "pages/worlds.html", "10 world cards · scene, ribbon title, Edge Pulse board, collect goal", 1150),
+        ("world-collection", "World collection (live)", "pages/world-collection.html", "Collection screen · tap a world · +1 item fills the bar, chest unlocks at the goal", 900),
+        ("ui-kit", "UI kit (live)", "pages/ui-kit.html", "Every themed control, live labels in the theme font, animations, typography", 1500),
         ("levels-live", "Level themes (live)", "pages/levels.html", "10 level worlds · tap obstacles to break them", 900),
         ("bombs-live", "Bombs (live)", "pages/bombs.html", "Lit fuses with live sparks · tap a bomb to detonate · Blast all", 900),
         ("seasons-live", "Seasons", "pages/seasons.html", "Four seasons · current season is live · tap pieces", 1000),

@@ -29,7 +29,7 @@ for f in svgs:
 for tid, t in THEMES.items():
     p = t["palette"]
     for role, fg, bg in (("primary", p["onPrimary"], p["primary"]), ("secondary", p["onSecondary"], p["secondary"]), ("danger", p["onDanger"], p["danger"])):
-        r = contrast(fg, bg)
+        r = contrast(fg, p["labelBg"] or bg)  # neon labels sit on dark glass, not on the tube colour
         if r < 3: errors.append(f"contrast {tid} {role}: {r:.2f}:1 (< 3:1) — adjust palette in level_themes.py")
     for what, fg, bg in (("ghost on background", p["ghost"], p["bg"]), ("label on surface", p["onSurface"], p["surface"]), ("text on background", p["text"], p["bg"])):
         if contrast(fg, bg) < 3: errors.append(f"contrast {tid} {what}: {contrast(fg, bg):.2f}:1 (< 3:1)")
@@ -48,6 +48,15 @@ for tid, t in THEMES.items():
     if len(lv["pieces"]) != 4: errors.append(f"{tid}: needs 4 pieces")
     for o in lv["obstacles"]:
         if len(o["states"]) != o["hits"]: errors.append(f"{tid}: obstacle {o['id']} has {len(o['states'])} states for {o['hits']} hits")
+
+# 4b. every world has its scene, hero collectible and chrome tone set
+chrome = json.load(open("data/chrome.json"))
+for tid, lv in levels.items():
+    if tid != "graphite" and not lv.get("scene"): errors.append(f"{tid}: no world scene")
+    goal = lv.get("goal", {}).get("item")
+    if not any(c["id"] == goal and c.get("hero") for c in lv["collectibles"]): errors.append(f"{tid}: goal item {goal} has no hero render")
+    for part in ("close", "pill", "frame", "ribbon", "fill"):
+        if part not in chrome["tones"].get(tid, {}): errors.append(f"{tid}: chrome part {part} missing")
 
 # 5. every bundled font has its licence beside it
 for fam, (path, _) in FONTS.items():

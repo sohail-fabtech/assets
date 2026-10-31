@@ -18,6 +18,7 @@
     "onPrimary": "#1a1020",
     "onSecondary": "#1a1020",
     "onDanger": "#1a1020",
+    "labelBg": null,
     "onSurface": "#ffffff",
     "ghost": "#7ff3ff"
    },
@@ -45,6 +46,7 @@
     "onPrimary": "#1a1020",
     "onSecondary": "#1a1020",
     "onDanger": "#1a1020",
+    "labelBg": null,
     "onSurface": "#ffffff",
     "ghost": "#ffd27a"
    },
@@ -72,6 +74,7 @@
     "onPrimary": "#1a1020",
     "onSecondary": "#1a1020",
     "onDanger": "#1a1020",
+    "labelBg": null,
     "onSurface": "#1a1020",
     "ghost": "#1d2a4a"
    },
@@ -99,6 +102,7 @@
     "onPrimary": "#1a1020",
     "onSecondary": "#1a1020",
     "onDanger": "#1a1020",
+    "labelBg": null,
     "onSurface": "#ffffff",
     "ghost": "#7fe8ff"
    },
@@ -126,6 +130,7 @@
     "onPrimary": "#1a1020",
     "onSecondary": "#1a1020",
     "onDanger": "#1a1020",
+    "labelBg": null,
     "onSurface": "#ffffff",
     "ghost": "#e0f8ff"
    },
@@ -153,6 +158,7 @@
     "onPrimary": "#1a1020",
     "onSecondary": "#1a1020",
     "onDanger": "#1a1020",
+    "labelBg": null,
     "onSurface": "#ffffff",
     "ghost": "#a8fff4"
    },
@@ -177,9 +183,10 @@
     "accent": "#ff4a6a",
     "danger": "#ff2a4a",
     "text": "#f4ecff",
-    "onPrimary": "#1a1020",
-    "onSecondary": "#1a1020",
-    "onDanger": "#1a1020",
+    "onPrimary": "#7aff4a",
+    "onSecondary": "#b04aff",
+    "onDanger": "#ff2a4a",
+    "labelBg": "#140a22",
     "onSurface": "#ffffff",
     "ghost": "#ff4a6a"
    },
@@ -207,6 +214,7 @@
     "onPrimary": "#1a1020",
     "onSecondary": "#1a1020",
     "onDanger": "#1a1020",
+    "labelBg": null,
     "onSurface": "#ffffff",
     "ghost": "#ffffff"
    },
@@ -234,6 +242,7 @@
     "onPrimary": "#1a1020",
     "onSecondary": "#1a1020",
     "onDanger": "#1a1020",
+    "labelBg": null,
     "onSurface": "#ffffff",
     "ghost": "#ffe08a"
    },
@@ -261,6 +270,7 @@
     "onPrimary": "#1a1020",
     "onSecondary": "#1a1020",
     "onDanger": "#1a1020",
+    "labelBg": null,
     "onSurface": "#ffffff",
     "ghost": "#ffe0a0"
    },
@@ -288,6 +298,7 @@
     "onPrimary": "#1a1020",
     "onSecondary": "#1a1020",
     "onDanger": "#1a1020",
+    "labelBg": null,
     "onSurface": "#ffffff",
     "ghost": "#ffd65a"
    },

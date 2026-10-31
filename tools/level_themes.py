@@ -123,9 +123,13 @@ def contrast(a, b):
 
 
 INK = "#1a1020"
+NEON_GLASS = "#140a22"  # body colour of neon controls (make_ui_kit.face)
 for _t in THEMES.values():
     _p = _t["palette"]
     for _role in ("primary", "secondary", "danger"):
         _p["on" + _role.capitalize()] = max(("#ffffff", INK), key=lambda ink: contrast(ink, _p[_role]))
+        if _t["material"] == "neon":  # neon buttons are dark glass: labels glow in the tube colour
+            _p["on" + _role.capitalize()] = _p[_role]
+    _p["labelBg"] = NEON_GLASS if _t["material"] == "neon" else None
     _p["onSurface"] = max(("#ffffff", INK), key=lambda ink: contrast(ink, _p["surface"]))
     _p["ghost"] = _p["accent"] if contrast(_p["accent"], _p["bg"]) >= 3 else _p["text"]  # outline/label colour for ghost buttons
