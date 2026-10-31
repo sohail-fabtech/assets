@@ -2,6 +2,7 @@
 CATEGORIES = {  # folder: (title, prefixes) — order = order in assets/index.html
     "pieces": ("Pieces", ("piece_",)),
     "collection": ("Piece collection", ("col_",)),
+    "events": ("Event pieces", ("evt_",)),
     "board": ("Board & objects", ("board_", "cell_", "crate", "launcher")),
     "hud": ("HUD & currency", ("hud_", "slot_", "progress_", "life_", "shard", "star_", "combo_")),
     "buttons": ("Buttons & controls", ("btn_", "icon_", "toggle_")),

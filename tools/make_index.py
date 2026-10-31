@@ -26,7 +26,8 @@ for w, t in themes.items():
     rows.append(f'<div class="world" style="--b0:{t["board"][0]};--b1:{t["board"][1]}"><div class="wh"><b>{w.replace("_", " ")}</b>{dots}</div>'
                 f'<div class="wp"><img class="wb" src="themes/{w}/board.svg">{pieces}</div></div>')
 nav.append(f'<a href="#themes">Color worlds <b>{total}</b></a>')
-LIVE = [("vault", "Piece Vault", "collection/index.html", "Unlock pieces with Shards · tap a silhouette", 900),
+LIVE = [("events", "Events", "events/index.html", "Live event prize path + yearly calendar · tap Play a run", 1000),
+        ("vault", "Piece Vault", "collection/index.html", "Unlock pieces with Shards · tap a silhouette", 900),
         ("board", "Theme board", "themes/index.html", "Switch color worlds and piece styles on a live 7×7 board", 760),
         ("showcase", "Animated showcase", "motion/showcase.html", "Every asset with idle loops · tap anything", 900),
         ("demo", "Motion spec demo", "motion/demo.html", "Clear, fall, fire, life loss, score, combo, panel timings", 640)]
