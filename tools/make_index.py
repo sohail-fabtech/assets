@@ -35,7 +35,7 @@ for folder, title in CATEGORIES.items():
         for sub in sorted(os.listdir(os.path.join(A, folder))):
             n = sum(len([f for f in fs if f.endswith(".svg")]) for _, _, fs in os.walk(os.path.join(A, folder, sub)))
             nav.append(f'<a class="sub" href="#pieces-{sub}">{sub} <b>{n}</b></a>')
-    sections.append(f'<section id="{folder}"><h2>{title} <span>{folder}/ · {count}</span></h2>{body}</section>')
+    sections.append(f'<details class="acc" id="{folder}"><summary><h2>{title} <span>{folder}/ · {count}</span></h2></summary><div class="accb">{body}</div></details>')
 
 LIVE = [("splash-live", "Splash & opening (live)", "pages/splash.html", "Vertical opening: studio splash → characters → loading tips → title + Play", 960),
         ("ribbons-live", "Ribbons & result banners (live)", "pages/ribbons.html", "Curved/wave/bow ribbons, level-up badges, level completed, victory, icon progress bars", 1500),
@@ -53,8 +53,8 @@ LIVE = [("splash-live", "Splash & opening (live)", "pages/splash.html", "Vertica
         ("demo", "Motion spec demo", "pages/demo.html", "Clear, fall, fire, life loss, score, combo, panel timings", 640)]
 for sid, title, src, sub, h in LIVE:  # interactive pages embedded so this one page shows everything
     nav.append(f'<a href="#{sid}">{title}</a>')
-    sections.append(f'<section id="{sid}"><h2>{title} <span>{sub}</span></h2>'
-                    f'<iframe src="{src}" loading="lazy" title="{title}" style="height:{h}px"></iframe></section>')
+    sections.append(f'<details class="acc live" id="{sid}"><summary><h2>{title} <span>{sub}</span></h2></summary>'
+                    f'<div class="accb"><iframe data-src="{src}" title="{title}" scrolling="no"></iframe></div></details>')  # loads on open, sized to content
 
 html = f'''<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Edge Pulse · Asset library</title>
@@ -77,7 +77,13 @@ figure img{{height:88px;max-width:100%;object-fit:contain}}figcaption{{font-size
 .wh i{{width:14px;height:14px;border-radius:50%}}
 .wp{{display:grid;grid-template-columns:120px repeat(20,minmax(36px,1fr));gap:4px;align-items:center}}.wp img{{width:100%;cursor:pointer}}
 h3{{font:800 14px Poppins;margin:16px 0 8px;text-transform:capitalize;opacity:.8}}h3 span{{opacity:.5;font-weight:600}}h3.d1{{font-size:16px;opacity:1}}
-iframe{{width:100%;border:0;border-radius:22px;background:#16181e;display:block;margin-bottom:12px}}
+iframe{{width:100%;height:240px;border:0;border-radius:22px;background:#16181e;display:block;margin-bottom:12px;overflow:hidden}}
+.acc{{margin:10px 28px;border-radius:20px;background:#ffffff08;border:1px solid #ffffff10;scroll-margin-top:110px}}
+.acc>summary{{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:16px 20px;border-radius:20px}}
+.acc>summary::-webkit-details-marker{{display:none}}.acc>summary:hover{{background:#ffffff0a}}
+.acc>summary h2{{margin:0;flex:1}}.acc>summary::after{{content:"";width:12px;height:12px;border-right:3px solid #fff8;border-bottom:3px solid #fff8;rotate:45deg;translate:0 -3px;transition:rotate .25s}}
+.acc[open]>summary::after{{rotate:225deg;translate:0 3px}}.acc.live>summary h2::before{{content:"● ";color:#5fd23a;font-size:.6em;vertical-align:middle}}
+.acc .accb{{padding:0 20px 18px}}.acc section{{padding:0}}
 html[data-theme] [data-for-theme]{{display:none}}{{HIDE_RULES}}
 .themes{{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}}.themes button{{border:1px solid #ffffff22;background:#ffffff0c;color:#e6e9f0;border-radius:99px;padding:6px 12px;cursor:pointer;font-size:14px;display:flex;gap:6px;align-items:center}}
 .themes button[aria-pressed=true]{{background:#fff;color:#12141a}}.themes i{{width:12px;height:12px;border-radius:50%}}
@@ -98,7 +104,20 @@ function setTheme(t) {{
 document.getElementById('themes').onclick = e => {{ const b = e.target.closest('button'); if (b) setTheme(b.dataset.t); }};
 document.querySelectorAll('iframe').forEach(f => f.addEventListener('load', () => f.contentWindow.postMessage({{ type: 'theme', theme: document.documentElement.dataset.theme }}, '*')));
 setTheme(localStorage.getItem('edgepulse.theme') || 'graphite');
-document.getElementById('q').oninput = e => {{ const q = e.target.value.toLowerCase();
+// accordion: embedded pages load when opened and grow to their content height (no inner scrollbars)
+function fit(f) {{ try {{ const d = f.contentDocument; f.style.height = Math.max(d.documentElement.scrollHeight, d.body.scrollHeight) + 'px'; }} catch (e) {{}} }}
+document.querySelectorAll('details.acc').forEach(dt => dt.addEventListener('toggle', () => {{
+  const f = dt.querySelector('iframe[data-src]');
+  if (dt.open && f && !f.src) {{
+    f.addEventListener('load', () => {{ fit(f); new ResizeObserver(() => fit(f)).observe(f.contentDocument.body); setTimeout(() => fit(f), 600); setTimeout(() => fit(f), 1800); }});
+    f.src = f.dataset.src;
+  }}
+}}));
+const openHash = () => {{ const t = document.getElementById(location.hash.slice(1)); const dt = t?.closest('details.acc'); if (dt) {{ dt.open = true; setTimeout(() => t.scrollIntoView({{ block: 'start' }}), 50); }} }};
+addEventListener('hashchange', openHash);
+document.querySelector('nav').addEventListener('click', e => {{ const a = e.target.closest('a[href^="#"]'); if (a) setTimeout(openHash, 0); }});
+if (location.hash) openHash();  // otherwise start fully collapsed: a clean list of sections
+document.getElementById('q').oninput = e => {{ const q = e.target.value.toLowerCase(); if (q) document.querySelectorAll('details.acc:not(.live)').forEach(d => (d.open = true));
   document.querySelectorAll('figure').forEach(f => f.hidden = q && !f.dataset.path.includes(q.replace(/ /g, '_'))); }};
 </script></body></html>'''
 chips = "".join(f'<button data-t="{tid}" style="font-family:\'{t["font"]}\'"><i style="background:{t["palette"]["primary"]}"></i>{t["name"]}</button>' for tid, t in THEMES.items())
