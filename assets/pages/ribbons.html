@@ -25,11 +25,30 @@ h2{font:900 26px/1.2 Poppins;margin:40px 0 4px}h2+p{margin:0 0 22px;opacity:.7}
 .bar .pct{position:absolute;inset:0;display:grid;place-items:center;font:900 16px Poppins;-webkit-text-stroke:4px #5a1a00;paint-order:stroke fill;z-index:3}
 .sparkle{position:absolute;width:26px;animation:tw 1.8s ease-in-out infinite}.sparkle:nth-of-type(2n){animation-delay:.6s}
 @keyframes tw{50%{transform:scale(.4) rotate(45deg);opacity:.4}}
-.pop .s{animation:fx-pop 520ms cubic-bezier(.34,1.4,.64,1) both}.pop .s:nth-child(2){animation-delay:.16s}.pop .s:nth-child(3){animation-delay:.32s}
+.cmp{cursor:pointer}
+/* reveal choreography — only scale/rotate/opacity (elements already use translate for centring) */
+.reveal .rv-ribbon{animation:rv-unfurl 420ms cubic-bezier(.34,1.4,.64,1) var(--d,0ms) both}
+.reveal .rv-laurel{animation:rv-grow 460ms cubic-bezier(.34,1.4,.64,1) var(--d,0ms) both;transform-origin:50% 100%}
+.reveal .rv-star{animation:rv-star 520ms cubic-bezier(.34,1.5,.64,1) both, rv-bob 2.4s ease-in-out infinite;animation-delay:var(--d),calc(var(--d) + 600ms)}
+.reveal .rv-title{animation:rv-punch 460ms cubic-bezier(.34,1.4,.64,1) both, rv-glow 2.2s ease-in-out infinite;animation-delay:var(--d),calc(var(--d) + 500ms)}
+.reveal .rv-pop{animation:rv-punch 420ms cubic-bezier(.34,1.4,.64,1) var(--d,0ms) both}
+.reveal .rv-fade{animation:rv-fade 600ms ease-out var(--d,0ms) both}
+@keyframes rv-unfurl{0%{scale:0 .6;opacity:0}70%{scale:1.05 1;opacity:1}100%{scale:1}}
+@keyframes rv-grow{0%{scale:.2;opacity:0;rotate:-25deg}100%{scale:1;opacity:1;rotate:0deg}}
+@keyframes rv-star{0%{scale:0;rotate:-160deg;opacity:0}65%{scale:1.3;rotate:12deg;opacity:1}85%{scale:.92;rotate:-4deg}100%{scale:1;rotate:0deg}}
+@keyframes rv-bob{50%{rotate:5deg;scale:1.04}}
+@keyframes rv-punch{0%{scale:2.4;opacity:0}60%{scale:.9;opacity:1}100%{scale:1}}
+@keyframes rv-glow{50%{filter:brightness(1.18) drop-shadow(0 0 10px #ffd65a88)}}
+@keyframes rv-fade{from{opacity:0}to{opacity:1}}
+/* in-game preview overlay */
+#stage{position:fixed;inset:0;z-index:25;display:none;place-items:center;background:radial-gradient(#2a1a6acc,#05020ef2);backdrop-filter:blur(4px);cursor:pointer}
+#stage.on{display:grid}#stage .hold{scale:1.25;pointer-events:none}#stage small{position:absolute;bottom:30px;opacity:.6}
+.ctrls{display:flex;gap:10px;margin:18px 0 0}.ctrls button{font:800 13px Poppins;color:#fff;background:#ffffff14;border:1px solid #ffffff2a;border-radius:99px;padding:8px 16px;cursor:pointer}
+.ctrls button.go{background:#ffa51f;color:#2a1200;border:0}
 #fx{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:30}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute"><defs><linearGradient id="goldtxt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c0"/><stop offset=".5" stop-color="#ffd23a"/><stop offset="1" stop-color="#ff8a1a"/></linearGradient></defs></svg>
-<header id="chips"></header><main id="main"></main><canvas id="fx"></canvas>
+<header id="chips"></header><main id="main"></main><div id="stage"><div class="hold" id="hold"></div><small>Tap anywhere to close</small></div><canvas id="fx"></canvas>
 <script type="module">
 import * as A from '../motion/anim.js';
 const $ = s => document.querySelector(s), fx = A.particles($('#fx'));
@@ -56,6 +75,7 @@ function render() {
   $('#chips').innerHTML = Object.entries(K.themes).map(([id, t]) => `<button class="chip" data-t="${id}" aria-pressed="${id === theme}"><i style="background:${t.palette.primary}"></i>${t.name}</button>`).join('');
   const tones = Object.keys(C.tones);
   $('#main').innerHTML = `
+  <div class="ctrls"><button class="go" id="ingame">▶ Show in game</button><button id="auto">Auto-replay: on</button><button id="all">Replay all</button></div>
   <h2>Ribbon shapes</h2><p>Curved, wave and bow — every theme colour. Labels follow the ribbon's arc.</p>
   <div class="row">${arc('curved', tone, 'LEVEL UP', 380)}${arc('wave', tone, 'BONUS', 380)}<div class="rb" style="width:200px"><img src="../${C.tones[tone].bow}" alt=""></div></div>
   <div class="row" style="margin-top:18px">${tones.map(t => arc('curved', t, t === 'brand' ? 'EDGE PULSE' : K.themes[t].name.split(' ').pop().toUpperCase(), 230, false, 50)).join('')}</div>
@@ -104,13 +124,16 @@ function render() {
   </div>`;
 }
 document.addEventListener('click', e => {
-  const chip = e.target.closest('.chip'); if (chip) { theme = chip.dataset.t; localStorage.setItem('edgepulse.theme', theme); render(); return fitLabels(); }
+  const chip = e.target.closest('.chip'); if (chip) { theme = chip.dataset.t; localStorage.setItem('edgepulse.theme', theme); render(); return boot(); }
   const plus = e.target.closest('.plus');
   if (plus) { const bar = plus.parentElement, f = bar.querySelector('.fill'), pct = bar.querySelector('.pct');
     const v = Math.min(100, parseFloat(f.style.width) + 10); f.style.width = v + '%'; pct.textContent = Math.round(v) + '%'; A.play(plus, 'pop');
     if (v >= 100) fx.burst(bar, 20, ['#ffd65a', '#fff', '#ff9a1a']); return; }
-  const c = e.target.closest('.cmp');
-  if (c) { c.classList.remove('pop'); void c.offsetWidth; c.classList.add('pop'); fx.burst(c, 22, ['#ffd65a', '#fff', '#ff9ee8']); }
+  if (e.target.id === 'ingame') return showInGame();
+  if (e.target.id === 'all') return document.querySelectorAll('main .cmp').forEach((c, i) => setTimeout(() => reveal(c), i * 140));
+  if (e.target.id === 'auto') { auto = !auto; e.target.textContent = `Auto-replay: ${auto ? 'on' : 'off'}`; return; }
+  if (e.target.closest('#stage')) return $('#stage').classList.remove('on');
+  const c = e.target.closest('.cmp'); if (c) reveal(c);
 });
 /** Fit every ribbon label to its band: shrink until it spans ≤ 70% of the centre line (keeps clear of the folds). */
 function fitLabels() {
@@ -122,6 +145,34 @@ function fitLabels() {
     while (text.getComputedTextLength() > max && size > 14) { size -= 1; text.style.fontSize = size + 'px'; }
   });
 }
-addEventListener('message', e => { if (e.data?.type === 'theme' && K.themes[e.data.theme]) { theme = e.data.theme; render(); fitLabels(); } });
-render(); document.fonts.ready.then(fitLabels);
+addEventListener('message', e => { if (e.data?.type === 'theme' && K.themes[e.data.theme]) { theme = e.data.theme; render(); boot(); } });
+/** Tag each part of a composition with its reveal role + delay: ribbon → laurels/wings → stars one by one → title. */
+function tag(c) {
+  const all = [...c.querySelectorAll('*')], has = (el, k) => (el.getAttribute?.('src') || '').includes(k);
+  let t = 0; const set = (el, cls, d) => { el.classList.add(cls); el.style.setProperty('--d', d + 'ms'); };
+  all.filter(el => el.classList.contains('rb') || el.classList.contains('pill') || (el.tagName === 'IMG' && has(el, 'plaque'))).forEach(el => set(el, 'rv-ribbon', 0));
+  all.filter(el => el.tagName === 'IMG' && (has(el, 'laurel') || has(el, 'wing'))).forEach(el => set(el, 'rv-laurel', 140));
+  all.filter(el => el.tagName === 'IMG' && (has(el, 'rays') || has(el, 'sparkle'))).forEach(el => set(el, 'rv-fade', 200));
+  all.filter(el => el.tagName === 'IMG' && has(el, 'trophy')).forEach(el => set(el, 'rv-pop', 220));
+  const stars = all.filter(el => el.tagName === 'IMG' && /star-(gold|face)/.test(el.getAttribute('src'))).map(el => el.parentElement.classList.contains('s') ? el.parentElement : el);
+  stars.forEach((el, i) => set(el, 'rv-star', (t = 320 + i * 170)));
+  all.filter(el => el.classList.contains('title-3d') || (el.classList.contains('label-3d') && !el.closest('.rb'))).forEach(el => set(el, 'rv-title', t + 260));
+  return stars;
+}
+function reveal(c) {
+  const stars = tag(c);
+  c.classList.remove('reveal'); void c.offsetWidth; c.classList.add('reveal');
+  stars.forEach(st => setTimeout(() => fx.burst(st, 12, ['#ffd65a', '#fff6c0', '#fff']), parseFloat(st.style.getPropertyValue('--d')) + 330));
+}
+function showInGame() {
+  const src = document.querySelectorAll('main .cmp')[4];  // the Level Completed banner
+  $('#hold').innerHTML = src.outerHTML; $('#stage').classList.add('on');
+  const c = $('#hold .cmp'); fitLabels(); reveal(c);
+  setTimeout(() => { for (let i = 0; i < 4; i++) setTimeout(() => fx.burst(c, 36, ['#ffd65a', '#ff7ad9', '#7ff3ff', '#9dff6a', '#fff']), i * 220); }, 900);  // confetti
+}
+let auto = true, turn = 0;
+setInterval(() => { if (!auto || $('#stage').classList.contains('on')) return;
+  const cs = [...document.querySelectorAll('main .cmp')]; if (cs.length) reveal(cs[turn++ % cs.length]); }, 1600);   // a different banner replays every 1.6 s
+function boot() { fitLabels(); document.querySelectorAll('main .cmp').forEach((c, i) => setTimeout(() => reveal(c), 200 + i * 160)); }
+render(); document.fonts.ready.then(boot);
 </script></body></html>
