@@ -224,9 +224,7 @@ def controls(t):
 
 
 def themes_css():
-    faces = "".join(f'@font-face{{font-family:"{f}";src:url("../fonts/{path}") format("truetype");font-display:swap;font-weight:100 900}}\n'
-                    for f, (path, _) in FONTS.items())
-    faces += "".join(f'@font-face{{font-family:"Poppins";src:url("../fonts/poppins/Poppins-{w}.ttf") format("truetype");font-weight:{n}}}\n'
+    faces = "".join(f'@font-face{{font-family:"Poppins";src:url("../fonts/poppins/Poppins-{w}.ttf") format("truetype");font-weight:{n}}}\n'
                      for w, n in (("SemiBold", 600), ("ExtraBold", 800), ("Black", 900)))
     rules = ""
     for tid, t in THEMES.items():

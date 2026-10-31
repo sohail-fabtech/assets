@@ -4,12 +4,12 @@
 <link rel="stylesheet" href="../motion/anim.css">
 <link rel="stylesheet" href="../motion/chrome.css">
 <style>
-:root{--brand-font:"Lilita One",Impact,sans-serif}
+:root{--brand-font:"Poppins",system-ui,sans-serif}
 body{margin:0;min-height:100vh;color:#fff;font:600 14px/1.45 Poppins,sans-serif;
   background:radial-gradient(90% 60% at 50% 0,#5a46c0,transparent 70%),radial-gradient(120% 80% at 50% 100%,#2a1470,#120a36)}
 .wrap{max-width:1240px;margin:0 auto;padding:18px 28px 40px}
 .top{display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
-.logo{font:400 46px/1 var(--brand-font)}
+.logo{font:900 46px/1 var(--brand-font)}
 .head{position:relative;padding-top:30px}.head .crown{position:absolute;left:50%;top:-4px;width:54px;translate:-50% 0;z-index:2}
 .head .ribbon{width:min(470px,60vw)}.head .sub{display:block;font:700 13px Poppins;margin-top:2px}
 .head .sp{position:absolute;width:22px}.close{justify-self:end;width:62px;cursor:pointer}
@@ -22,25 +22,25 @@ body{margin:0;min-height:100vh;color:#fff;font:600 14px/1.45 Poppins,sans-serif;
 .tile .hero{position:absolute;left:12%;right:12%;top:12%;width:76%}
 .tile .name{position:absolute;left:50%;top:-30px;translate:-50% 0;width:86%;z-index:2}
 .tile .name .pill{min-height:46px;border-width:0 24px;border-image-width:0 24px}
-.tile .name .label-3d{font:400 clamp(13px,1.3vw,18px)/1 var(--brand-font)}
+.tile .name .label-3d{font:900 clamp(13px,1.3vw,18px)/1 var(--brand-font)}
 .tile .cnt{position:absolute;left:14%;right:14%;bottom:-6px}
 .tile .cnt .plate-dark b{font:800 17px Poppins;font-variant-numeric:tabular-nums}.tile .cnt img{width:22px}
 .bottom{display:grid;grid-template-columns:1.55fr auto 1fr;gap:18px;align-items:center;margin-top:34px}
 .feat{position:relative;display:grid;grid-template-columns:170px 1fr auto;gap:16px;align-items:center;min-height:170px}
 .feat.frame{border-width:20px;border-image-width:20px}
 .feat .thumb{align-self:stretch;border-radius:14px;background-size:cover;background-position:center}
-.feat .pill{position:absolute;top:-34px;left:150px;min-width:260px}.feat .pill .label-3d{font:400 22px var(--brand-font)}
+.feat .pill{position:absolute;top:-34px;left:150px;min-width:260px}.feat .pill .label-3d{font:900 22px var(--brand-font)}
 .feat p{margin:18px 0 0;font:700 14px Poppins;opacity:.92;max-width:230px}
 .feat .count{display:grid;gap:8px;justify-items:start;padding-right:8px}
 .feat .count .row{display:flex;align-items:center;gap:10px}.feat .count img{width:64px}
-.feat .count .title-3d{font:400 44px var(--brand-font);font-variant-numeric:tabular-nums}
+.feat .count .title-3d{font:900 44px var(--brand-font);font-variant-numeric:tabular-nums}
 .feat .track{width:230px}
 .chestbox{display:grid;place-items:center;position:relative}.chestbox .arrow{position:absolute;left:-44px;width:34px;animation:nudge 1.2s ease-in-out infinite}
 @keyframes nudge{50%{translate:6px 0}}
 .chest{width:220px;cursor:pointer;animation:breathe 2s ease-in-out infinite}.chest.ready{animation:ready .9s ease-in-out infinite}
 @keyframes ready{50%{transform:scale(1.06) rotate(-2deg);filter:drop-shadow(0 0 24px #ffd65a)}}
 .bubble{position:relative;padding:4px 6px}.bubble.frame{border-width:18px;border-image-width:18px}
-.bubble b{display:block;font:400 19px/1.2 var(--brand-font);text-align:center}.bubble b span{color:#ffd65a}
+.bubble b{display:block;font:900 19px/1.2 var(--brand-font);text-align:center}.bubble b span{color:#ffd65a}
 .bubble .rw{display:flex;justify-content:center;gap:12px;margin-top:8px}.bubble .rw img{width:46px}
 .demo{margin-top:18px;font:800 13px Poppins;color:#fff;background:#ffffff1a;border:1px solid #ffffff33;border-radius:99px;padding:8px 16px;cursor:pointer}
 #fx{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9}
@@ -50,7 +50,7 @@ body{margin:0;min-height:100vh;color:#fff;font:600 14px/1.45 Poppins,sans-serif;
   <div class="head"><img class="crown" src="../ui/chrome/shared/chr_shared_crown.svg" alt="">
    <img class="sp" src="../ui/chrome/shared/chr_shared_sparkle.svg" style="left:-18px;top:44px" alt=""><img class="sp" src="../ui/chrome/shared/chr_shared_sparkle.svg" style="right:-14px;top:36px;width:16px" alt="">
    <div class="ribbon" style="--ribbon-src:url(../ui/chrome/brand/chr_brand_ribbon.svg)"><div style="text-align:center">
-    <span class="title-3d" data-text="Collection" style="font:400 42px var(--brand-font)">Collection</span>
+    <span class="title-3d" data-text="Collection" style="font:900 42px var(--brand-font)">Collection</span>
     <span class="label-3d sub" data-text="Collect all items across different worlds!">Collect all items across different worlds!</span></div></div></div>
   <img class="close" src="../ui/chrome/brand/chr_brand_close.svg" alt="Close"></div>
  <div class="tiles" id="tiles"></div>

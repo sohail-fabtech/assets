@@ -30,7 +30,7 @@
   },
   "volcano": {
    "name": "Dangerous Volcano",
-   "font": "Bungee",
+   "font": "Poppins",
    "fontTitleOnly": false,
    "material": "lava",
    "palette": {
@@ -58,7 +58,7 @@
   },
   "sky": {
    "name": "Sky Islands",
-   "font": "Fredoka",
+   "font": "Poppins",
    "fontTitleOnly": false,
    "material": "frosted",
    "palette": {
@@ -86,8 +86,8 @@
   },
   "forest": {
    "name": "Enchanted Forest",
-   "font": "Cinzel Decorative",
-   "fontTitleOnly": true,
+   "font": "Poppins",
+   "fontTitleOnly": false,
    "material": "wood",
    "palette": {
     "bg": "#0a1a12",
@@ -114,7 +114,7 @@
   },
   "tundra": {
    "name": "Frozen Tundra",
-   "font": "Exo 2",
+   "font": "Poppins",
    "fontTitleOnly": false,
    "material": "ice",
    "palette": {
@@ -142,7 +142,7 @@
   },
   "reef": {
    "name": "Coral Reef",
-   "font": "Baloo 2",
+   "font": "Poppins",
    "fontTitleOnly": false,
    "material": "pearl",
    "palette": {
@@ -170,8 +170,8 @@
   },
   "carnival": {
    "name": "Haunted Carnival",
-   "font": "Creepster",
-   "fontTitleOnly": true,
+   "font": "Poppins",
+   "fontTitleOnly": false,
    "material": "neon",
    "palette": {
     "bg": "#120a1e",
@@ -198,7 +198,7 @@
   },
   "crystal": {
    "name": "Crystal Caves",
-   "font": "Righteous",
+   "font": "Poppins",
    "fontTitleOnly": false,
    "material": "crystal",
    "palette": {
@@ -226,7 +226,7 @@
   },
   "desert": {
    "name": "Desert Oasis",
-   "font": "Lilita One",
+   "font": "Poppins",
    "fontTitleOnly": false,
    "material": "sand",
    "palette": {
@@ -254,8 +254,8 @@
   },
   "steampunk": {
    "name": "Steampunk Factory",
-   "font": "Rye",
-   "fontTitleOnly": true,
+   "font": "Poppins",
+   "fontTitleOnly": false,
    "material": "brass",
    "palette": {
     "bg": "#1a140e",
@@ -282,7 +282,7 @@
   },
   "nebula": {
    "name": "Cosmic Nebula",
-   "font": "Audiowide",
+   "font": "Poppins",
    "fontTitleOnly": false,
    "material": "cosmic",
    "palette": {
