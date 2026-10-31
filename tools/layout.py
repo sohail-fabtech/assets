@@ -3,7 +3,8 @@ CATEGORIES = {  # folder: (title, prefixes) — order = order in assets/index.ht
     "pieces": ("Pieces", ("piece_",)),
     "collection": ("Piece collection", ("col_",)),
     "events": ("Event pieces", ("evt_",)),
-    "seasons": ("Seasonal aura pieces", ("sea_",)),
+    "seasons": ("Seasonal pieces", ("sea_",)),
+    "sweets": ("Sweet Shop", ("sw_",)),  # nested: sweets/<category>/<design>/
     "board": ("Board & objects", ("board_", "cell_", "crate", "launcher")),
     "hud": ("HUD & currency", ("hud_", "slot_", "progress_", "life_", "shard", "star_", "combo_")),
     "buttons": ("Buttons & controls", ("btn_", "icon_", "toggle_")),
@@ -15,6 +16,9 @@ CATEGORIES = {  # folder: (title, prefixes) — order = order in assets/index.ht
 
 
 def folder_for(name):
+    if name.startswith("sw_"):  # sw_<category>_<design>_<i>.svg → sweets/<category>/<design>
+        _, cat, design, _ = name.split("_", 3)
+        return f"sweets/{cat}/{design}"
     for folder, (_, prefixes) in CATEGORIES.items():
         if name.startswith(prefixes):
             return folder

@@ -8,12 +8,25 @@ WIDE = ("board_", "sea_spring_board", "sea_summer_board", "sea_autumn_board", "s
 nice = lambda n: n[:-4].replace("_", " ")
 
 sections, nav = [], []
+def cards(rel):
+    files = sorted(f for f in os.listdir(os.path.join(A, rel)) if f.endswith(".svg"))
+    return files, "".join(f'<figure class="{"wide" if f.startswith(WIDE) else ""}" data-path="{rel}/{f}" title="Click to copy path">'
+                          f'<img src="{rel}/{f}" loading="lazy"><figcaption>{nice(f)}</figcaption></figure>' for f in files)
+
+
 for folder, (title, _) in CATEGORIES.items():
-    files = sorted(f for f in os.listdir(os.path.join(A, folder)) if f.endswith(".svg"))
-    cards = "".join(f'<figure class="{"wide" if f.startswith(WIDE) else ""}" data-path="{folder}/{f}" title="Click to copy path">'
-                    f'<img src="{folder}/{f}" loading="lazy"><figcaption>{nice(f)}</figcaption></figure>' for f in files)
-    nav.append(f'<a href="#{folder}">{title} <b>{len(files)}</b></a>')
-    sections.append(f'<section id="{folder}"><h2>{title} <span>{folder}/ · {len(files)}</span></h2><div class="grid">{cards}</div></section>')
+    body, count = "", 0
+    for root, dirs, _ in sorted(os.walk(os.path.join(A, folder))):  # nested folders get their own sub-heading
+        dirs.sort()
+        rel = os.path.relpath(root, A)
+        files, html_cards = cards(rel)
+        if not files: continue
+        count += len(files)
+        depth = rel.count("/")
+        label = rel.split("/", 1)[1].replace("/", " › ") if depth else ""
+        body += (f'<h3 class="d{depth}">{label} <span>{len(files)}</span></h3>' if label else "") + f'<div class="grid">{html_cards}</div>'
+    nav.append(f'<a href="#{folder}">{title} <b>{count}</b></a>')
+    sections.append(f'<section id="{folder}"><h2>{title} <span>{folder}/ · {count}</span></h2>{body}</section>')
 
 themes = json.load(open(os.path.join(A, "themes", "themes.json")))
 styles = ["box", "ball", "pillow", "gem", "bubble"]
@@ -58,6 +71,7 @@ figure img{{height:88px;max-width:100%;object-fit:contain}}figcaption{{font-size
 .wh{{display:flex;gap:6px;align-items:center;margin-bottom:10px;text-transform:capitalize}}.wh b{{font:800 16px Poppins;margin-right:6px}}
 .wh i{{width:14px;height:14px;border-radius:50%}}
 .wp{{display:grid;grid-template-columns:120px repeat(20,minmax(36px,1fr));gap:4px;align-items:center}}.wp img{{width:100%;cursor:pointer}}
+h3{{font:800 14px Poppins;margin:16px 0 8px;text-transform:capitalize;opacity:.8}}h3 span{{opacity:.5;font-weight:600}}h3.d1{{font-size:16px;opacity:1}}
 iframe{{width:100%;border:0;border-radius:22px;background:#16181e;display:block;margin-bottom:12px}}
 #toast{{position:fixed;bottom:24px;left:50%;translate:-50%;background:#fff;color:#12141a;padding:8px 16px;border-radius:99px;opacity:0;transition:opacity .2s}}
 @media (max-width:900px){{.wp{{grid-template-columns:repeat(10,1fr)}}.wb{{grid-column:span 10;width:120px}}}}
@@ -72,4 +86,4 @@ document.getElementById('q').oninput = e => {{ const q = e.target.value.toLowerC
   document.querySelectorAll('figure').forEach(f => f.hidden = q && !f.dataset.path.includes(q.replace(/ /g, '_'))); }};
 </script></body></html>'''
 open(os.path.join(A, "index.html"), "w").write(html)
-print(f"wrote assets/index.html ({sum(len(os.listdir(os.path.join(A, f))) for f in CATEGORIES)} assets + {total} theme files)")
+print(f"wrote assets/index.html")
