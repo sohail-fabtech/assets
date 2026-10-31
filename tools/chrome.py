@@ -11,7 +11,7 @@ from make_ui_kit import mix
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "assets")
 BRAND = ("#b48cff", "#7a3ad8", "#3a1080")  # light, mid, dark — global UI purple
-SLICE = {"frame": "44 fill", "ribbon": "0 92 fill", "pill": "0 48 fill", "plate-cream": "0 40 fill", "plate-dark": "0 34 fill",
+SLICE = {"header": "0 60 fill", "bubble": "34 fill", "frame": "44 fill", "ribbon": "0 92 fill", "pill": "0 48 fill", "plate-cream": "0 40 fill", "plate-dark": "0 34 fill",
          "track": "0 18 fill", "fill": "0 18 fill"}
 
 
@@ -185,6 +185,79 @@ def reward(kind):
                    '<path d="M64 32 L68 41 L78 42 L70 48 L73 58 L64 52 L55 58 L58 48 L50 42 L60 41 Z" fill="#fff"/><rect x="16" y="24" width="80" height="8" rx="4" fill="#fff" opacity=".35"/></g>')
 
 
+# ---- panels & banners parts ------------------------------------------------------------------------
+def header(c, w=480, h=88):
+    """Panel title bar: big top radius, flat bottom edge, glossy. 3-slice horizontally (slice 0 60)."""
+    l, m, d = c
+    bar = f"M2 {h - 2} V34 A32 32 0 0 1 34 2 H{w - 34} A32 32 0 0 1 {w - 2} 34 V{h - 2} Z"
+    return doc(w, h, vgrad("hd", (0, l), (.5, m), (1, mix(m, d, .5))).join(["<defs>", "</defs>"])
+               + f'<path d="{bar}" fill="url(#hd)" stroke="{mix(d, "#000", .45)}" stroke-width="3"/>'
+               + f'<path d="M14 {h * .42} V34 A22 22 0 0 1 36 12 H{w - 36} A22 22 0 0 1 {w - 14} 34 V{h * .42} Z" fill="#fff" opacity=".28"/>'
+               + f'<path d="M4 {h - 6} H{w - 4}" stroke="{d}" stroke-width="5" opacity=".6"/>')
+
+
+def tag(c):
+    """Vertical bookmark ribbon with a notched tail (NEW / HOT / LV 5)."""
+    l, m, d = c
+    shape = "M6 4 H74 V120 L40 100 L6 120 Z"
+    return doc(80, 126, vgrad("tg", (0, l), (.5, m), (1, d)).join(["<defs>", "</defs>"])
+               + f'<path d="{shape}" fill="url(#tg)" stroke="{mix(d, "#000", .45)}" stroke-width="3" stroke-linejoin="round"/>'
+               + '<path d="M14 10 H32 V96 L14 108 Z" fill="#fff" opacity=".22"/><path d="M10 8 H70" stroke="#fff" stroke-opacity=".6" stroke-width="2"/>')
+
+
+def corner(c):
+    """Diagonal corner ribbon for the top-right of cards (BEST VALUE). Text is rotated 45° in HTML."""
+    l, m, d = c
+    return doc(170, 170, vgrad("cr2", (0, l), (.5, m), (1, d)).join(["<defs>", "</defs>"])
+               + f'<path d="M150 170 L170 150 V170 Z M0 20 L20 0 H0 Z" fill="{mix(d, "#000", .35)}"/>'
+               + f'<path d="M20 0 H78 L170 92 V150 Z" fill="url(#cr2)" stroke="{mix(d, "#000", .45)}" stroke-width="3" stroke-linejoin="round"/>'
+               + '<path d="M34 6 H70 L164 100 V112 Z" fill="#fff" opacity=".25"/>')
+
+
+def burst(c):
+    """Starburst badge (‑50%, x2, SALE)."""
+    l, m, d = c
+    pts = " ".join(f"{70 + (64 if i % 2 == 0 else 54) * math.cos(i * math.pi / 14):.1f},{70 + (64 if i % 2 == 0 else 54) * math.sin(i * math.pi / 14):.1f}" for i in range(28))
+    return doc(140, 140, '<defs><radialGradient id="bs" cx="40%" cy="35%" r="70%">' + f'<stop offset="0" stop-color="{l}"/><stop offset=".6" stop-color="{m}"/><stop offset="1" stop-color="{d}"/></radialGradient></defs>'
+               + f'<polygon points="{pts}" fill="{mix(d, "#000", .4)}" transform="translate(0 4)"/>'
+               + f'<polygon points="{pts}" fill="url(#bs)" stroke="{mix(d, "#000", .45)}" stroke-width="3" stroke-linejoin="round"/>'
+               + '<circle cx="70" cy="70" r="44" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2" stroke-dasharray="3 5"/>'
+               + '<ellipse cx="52" cy="44" rx="20" ry="10" fill="#fff" opacity=".35" transform="rotate(-25 52 44)"/>')
+
+
+def bubble():
+    """Callout body (cream, 9-slice 34) — pair with chr_shared_tail.svg for the pointer."""
+    return doc(120, 120, vgrad("bb", (0, "#fffdf6"), (1, "#f2e0c2")).join(["<defs>", "</defs>"])
+               + f'<path d="{rrect(2, 2, 116, 112, 28)}" fill="#a87a44"/><path d="{rrect(2, 2, 116, 108, 28)}" fill="url(#bb)" stroke="#8a5a24" stroke-width="3"/>'
+               + f'<path d="{rrect(8, 6, 104, 34, 20)}" fill="#fff" opacity=".7"/>')
+
+
+def tail():
+    return doc(60, 44, '<path d="M4 0 H56 L14 42 Z" fill="#f2e0c2" stroke="#8a5a24" stroke-width="3" stroke-linejoin="round"/><path d="M2 2 H58" stroke="#f2e0c2" stroke-width="5"/>')
+
+
+def rays(col="#ffe680"):
+    """Rotating light rays behind reward icons."""
+    r = "".join(f'<path d="M200 200 L{200 + 200 * math.cos(a / 16 * 6.283):.0f} {200 + 200 * math.sin(a / 16 * 6.283):.0f} '
+                f'L{200 + 200 * math.cos((a + .5) / 16 * 6.283):.0f} {200 + 200 * math.sin((a + .5) / 16 * 6.283):.0f} Z"/>' for a in range(16))
+    return doc(400, 400, f'<defs><radialGradient id="rf"><stop offset="0" stop-color="{col}" stop-opacity=".9"/><stop offset="1" stop-color="{col}" stop-opacity="0"/></radialGradient></defs>'
+               f'<g fill="url(#rf)">{r}</g><circle cx="200" cy="200" r="90" fill="url(#rf)"/>')
+
+
+def divider():
+    return doc(300, 24, '<path d="M10 12 H120 M180 12 H290" stroke="#fff" stroke-opacity=".35" stroke-width="2" stroke-linecap="round"/>'
+               '<path d="M150 2 L160 12 L150 22 L140 12 Z" fill="#ffd65a" stroke="#7a4400" stroke-width="2"/><circle cx="128" cy="12" r="3" fill="#ffd65a"/><circle cx="172" cy="12" r="3" fill="#ffd65a"/>')
+
+
+def socket(c):
+    """Round icon socket that sits above a panel (icon overlaps the top edge)."""
+    l, m, d = c
+    return doc(130, 130, '<defs><radialGradient id="sk" cx="40%" cy="35%" r="70%">' + f'<stop offset="0" stop-color="{l}"/><stop offset=".6" stop-color="{m}"/><stop offset="1" stop-color="{d}"/></radialGradient></defs>'
+               + f'<circle cx="65" cy="69" r="60" fill="{mix(d, "#000", .4)}"/><circle cx="65" cy="65" r="60" fill="url(#sk)" stroke="{mix(d, "#000", .45)}" stroke-width="3"/>'
+               + f'<circle cx="65" cy="65" r="47" fill="{mix(d, "#000", .35)}"/><circle cx="65" cy="65" r="47" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/>'
+               + '<path d="M22 44 A48 48 0 0 1 70 12" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" opacity=".55"/>')
+
+
 def write(f, data):
     d = os.path.join(OUT, folder_for(f)); os.makedirs(d, exist_ok=True)
     open(os.path.join(d, f), "w").write(data)
@@ -195,11 +268,13 @@ if __name__ == "__main__":
     out = {"slice": SLICE, "tones": {}}
     for tid in ["brand", *THEMES]:
         c = tone(tid)
-        parts = {"close": close_btn(c), "pill": pill(c), "frame": frame(c), "ribbon": ribbon(c), "fill": fill(c)}
+        parts = {"close": close_btn(c), "pill": pill(c), "frame": frame(c), "ribbon": ribbon(c), "fill": fill(c),
+                 "header": header(c), "tag": tag(c), "corner": corner(c), "burst": burst(c), "socket": socket(c)}
         out["tones"][tid] = {k: write(f"chr_{tid}_{k}.svg", v) for k, v in parts.items()}
     shared = {"plate-cream": plate_cream(), "plate-dark": plate_dark(), "track": track(), "fill-orange": fill(ORANGE), "crown": crown(),
-              "sparkle": sparkle(), "arrow": arrow(), "chest": chest(), "reward-coin": reward("coin"), "reward-orb": reward("orb"), "reward-ticket": reward("ticket")}
+              "sparkle": sparkle(), "arrow": arrow(), "chest": chest(), "reward-coin": reward("coin"), "reward-orb": reward("orb"), "reward-ticket": reward("ticket"),
+              "bubble": bubble(), "tail": tail(), "rays": rays(), "divider": divider()}
     out["shared"] = {k: write(f"chr_shared_{k}.svg", v) for k, v in shared.items()}
     os.makedirs(os.path.join(OUT, "data"), exist_ok=True)
     json.dump(out, open(os.path.join(OUT, "data", "chrome.json"), "w"), indent=1)
-    print(f"wrote {len(out['tones']) * 5 + len(shared)} chrome parts + data/chrome.json")
+    print(f"wrote {sum(len(v) for v in out['tones'].values()) + len(shared)} chrome parts + data/chrome.json")

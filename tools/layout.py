@@ -9,6 +9,8 @@ CATEGORIES = {  # top-level folder: title — order = order in assets/index.html
     "modes": "Mode tiles",
     "map": "Campaign map",
     "rewards": "Rewards & badges",
+    "ui": "Chrome: frames, ribbons, headers, tags, badges",
+    "scenes": "World scenes",
 }
 UI = {  # flat UI folders by filename prefix
     "board": ("board_", "cell_", "crate", "launcher"),

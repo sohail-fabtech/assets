@@ -27,7 +27,7 @@ for folder, title in CATEGORIES.items():
         label = rel.split("/", 1)[1].replace("/", " › ") if depth else ""
         anchor = rel.replace("/", "-")
         parts = rel.split("/")
-        th = next((x for x in parts[1:3] if x in THEMES), None) if parts[0] in ("buttons", "pieces", "board") and ("levels" in parts or parts[0] == "buttons") else None
+        th = next((x for x in parts[1:3] if x in THEMES), None) if parts[0] in ("buttons", "pieces", "board", "ui") and ("levels" in parts or parts[0] in ("buttons", "ui")) else None
         block = (f'<h3 id="{anchor}" class="d{depth}">{label} <span>{len(files)}</span></h3>' if label else "") + f'<div class="grid">{html_cards}</div>'
         body += f'<div data-for-theme="{th}">{block}</div>' if th else block
     nav.append(f'<a href="#{folder}">{title} <b>{count}</b></a>')
@@ -37,7 +37,8 @@ for folder, title in CATEGORIES.items():
             nav.append(f'<a class="sub" href="#pieces-{sub}">{sub} <b>{n}</b></a>')
     sections.append(f'<section id="{folder}"><h2>{title} <span>{folder}/ · {count}</span></h2>{body}</section>')
 
-LIVE = [("worlds", "World select (live)", "pages/worlds.html", "10 world cards · scene, ribbon title, Edge Pulse board, collect goal", 1150),
+LIVE = [("panels-live", "Panels & banners (live)", "pages/panels.html", "Dialogs, rewards, results, shop, daily, quests, toasts, events, callouts, lists, banners", 1500),
+        ("worlds", "World select (live)", "pages/worlds.html", "10 world cards · scene, ribbon title, Edge Pulse board, collect goal", 1150),
         ("world-collection", "World collection (live)", "pages/world-collection.html", "Collection screen · tap a world · +1 item fills the bar, chest unlocks at the goal", 900),
         ("ui-kit", "UI kit (live)", "pages/ui-kit.html", "Every themed control, live labels in the theme font, animations, typography", 1500),
         ("levels-live", "Level themes (live)", "pages/levels.html", "10 level worlds · tap obstacles to break them", 900),

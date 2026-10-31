@@ -29,6 +29,15 @@
         ],
         "createdAt": "2026-10-31T07:56:19.913Z",
         "reason": "User's Collection reference mockup specifies gradient 3D logo, ribbon title and gold counters"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "assets/pages/panels.html"
+        ],
+        "createdAt": "2026-10-31T08:10:42.252Z",
+        "reason": "User's reference mockups specify gradient 3D game lettering for titles and reward numbers"
       }
     ]
   }

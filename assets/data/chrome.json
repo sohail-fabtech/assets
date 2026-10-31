@@ -1,5 +1,7 @@
 {
  "slice": {
+  "header": "0 60 fill",
+  "bubble": "34 fill",
   "frame": "44 fill",
   "ribbon": "0 92 fill",
   "pill": "0 48 fill",
@@ -14,84 +16,144 @@
    "pill": "ui/chrome/brand/chr_brand_pill.svg",
    "frame": "ui/chrome/brand/chr_brand_frame.svg",
    "ribbon": "ui/chrome/brand/chr_brand_ribbon.svg",
-   "fill": "ui/chrome/brand/chr_brand_fill.svg"
+   "fill": "ui/chrome/brand/chr_brand_fill.svg",
+   "header": "ui/chrome/brand/chr_brand_header.svg",
+   "tag": "ui/chrome/brand/chr_brand_tag.svg",
+   "corner": "ui/chrome/brand/chr_brand_corner.svg",
+   "burst": "ui/chrome/brand/chr_brand_burst.svg",
+   "socket": "ui/chrome/brand/chr_brand_socket.svg"
   },
   "graphite": {
    "close": "ui/chrome/graphite/chr_graphite_close.svg",
    "pill": "ui/chrome/graphite/chr_graphite_pill.svg",
    "frame": "ui/chrome/graphite/chr_graphite_frame.svg",
    "ribbon": "ui/chrome/graphite/chr_graphite_ribbon.svg",
-   "fill": "ui/chrome/graphite/chr_graphite_fill.svg"
+   "fill": "ui/chrome/graphite/chr_graphite_fill.svg",
+   "header": "ui/chrome/graphite/chr_graphite_header.svg",
+   "tag": "ui/chrome/graphite/chr_graphite_tag.svg",
+   "corner": "ui/chrome/graphite/chr_graphite_corner.svg",
+   "burst": "ui/chrome/graphite/chr_graphite_burst.svg",
+   "socket": "ui/chrome/graphite/chr_graphite_socket.svg"
   },
   "volcano": {
    "close": "ui/chrome/volcano/chr_volcano_close.svg",
    "pill": "ui/chrome/volcano/chr_volcano_pill.svg",
    "frame": "ui/chrome/volcano/chr_volcano_frame.svg",
    "ribbon": "ui/chrome/volcano/chr_volcano_ribbon.svg",
-   "fill": "ui/chrome/volcano/chr_volcano_fill.svg"
+   "fill": "ui/chrome/volcano/chr_volcano_fill.svg",
+   "header": "ui/chrome/volcano/chr_volcano_header.svg",
+   "tag": "ui/chrome/volcano/chr_volcano_tag.svg",
+   "corner": "ui/chrome/volcano/chr_volcano_corner.svg",
+   "burst": "ui/chrome/volcano/chr_volcano_burst.svg",
+   "socket": "ui/chrome/volcano/chr_volcano_socket.svg"
   },
   "sky": {
    "close": "ui/chrome/sky/chr_sky_close.svg",
    "pill": "ui/chrome/sky/chr_sky_pill.svg",
    "frame": "ui/chrome/sky/chr_sky_frame.svg",
    "ribbon": "ui/chrome/sky/chr_sky_ribbon.svg",
-   "fill": "ui/chrome/sky/chr_sky_fill.svg"
+   "fill": "ui/chrome/sky/chr_sky_fill.svg",
+   "header": "ui/chrome/sky/chr_sky_header.svg",
+   "tag": "ui/chrome/sky/chr_sky_tag.svg",
+   "corner": "ui/chrome/sky/chr_sky_corner.svg",
+   "burst": "ui/chrome/sky/chr_sky_burst.svg",
+   "socket": "ui/chrome/sky/chr_sky_socket.svg"
   },
   "forest": {
    "close": "ui/chrome/forest/chr_forest_close.svg",
    "pill": "ui/chrome/forest/chr_forest_pill.svg",
    "frame": "ui/chrome/forest/chr_forest_frame.svg",
    "ribbon": "ui/chrome/forest/chr_forest_ribbon.svg",
-   "fill": "ui/chrome/forest/chr_forest_fill.svg"
+   "fill": "ui/chrome/forest/chr_forest_fill.svg",
+   "header": "ui/chrome/forest/chr_forest_header.svg",
+   "tag": "ui/chrome/forest/chr_forest_tag.svg",
+   "corner": "ui/chrome/forest/chr_forest_corner.svg",
+   "burst": "ui/chrome/forest/chr_forest_burst.svg",
+   "socket": "ui/chrome/forest/chr_forest_socket.svg"
   },
   "tundra": {
    "close": "ui/chrome/tundra/chr_tundra_close.svg",
    "pill": "ui/chrome/tundra/chr_tundra_pill.svg",
    "frame": "ui/chrome/tundra/chr_tundra_frame.svg",
    "ribbon": "ui/chrome/tundra/chr_tundra_ribbon.svg",
-   "fill": "ui/chrome/tundra/chr_tundra_fill.svg"
+   "fill": "ui/chrome/tundra/chr_tundra_fill.svg",
+   "header": "ui/chrome/tundra/chr_tundra_header.svg",
+   "tag": "ui/chrome/tundra/chr_tundra_tag.svg",
+   "corner": "ui/chrome/tundra/chr_tundra_corner.svg",
+   "burst": "ui/chrome/tundra/chr_tundra_burst.svg",
+   "socket": "ui/chrome/tundra/chr_tundra_socket.svg"
   },
   "reef": {
    "close": "ui/chrome/reef/chr_reef_close.svg",
    "pill": "ui/chrome/reef/chr_reef_pill.svg",
    "frame": "ui/chrome/reef/chr_reef_frame.svg",
    "ribbon": "ui/chrome/reef/chr_reef_ribbon.svg",
-   "fill": "ui/chrome/reef/chr_reef_fill.svg"
+   "fill": "ui/chrome/reef/chr_reef_fill.svg",
+   "header": "ui/chrome/reef/chr_reef_header.svg",
+   "tag": "ui/chrome/reef/chr_reef_tag.svg",
+   "corner": "ui/chrome/reef/chr_reef_corner.svg",
+   "burst": "ui/chrome/reef/chr_reef_burst.svg",
+   "socket": "ui/chrome/reef/chr_reef_socket.svg"
   },
   "carnival": {
    "close": "ui/chrome/carnival/chr_carnival_close.svg",
    "pill": "ui/chrome/carnival/chr_carnival_pill.svg",
    "frame": "ui/chrome/carnival/chr_carnival_frame.svg",
    "ribbon": "ui/chrome/carnival/chr_carnival_ribbon.svg",
-   "fill": "ui/chrome/carnival/chr_carnival_fill.svg"
+   "fill": "ui/chrome/carnival/chr_carnival_fill.svg",
+   "header": "ui/chrome/carnival/chr_carnival_header.svg",
+   "tag": "ui/chrome/carnival/chr_carnival_tag.svg",
+   "corner": "ui/chrome/carnival/chr_carnival_corner.svg",
+   "burst": "ui/chrome/carnival/chr_carnival_burst.svg",
+   "socket": "ui/chrome/carnival/chr_carnival_socket.svg"
   },
   "crystal": {
    "close": "ui/chrome/crystal/chr_crystal_close.svg",
    "pill": "ui/chrome/crystal/chr_crystal_pill.svg",
    "frame": "ui/chrome/crystal/chr_crystal_frame.svg",
    "ribbon": "ui/chrome/crystal/chr_crystal_ribbon.svg",
-   "fill": "ui/chrome/crystal/chr_crystal_fill.svg"
+   "fill": "ui/chrome/crystal/chr_crystal_fill.svg",
+   "header": "ui/chrome/crystal/chr_crystal_header.svg",
+   "tag": "ui/chrome/crystal/chr_crystal_tag.svg",
+   "corner": "ui/chrome/crystal/chr_crystal_corner.svg",
+   "burst": "ui/chrome/crystal/chr_crystal_burst.svg",
+   "socket": "ui/chrome/crystal/chr_crystal_socket.svg"
   },
   "desert": {
    "close": "ui/chrome/desert/chr_desert_close.svg",
    "pill": "ui/chrome/desert/chr_desert_pill.svg",
    "frame": "ui/chrome/desert/chr_desert_frame.svg",
    "ribbon": "ui/chrome/desert/chr_desert_ribbon.svg",
-   "fill": "ui/chrome/desert/chr_desert_fill.svg"
+   "fill": "ui/chrome/desert/chr_desert_fill.svg",
+   "header": "ui/chrome/desert/chr_desert_header.svg",
+   "tag": "ui/chrome/desert/chr_desert_tag.svg",
+   "corner": "ui/chrome/desert/chr_desert_corner.svg",
+   "burst": "ui/chrome/desert/chr_desert_burst.svg",
+   "socket": "ui/chrome/desert/chr_desert_socket.svg"
   },
   "steampunk": {
    "close": "ui/chrome/steampunk/chr_steampunk_close.svg",
    "pill": "ui/chrome/steampunk/chr_steampunk_pill.svg",
    "frame": "ui/chrome/steampunk/chr_steampunk_frame.svg",
    "ribbon": "ui/chrome/steampunk/chr_steampunk_ribbon.svg",
-   "fill": "ui/chrome/steampunk/chr_steampunk_fill.svg"
+   "fill": "ui/chrome/steampunk/chr_steampunk_fill.svg",
+   "header": "ui/chrome/steampunk/chr_steampunk_header.svg",
+   "tag": "ui/chrome/steampunk/chr_steampunk_tag.svg",
+   "corner": "ui/chrome/steampunk/chr_steampunk_corner.svg",
+   "burst": "ui/chrome/steampunk/chr_steampunk_burst.svg",
+   "socket": "ui/chrome/steampunk/chr_steampunk_socket.svg"
   },
   "nebula": {
    "close": "ui/chrome/nebula/chr_nebula_close.svg",
    "pill": "ui/chrome/nebula/chr_nebula_pill.svg",
    "frame": "ui/chrome/nebula/chr_nebula_frame.svg",
    "ribbon": "ui/chrome/nebula/chr_nebula_ribbon.svg",
-   "fill": "ui/chrome/nebula/chr_nebula_fill.svg"
+   "fill": "ui/chrome/nebula/chr_nebula_fill.svg",
+   "header": "ui/chrome/nebula/chr_nebula_header.svg",
+   "tag": "ui/chrome/nebula/chr_nebula_tag.svg",
+   "corner": "ui/chrome/nebula/chr_nebula_corner.svg",
+   "burst": "ui/chrome/nebula/chr_nebula_burst.svg",
+   "socket": "ui/chrome/nebula/chr_nebula_socket.svg"
   }
  },
  "shared": {
@@ -105,6 +167,10 @@
   "chest": "ui/chrome/shared/chr_shared_chest.svg",
   "reward-coin": "ui/chrome/shared/chr_shared_reward-coin.svg",
   "reward-orb": "ui/chrome/shared/chr_shared_reward-orb.svg",
-  "reward-ticket": "ui/chrome/shared/chr_shared_reward-ticket.svg"
+  "reward-ticket": "ui/chrome/shared/chr_shared_reward-ticket.svg",
+  "bubble": "ui/chrome/shared/chr_shared_bubble.svg",
+  "tail": "ui/chrome/shared/chr_shared_tail.svg",
+  "rays": "ui/chrome/shared/chr_shared_rays.svg",
+  "divider": "ui/chrome/shared/chr_shared_divider.svg"
  }
 }
