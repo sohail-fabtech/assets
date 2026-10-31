@@ -1,0 +1,58 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Edge Pulse – Bombs</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../motion/anim.css">
+<style>
+body{margin:0;min-height:100vh;background:radial-gradient(120% 80% at 50% 0,#2e3340,#12141a);color:#e3e6ee;font:600 14px/1.45 Poppins,sans-serif;overflow-x:hidden}
+header{display:flex;gap:14px;align-items:center;padding:18px 28px 6px;flex-wrap:wrap}
+h1{font:900 28px/1.2 Poppins;letter-spacing:-.02em;margin:0;flex:1}
+button.ui{font:800 13px Poppins;color:#fff;background:#ffffff14;border:1px solid #ffffff22;border-radius:99px;padding:8px 14px;cursor:pointer}
+button.go{background:#ff5a3a;border:0}
+#stage{padding:8px 28px 40px}
+h2{font:900 22px/1.2 Poppins;letter-spacing:-.02em;margin:26px 0 4px}h2 span{font:600 13px Poppins;opacity:.55;margin-left:8px}
+.design{display:grid;grid-template-columns:200px 1fr;align-items:center;gap:20px;padding:16px 0;border-bottom:1px solid #ffffff0d}
+.design b{font:800 17px Poppins;display:block}.design small{opacity:.6;text-transform:capitalize}
+.row{display:grid;grid-template-columns:repeat(var(--n,5),minmax(0,150px));gap:16px;align-items:end;min-height:150px}
+.cell{display:grid;place-items:end center}
+.tiers .row{min-height:0}.lvl{text-align:center;font:800 12px Poppins;letter-spacing:.04em;opacity:.7}
+.bomb{cursor:pointer}.bomb img{animation:tick .9s ease-in-out infinite;transform-origin:50% 70%}
+@keyframes tick{50%{transform:scale(1.035)}}
+.gentle .bomb img{animation:none}
+#fx{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:8}
+</style></head><body>
+<header><h1>Bombs</h1>
+ <label>Speed <input id="slow" type="range" min="1" max="6" value="1"> <output id="so">1×</output></label>
+ <button class="ui" id="gentle">Gentle motion: off</button><button class="ui go" id="all">Blast all</button></header>
+<div id="stage"></div><canvas id="fx"></canvas>
+<script type="module">
+import * as A from '../motion/anim.js';
+import { blastFX } from '../motion/blast.js';
+import { wait } from '../motion/tween.js';
+const $ = s => document.querySelector(s), fx = blastFX($('#fx'));
+const METAL = await (await fetch('bombs.json')).json(), COLOR = await (await fetch('bombs_color.json')).json();
+const SETS = { metal: METAL, color: COLOR };
+const SIZE = { small: 72, medium: 104, large: 136 }, POWER = { small: .7, medium: 1, large: 1.5 };
+
+const section = (key, title, sub) => { const B = SETS[key];
+  return `<h2>${title} <span>${sub}</span></h2><div class="design tiers"><div></div><div class="row" style="--n:${B[0].pieces.length}">${
+    B[0].pieces.map(p => `<span class="lvl">${p.level ? `Lv ${p.level} · ` : ''}${p.tierName}</span>`).join('')}</div></div>` +
+  B.map(b => `<div class="design"><div><b>${b.name}</b><small>${b.size} · ${b.blast}</small></div><div class="row" style="--n:${b.pieces.length}">${
+    b.pieces.map((p, i) => `<div class="cell"><div class="ep bomb" data-set="${key}" data-id="${b.id}" data-i="${i}" style="width:${SIZE[b.size]}px"><img src="../${p.file}" alt="${b.name} ${p.tierName}"></div></div>`).join('')}</div></div>`).join(''); };
+$('#stage').innerHTML = section('metal', 'Metal tiers', 'level up from Black Iron to Inferno') + section('color', 'Color bombs', 'match the piece colors');
+const info = el => { const b = SETS[el.dataset.set].find(x => x.id === el.dataset.id); return [b, b.pieces[el.dataset.i]]; };
+const light = el => fx.fuse(el, info(el)[0].tip);
+document.querySelectorAll('.bomb').forEach(el => el.querySelector('img').complete ? light(el) : el.querySelector('img').onload = () => light(el));
+
+async function boom(el) {
+  if (el.dataset.busy) return; el.dataset.busy = 1;
+  const [b, p] = info(el);
+  await fx.blast(el, { color: p.color, light: p.light, power: POWER[b.size], kind: b.id === 'line' ? 'line' : b.id === 'spike' ? 'spike' : 'round', shakeEl: $('#stage') });
+  await wait(1400);           // let smoke drift before the respawn
+  el.style.opacity = ''; await A.popIn(el); light(el); delete el.dataset.busy;
+}
+document.addEventListener('click', e => { const el = e.target.closest('.bomb'); if (el) boom(el); });
+$('#all').onclick = async () => { for (const el of document.querySelectorAll('.bomb')) { boom(el); await wait(90); } };
+if (location.search.includes('blast')) setTimeout(() => boom(document.querySelectorAll('.bomb')[12]), 800);  // ?blast = auto-detonate (preview/testing)
+$('#slow').oninput = e => { globalThis.SLOW = +e.target.value; $('#so').value = e.target.value + '×'; };
+$('#gentle').onclick = e => { const g = document.body.classList.toggle('gentle'); e.target.textContent = `Gentle motion: ${g ? 'on' : 'off'}`; };
+</script></body></html>
