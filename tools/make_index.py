@@ -37,7 +37,8 @@ for folder, title in CATEGORIES.items():
             nav.append(f'<a class="sub" href="#pieces-{sub}">{sub} <b>{n}</b></a>')
     sections.append(f'<details class="acc" id="{folder}"><summary><h2>{title} <span>{folder}/ · {count}</span></h2></summary><div class="accb">{body}</div></details>')
 
-LIVE = [("splash-live", "Splash & opening (live)", "pages/splash.html", "Vertical opening: studio splash → characters → loading tips → title + Play", 960),
+LIVE = [("home-live", "Home · first screen (live)", "pages/home.html", "Lobby: HUD, world hero, side rails, modes, big PLAY, bottom tabs", 960),
+        ("splash-live", "Splash & opening (live)", "pages/splash.html", "Vertical opening: studio splash → characters → loading tips → title + Play", 960),
         ("ribbons-live", "Ribbons & result banners (live)", "pages/ribbons.html", "Curved/wave/bow ribbons, level-up badges, level completed, victory, icon progress bars", 1500),
         ("panels-live", "Panels & banners (live)", "pages/panels.html", "Dialogs, rewards, results, shop, daily, quests, toasts, events, callouts, lists, banners", 1500),
         ("worlds", "World select (live)", "pages/worlds.html", "10 world cards · scene, ribbon title, Edge Pulse board, collect goal", 1150),
@@ -105,7 +106,15 @@ document.getElementById('themes').onclick = e => {{ const b = e.target.closest('
 document.querySelectorAll('iframe').forEach(f => f.addEventListener('load', () => f.contentWindow.postMessage({{ type: 'theme', theme: document.documentElement.dataset.theme }}, '*')));
 setTheme(localStorage.getItem('edgepulse.theme') || 'graphite');
 // accordion: embedded pages load when opened and grow to their content height (no inner scrollbars)
-function fit(f) {{ try {{ const d = f.contentDocument; f.style.height = Math.max(d.documentElement.scrollHeight, d.body.scrollHeight) + 'px'; }} catch (e) {{}} }}
+// size to the page's real content (not its viewport): pages using min-height:100vh would otherwise grow with the frame forever
+function fit(f) {{ try {{
+  const d = f.contentDocument, w = d.defaultView;
+  if (!d.getElementById('embed-fix')) d.head.insertAdjacentHTML('beforeend', '<style id="embed-fix">html,body{{min-height:0!important;height:auto!important;align-content:start!important}}</style>');
+  let bottom = d.body.getBoundingClientRect().bottom;
+  for (const el of d.body.children) {{ const cs = w.getComputedStyle(el); if (cs.position !== 'fixed' && cs.display !== 'none') bottom = Math.max(bottom, el.getBoundingClientRect().bottom); }}
+  const h = Math.ceil(bottom + w.scrollY + 4);
+  if (Math.abs(parseFloat(f.style.height || 0) - h) > 2) f.style.height = h + 'px';
+}} catch (e) {{}} }}
 document.querySelectorAll('details.acc').forEach(dt => dt.addEventListener('toggle', () => {{
   const f = dt.querySelector('iframe[data-src]');
   if (dt.open && f && !f.src) {{

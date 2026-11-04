@@ -1,0 +1,175 @@
+<!doctype html><html data-theme="graphite"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Edge Pulse – Home (first screen)</title>
+<link rel="stylesheet" href="../motion/themes.css">
+<link rel="stylesheet" href="../motion/chrome.css">
+<style>
+:root{--ink:#160a3a;--out:cubic-bezier(.34,1.5,.64,1)}
+body{margin:0;min-height:100vh;display:grid;justify-items:center;gap:14px;padding:22px 0 40px;background:#0f0b24;color:#fff;font:600 14px/1.4 Poppins,sans-serif}
+.ctrls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.ctrls button{font:800 12px Poppins;color:#fff;background:#ffffff14;border:1px solid #ffffff2a;border-radius:99px;padding:7px 14px;cursor:pointer}
+.ctrls button[aria-pressed=true]{background:#fff;color:#0f0b24}
+.phone{position:relative;width:390px;height:844px;border-radius:52px;overflow:hidden;box-shadow:0 0 0 10px #1c1640,0 0 0 12px #3a3070,0 40px 80px #000a;isolation:isolate;user-select:none}
+.phone::after{content:"";position:absolute;top:12px;left:50%;width:118px;height:32px;translate:-50% 0;border-radius:20px;background:#000;z-index:60}
+/* background: current world scene, slow parallax drift, fades into brand purple */
+.bg{position:absolute;inset:-30px;background:center 20%/cover;animation:drift 18s ease-in-out infinite alternate;transition:opacity .4s}
+@keyframes drift{to{translate:-14px 10px;scale:1.04}}
+.shade{position:absolute;inset:0;background:linear-gradient(#1a0e4a88,transparent 26%,transparent 50%,#2a1a8aaa 72%,#1a0e4acc 100%)}
+/* generic tap feel for every interactive thing */
+.tap{cursor:pointer;transition:scale 120ms var(--out),translate 160ms var(--out)}
+.tap:active{scale:.9}@media (hover:hover){.tap:hover{translate:0 -2px}}
+.in{opacity:0;animation:in 560ms var(--out) both;animation-delay:var(--d,0ms)}
+@keyframes in{0%{opacity:0;scale:.6;translate:0 16px}100%{opacity:1;scale:1;translate:0}}
+.badge{position:absolute;right:-4px;top:-4px;min-width:22px;height:22px;padding:0 6px;box-sizing:border-box;border-radius:99px;background:#ff3a5a;border:2.5px solid #fff;font:900 12px/17px Poppins;text-align:center;animation:bounce 2.4s ease-in-out infinite}
+@keyframes bounce{0%,80%,100%{scale:1}86%{scale:1.3}92%{scale:.9}}
+/* ---- top HUD ---- */
+.hud{position:absolute;top:54px;left:14px;right:14px;display:flex;align-items:center;gap:8px;z-index:10}
+.ava{position:relative;width:52px;height:52px;border-radius:50%;background:#14b8d4;box-shadow:0 0 0 3px #fff,0 4px 0 3px #0005;overflow:hidden}
+.ava img{width:120%;margin:-2px 0 0 -10%}
+.lvl{position:absolute;left:34px;bottom:-6px;width:26px;height:26px;border-radius:50%;background:#ffc21f;border:2.5px solid #fff;color:#3a1a00;font:900 12px/21px Poppins;text-align:center;z-index:2}
+.cur{position:relative;flex:1;height:34px;display:flex;align-items:center;padding:0 30px 0 34px;border-radius:99px;background:#0e0830cc;box-shadow:inset 0 2px 0 #0006,0 0 0 2px #ffffff22;font:900 15px Poppins;font-variant-numeric:tabular-nums}
+.cur>img.ic{position:absolute;left:-8px;width:40px;filter:drop-shadow(0 3px 0 #0005)}
+.cur .plus{position:absolute;right:-4px;width:30px}.cur small{font:800 11px Poppins;opacity:.8;margin-left:4px}
+.gear{width:44px}
+/* ---- world title + hero ---- */
+.world{position:absolute;top:128px;left:0;right:0;text-align:center;z-index:5}
+.world .ribbon{width:300px;margin:0 auto;height:86px;border-width:0 52px;border-image-width:0 52px}
+.world .ribbon .label-3d{font:900 20px/1 Poppins}
+.world small{display:block;font:800 12px Poppins;letter-spacing:.14em;opacity:.9;margin-top:-6px}
+.hero{position:absolute;left:0;right:0;top:250px;height:230px}
+.hero img.m{position:absolute;filter:drop-shadow(0 12px 0 #0003)}
+.hero .m1{left:96px;top:30px;width:200px;animation:float 3.2s ease-in-out infinite}
+.hero .m2{left:84px;top:150px;width:74px;z-index:2;animation:float 2.6s .4s ease-in-out infinite}
+.hero .m3{right:84px;top:144px;width:80px;z-index:2;animation:float 2.9s .8s ease-in-out infinite}
+@keyframes float{50%{translate:0 -12px}}
+.node{position:absolute;left:50%;top:-6px;translate:-50% 0;display:flex;gap:3px}
+.node img{width:26px}.node img:nth-child(2){width:32px;margin-top:-6px}
+/* ---- side rails ---- */
+.rail{position:absolute;top:226px;display:grid;gap:8px;z-index:8}
+.rail.l{left:12px}.rail.r{right:12px}
+.rb{position:relative;width:62px;text-align:center}
+.rb .ic{width:56px;height:56px;margin:0 auto;border-radius:20px;display:grid;place-items:center;background:linear-gradient(#ffffff30,#ffffff08);box-shadow:inset 0 0 0 2px #ffffff40,0 5px 0 #0005}
+.rb .ic img{width:42px}.rb .t{display:block;margin-top:5px;font:900 11px/1 Poppins;text-shadow:0 2px 0 #0008}
+.rb .timer{display:block;margin:3px auto 0;width:max-content;padding:1px 7px;border-radius:99px;background:#0008;font:800 11px Poppins;font-variant-numeric:tabular-nums}
+.rb.wig .ic{animation:wiggle 5s ease-in-out infinite;animation-delay:var(--w,0s)}
+@keyframes wiggle{0%,88%,100%{rotate:0}90%{rotate:-12deg}93%{rotate:10deg}96%{rotate:-6deg}}
+/* ---- play area ---- */
+.modes{position:absolute;left:0;right:0;bottom:232px;display:flex;justify-content:center;gap:12px;z-index:6}
+.mode{position:relative;width:64px;text-align:center}.mode img{width:64px;display:block}
+.mode span{display:block;font:800 11px Poppins;margin-top:2px}.mode.sel img{filter:drop-shadow(0 0 0 #fff) drop-shadow(0 0 10px #fff8)}
+.mode.sel::before{content:"";position:absolute;left:8px;right:8px;top:-8px;height:4px;border-radius:2px;background:#fff}
+.play{position:absolute;left:50%;bottom:124px;width:290px;translate:-50% 0;z-index:7;cursor:pointer}
+.play img{display:block;width:100%}.play b{position:absolute;inset:0 0 13%;display:grid;place-items:center;align-content:center;font:900 32px/1 Poppins;color:#0e2a06}
+.play b small{font:800 13px Poppins;opacity:.8;margin-top:3px}
+.play{animation:breathe 1.8s ease-in-out infinite}@keyframes breathe{50%{scale:1.04}}
+.play::after{content:"";position:absolute;inset:6px 10px 22px;border-radius:40px;background:linear-gradient(105deg,transparent 35%,#fff9 50%,transparent 65%);background-size:300% 100%;animation:shine 3s ease-in-out infinite;pointer-events:none;mix-blend-mode:overlay}
+@keyframes shine{0%,55%{background-position:120% 0}100%{background-position:-120% 0}}
+.play:active{animation:none;scale:.92}
+/* ---- bottom nav ---- */
+.nav{position:absolute;left:0;right:0;bottom:0;height:104px;padding-bottom:20px;box-sizing:border-box;display:grid;grid-template-columns:repeat(5,1fr);align-items:end;z-index:12;
+  background:linear-gradient(#3a2ab0,#22168a);box-shadow:inset 0 3px 0 #ffffff33,0 -6px 20px #0006;border-radius:28px 28px 0 0}
+.tab{position:relative;display:grid;justify-items:center;gap:2px;padding-bottom:4px;cursor:pointer;font:800 11px Poppins;color:#c8c0ff}
+.tab img{width:40px;transition:translate 240ms var(--out),scale 240ms var(--out)}
+.tab.on{color:#fff}.tab.on img{translate:0 -26px;scale:1.35}
+.tab.on span{translate:0 -14px}
+.navglow{position:absolute;bottom:34px;width:74px;height:74px;margin-left:-37px;border-radius:50%;background:radial-gradient(#ffd65a,#ff9a1a);box-shadow:0 0 0 5px #fff,0 6px 0 5px #0004;transition:left 300ms var(--out);z-index:-1}
+#fx{position:absolute;inset:0;pointer-events:none;z-index:50}
+.toast{position:absolute;left:50%;top:110px;translate:-50% 0;z-index:40;padding:8px 16px;border-radius:99px;background:#fff;color:var(--ink);font:800 13px Poppins;opacity:0;pointer-events:none}
+.toast.show{animation:toast 1.6s var(--out)}@keyframes toast{0%{opacity:0;translate:-50% -20px}15%,80%{opacity:1;translate:-50% 0}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style></head><body>
+<div class="ctrls"><button id="replay">▶ Replay entrance</button><span id="worlds" style="display:contents"></span></div>
+<div class="phone" id="phone">
+  <div class="bg" id="bg"></div><div class="shade"></div>
+  <div class="hud">
+    <div class="ava tap in" style="--d:80ms"><img src="../ui/mascots/masc_cyan.svg" alt=""><span class="lvl">14</span></div>
+    <div class="cur tap in" style="--d:140ms" data-act="lives"><img class="ic" src="../hud/life_heart.svg" alt=""><span id="lives">5</span><small>FULL</small><img class="plus" src="../ui/chrome/shared/chr_shared_plus.svg" alt=""></div>
+    <div class="cur tap in" style="--d:200ms" data-act="coins"><img class="ic" src="../ui/chrome/shared/chr_shared_reward-coin.svg" alt=""><span id="coins">0</span><img class="plus" src="../ui/chrome/shared/chr_shared_plus.svg" alt=""></div>
+    <img class="gear tap in" style="--d:260ms" data-act="settings" src="../buttons/graphite/ui_graphite_icon-settings_normal.svg" alt="Settings">
+  </div>
+  <div class="world in" style="--d:300ms"><div class="ribbon" id="wribbon"><span class="label-3d" id="wname" data-text="Dangerous Volcano">Dangerous Volcano</span></div><small id="wsub">WORLD 1 · LEVEL 14</small></div>
+  <div class="hero">
+    <div class="node in" style="--d:520ms"><img src="../hud/star_on.svg"><img src="../hud/star_on.svg"><img src="../hud/star_off.svg"></div>
+    <span class="in" style="--d:420ms"><img class="m m1 tap" data-act="poke" src="../ui/mascots/masc_lime.svg" alt=""></span>
+    <span class="in" style="--d:480ms"><img class="m m2 tap" data-act="poke" src="../ui/mascots/masc_magenta.svg" alt=""></span>
+    <span class="in" style="--d:540ms"><img class="m m3 tap" data-act="poke" src="../ui/mascots/masc_amber.svg" alt=""></span>
+  </div>
+  <div class="rail l">
+    <div class="rb tap in wig" style="--d:600ms;--w:.5s" data-act="daily"><div class="ic"><img src="../modes/mode_daily.svg" alt=""></div><span class="badge">!</span><span class="t">Daily</span></div>
+    <div class="rb tap in wig" style="--d:660ms;--w:1.5s" data-act="event"><div class="ic"><img src="../pieces/events/pumpkin/evt_pumpkin_0.svg" alt=""></div><span class="t">Event</span><span class="timer" id="t1">2d 06h</span></div>
+    <div class="rb tap in wig" style="--d:720ms;--w:2.5s" data-act="offer"><div class="ic"><img src="../ui/chrome/shared/chr_shared_chest.svg" alt=""></div><span class="badge" style="background:#ffa51f">-50%</span><span class="t">Offer</span><span class="timer" id="t2">05:59:12</span></div>
+  </div>
+  <div class="rail r">
+    <div class="rb tap in wig" style="--d:640ms;--w:1s" data-act="missions"><div class="ic"><img src="../buttons/graphite/ui_graphite_icon-trophy_normal.svg" alt=""></div><span class="badge" id="mb">3</span><span class="t">Missions</span></div>
+    <div class="rb tap in wig" style="--d:700ms;--w:2s" data-act="weekly"><div class="ic"><img src="../modes/mode_weekly.svg" alt=""></div><span class="t">Journey</span><span class="timer">4/5</span></div>
+    <div class="rb tap in wig" style="--d:760ms;--w:3s" data-act="gift"><div class="ic"><img src="../hud/shard.svg" alt=""></div><span class="badge">1</span><span class="t">Free gift</span></div>
+  </div>
+  <div class="modes">
+    <div class="mode tap in sel" style="--d:800ms" data-mode="Campaign"><img src="../modes/mode_campaign.svg" alt=""><span>Campaign</span></div>
+    <div class="mode tap in" style="--d:850ms" data-mode="Endless"><img src="../modes/mode_endless.svg" alt=""><span>Endless</span></div>
+    <div class="mode tap in" style="--d:900ms" data-mode="Time Rush"><img src="../modes/mode_time_rush.svg" alt=""><span>Time Rush</span></div>
+    <div class="mode tap in" style="--d:950ms" data-mode="Blast"><img src="../modes/mode_blast.svg" alt=""><span>Blast</span></div>
+  </div>
+  <div class="in" style="--d:1000ms;position:absolute;inset:0;pointer-events:none;z-index:7"><div class="play" id="play" style="pointer-events:auto"><img src="../buttons/graphite/ui_graphite_pill-primary_normal.svg" alt=""><b><span id="ptxt">PLAY</span><small id="psub">Level 14</small></b></div></div>
+  <nav class="nav in" style="--d:200ms" id="nav"><div class="navglow" id="glow"></div>
+    <div class="tab" data-tab="0"><img src="../buttons/graphite/ui_graphite_icon-shop_normal.svg" alt=""><span>Shop</span></div>
+    <div class="tab" data-tab="1"><img src="../ui/chrome/shared/chr_shared_chest.svg" alt=""><span>Collection</span><span class="badge" style="right:14px;top:8px">2</span></div>
+    <div class="tab on" data-tab="2"><img src="../buttons/graphite/ui_graphite_icon-home_normal.svg" alt=""><span>Home</span></div>
+    <div class="tab" data-tab="3"><img src="../buttons/graphite/ui_graphite_icon-trophy_normal.svg" alt=""><span>Ranks</span></div>
+    <div class="tab" data-tab="4"><img src="../ui/mascots/masc_magenta.svg" alt=""><span>Profile</span></div>
+  </nav>
+  <div class="toast" id="toast"></div><canvas id="fx"></canvas>
+</div>
+<script type="module">
+import * as A from '../motion/anim.js';
+const $ = s => document.querySelector(s);
+const L = await (await fetch('../data/levels.json')).json(), C = await (await fetch('../data/chrome.json')).json();
+const WORLDS = Object.keys(L).filter(t => L[t].scene);
+let world = 'volcano';
+// particles on the phone canvas (sized to the phone, not the window)
+const cv = $('#fx'); cv.width = 390 * devicePixelRatio; cv.height = 844 * devicePixelRatio; cv.style.width = '390px'; cv.style.height = '844px';
+const g = cv.getContext('2d'); let ps = [];
+const burst = (el, n, cols) => { const p = $('#phone').getBoundingClientRect(), r = el.getBoundingClientRect(), x = r.left - p.left + r.width / 2, y = r.top - p.top + r.height / 2;
+  for (let i = 0; i < n; i++) { const a = Math.random() * 6.283, s = 2 + Math.random() * 5; ps.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 2, l: 1, c: cols[i % cols.length] }); } };
+(function tick() { g.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0); g.clearRect(0, 0, 390, 844);
+  ps = ps.filter(p => (p.l -= .028) > 0); for (const p of ps) { p.x += p.vx; p.y += p.vy; p.vy += .25; g.globalAlpha = p.l; g.fillStyle = p.c; g.beginPath(); g.arc(p.x, p.y, 1 + 4 * p.l, 0, 7); g.fill(); }
+  requestAnimationFrame(tick); })();
+const toast = t => { const e = $('#toast'); e.textContent = t; e.classList.remove('show'); void e.offsetWidth; e.classList.add('show'); };
+
+function setWorld(t) {
+  world = t; const n = WORLDS.indexOf(t) + 1, lv = L[t];
+  $('#bg').style.backgroundImage = `url(../${lv.scene})`;
+  $('#wribbon').style.setProperty('--ribbon-src', `url(../${C.tones[t].ribbon})`);
+  $('#wname').textContent = lv.name; $('#wname').dataset.text = lv.name;
+  $('#wsub').textContent = `WORLD ${n} · LEVEL ${n * 10 + 4}`; $('#psub').textContent = `Level ${n * 10 + 4}`;
+  $('#worlds').innerHTML = WORLDS.map(w => `<button data-w="${w}" aria-pressed="${w === t}">${L[w].name.split(' ').pop()}</button>`).join('');
+}
+function entrance() {
+  document.querySelectorAll('.in').forEach(el => { el.classList.remove('in'); void el.offsetWidth; el.classList.add('in'); });
+  A.countTo($('#coins'), 0, 1250, 900);
+  setTimeout(placeGlow, 900);
+}
+function placeGlow() { const i = +$('.tab.on').dataset.tab; $('#glow').style.left = `${(i + .5) * 20}%`; }  // 5 equal columns: no measuring needed
+
+document.addEventListener('click', e => {
+  const w = e.target.closest('[data-w]'); if (w) { setWorld(w.dataset.w); return entrance(); }
+  if (e.target.id === 'replay') return entrance();
+  const tab = e.target.closest('.tab');
+  if (tab) { document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t === tab)); placeGlow(); A.play(tab.querySelector('img'), 'jelly'); return; }
+  const mode = e.target.closest('.mode');
+  if (mode) { document.querySelectorAll('.mode').forEach(m => m.classList.toggle('sel', m === mode)); A.play(mode, 'pop');
+    $('#ptxt').textContent = 'PLAY'; $('#psub').textContent = mode.dataset.mode === 'Campaign' ? `Level ${WORLDS.indexOf(world) * 10 + 14}` : mode.dataset.mode; return; }
+  if (e.target.closest('#play')) { const p = $('#play'); A.play(p, 'jelly'); burst(p, 30, ['#9dff6a', '#fff', '#ffd65a']); toast(`Starting ${$('#psub').textContent}…`); return; }
+  const a = e.target.closest('[data-act]'); if (!a) return;
+  A.play(a, a.dataset.act === 'poke' ? 'jelly' : 'pop');
+  const msg = { lives: 'Lives are full', coins: 'Open coin shop', settings: 'Settings', daily: 'Daily Pulse is ready!', event: 'Spooky Pulse event', offer: 'Starter offer', missions: '3 missions to claim', weekly: 'Weekly Journey 4/5', gift: '+25 shards!' }[a.dataset.act];
+  if (msg) toast(msg);
+  if (a.dataset.act === 'gift') { burst(a, 22, ['#c9d6ff', '#7f9bff', '#fff']); a.querySelector('.badge')?.remove(); }
+  if (a.dataset.act === 'missions') { const b = $('#mb'); if (b) b.textContent = Math.max(0, +b.textContent - 1) || (b.remove(), ''); }
+  if (a.dataset.act === 'poke') burst(a, 12, ['#fff', '#ffd65a']);
+});
+// live countdowns (event + offer)
+let s1 = 2 * 86400 + 6 * 3600, s2 = 5 * 3600 + 59 * 60 + 12;
+setInterval(() => { s1--; s2--; $('#t1').textContent = `${Math.floor(s1 / 86400)}d ${String(Math.floor(s1 % 86400 / 3600)).padStart(2, '0')}h`;
+  $('#t2').textContent = [s2 / 3600, s2 % 3600 / 60, s2 % 60].map(v => String(Math.floor(v)).padStart(2, '0')).join(':'); }, 1000);
+setWorld(world); entrance(); setTimeout(placeGlow, 900); addEventListener("resize", placeGlow);
+</script></body></html>

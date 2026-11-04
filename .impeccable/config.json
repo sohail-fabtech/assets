@@ -56,6 +56,24 @@
         ],
         "createdAt": "2026-10-31T08:49:57.205Z",
         "reason": "Gold 3D Edge Pulse logo lettering established by the user's reference mockups"
+      },
+      {
+        "rule": "clipped-overflow-container",
+        "value": "*",
+        "files": [
+          "assets/pages/home.html"
+        ],
+        "createdAt": "2026-11-04T06:48:28.639Z",
+        "reason": "Phone screen frame and round avatar intentionally clip their content (device mock)"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "assets/pages/home.html"
+        ],
+        "createdAt": "2026-11-04T06:48:28.664Z",
+        "reason": "Ribbon world title uses the 3D game lettering from the user's references"
       }
     ]
   }
