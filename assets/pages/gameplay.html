@@ -1,0 +1,298 @@
+<!doctype html><html data-theme="graphite"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Edge Pulse – Gameplay</title>
+<link rel="stylesheet" href="../motion/themes.css">
+<link rel="stylesheet" href="../motion/chrome.css">
+<style>
+:root{--out:cubic-bezier(.34,1.5,.64,1);--cell:38px;--gap:4px;--pad:8px;--ring:34px}
+body{margin:0;min-height:100vh;display:grid;justify-items:center;align-content:start;gap:12px;padding:20px 0 40px;background:#0f0b24;color:#fff;font:600 14px/1.4 Poppins,sans-serif}
+.hint{color:#b8bccb;font-size:13px}
+.phone{position:relative;width:390px;height:844px;border-radius:52px;overflow:hidden;background:#12141a;cursor:pointer;box-shadow:0 0 0 10px #1c1640,0 0 0 12px #3a3070,0 40px 80px #000a;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.phone::after{content:"";position:absolute;top:12px;left:50%;width:118px;height:32px;translate:-50% 0;border-radius:20px;background:#000;z-index:60}
+/* ---- world backdrop ---- */
+.bgscene{position:absolute;inset:-24px;background:center 30%/cover;filter:saturate(1.15) brightness(.62);animation:drift 22s ease-in-out infinite alternate}
+@keyframes drift{to{translate:-12px 10px;scale:1.05}}
+.vig{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 45%,transparent 40%,#000a),linear-gradient(#0008,transparent 22%,transparent 70%,#000c);pointer-events:none}
+.phone.danger .vig{animation:danger 900ms ease-in-out infinite alternate}
+@keyframes danger{to{box-shadow:inset 0 0 70px 10px #ff2a4acc}}
+/* ---- HUD ---- */
+.hud{position:absolute;top:56px;left:14px;right:14px;display:grid;grid-template-columns:48px 1fr auto;gap:10px;align-items:center;z-index:5}
+.pause{width:48px;cursor:pointer}.pause:active{scale:.9}
+.score{position:relative;height:52px;border-radius:99px;background:#0b0c10cc;box-shadow:inset 0 2px 0 #0008,0 0 0 2px #ffffff1c;display:grid;place-items:center}
+.score b{font:900 26px/1 Poppins;font-variant-numeric:tabular-nums}.score small{position:absolute;left:18px;top:50%;translate:0 -50%;font:800 11px Poppins;color:#c8cad4;letter-spacing:.08em}
+.score.bump{animation:bump 260ms var(--out)}@keyframes bump{40%{scale:1.1}}
+.combo{position:absolute;right:10px;top:50%;translate:0 -50%;padding:4px 10px;border-radius:99px;background:#ffa51f;color:#2a1200;font:900 13px Poppins;opacity:0;transition:opacity .2s}
+.combo.on{opacity:1}
+.lives{display:flex;gap:2px}.lives img{width:34px;transition:opacity .2s}.lives img.lost{animation:shatter 420ms ease-in forwards}
+@keyframes shatter{30%{scale:1.3;filter:brightness(2)}100%{scale:.3;rotate:40deg;translate:0 30px;opacity:0}}
+.meta{position:absolute;top:118px;left:0;right:0;display:flex;justify-content:center;gap:16px;font:800 12px Poppins;color:#d6d8e0;z-index:5}
+/* ---- arena: board + launcher ring ---- */
+.arena{position:absolute;left:50%;top:176px;translate:-50% 0;width:calc(var(--b) + 2 * var(--ring));height:calc(var(--b) + 2 * var(--ring));--b:calc(7 * var(--cell) + 6 * var(--gap) + 2 * var(--pad))}
+.board{position:absolute;inset:var(--ring);border-radius:24px;background:url(../board/board_graphite.svg) center/100% 100%;box-shadow:0 16px 34px #000a}
+.board::after{content:"";position:absolute;inset:-7px;border-radius:30px;box-shadow:0 0 0 3px var(--acc,#7ff3ff),0 0 26px 2px var(--acc,#7ff3ff);opacity:.45;animation:rim 1.8s ease-in-out infinite alternate;pointer-events:none}
+@keyframes rim{to{opacity:.85}}
+.ghost{position:absolute;width:var(--cell);height:var(--cell);opacity:.5;pointer-events:none;z-index:3;filter:drop-shadow(0 0 8px #fff);animation:ghost 700ms ease-in-out infinite alternate;transition:left 90ms,top 90ms}
+@keyframes ghost{from{scale:.84;opacity:.35}to{scale:1;opacity:.6}}
+.tapfx{position:absolute;width:24px;height:24px;margin:-12px;border-radius:50%;border:3px solid #fff;pointer-events:none;z-index:30;animation:tapfx 420ms ease-out forwards}
+@keyframes tapfx{to{scale:4;opacity:0}}
+.taphint{position:absolute;left:0;right:0;bottom:46px;text-align:center;font:900 15px Poppins;letter-spacing:.14em;z-index:5;pointer-events:none;animation:hintp 1.2s ease-in-out infinite alternate;transition:opacity .5s}
+@keyframes hintp{to{opacity:.35;scale:.96}}
+.ready{position:absolute;left:0;right:0;top:300px;text-align:center;z-index:25;pointer-events:none;font:900 58px/1 Poppins;color:#fff;-webkit-text-stroke:10px #1a1040;paint-order:stroke fill;animation:ready 620ms var(--out) forwards}
+.ready.go{color:#9dff6a;-webkit-text-stroke-color:#0e3a06}
+@keyframes ready{0%{scale:2.6;opacity:0}35%{scale:.92;opacity:1}75%{scale:1;opacity:1}100%{scale:1.3;opacity:0}}
+.meter{position:absolute;left:62px;right:62px;bottom:-9px;height:7px;border-radius:99px;background:#0009;overflow:hidden}
+.meter i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#ffe08a,#ffa51f,#ff5a3a);transition:width .3s var(--out)}
+.cell{position:absolute;width:var(--cell);height:var(--cell);border-radius:11px;background:#0006;box-shadow:inset 0 2px 0 #0007}
+.cell.target{box-shadow:inset 0 0 0 3px var(--tc,#fff),0 0 14px var(--tc,#fff);background:#ffffff14;animation:tgt .8s ease-in-out infinite alternate}
+@keyframes tgt{to{box-shadow:inset 0 0 0 3px var(--tc,#fff),0 0 4px var(--tc,#fff)}}
+.pc{position:absolute;width:var(--cell);height:var(--cell);pointer-events:none;transition:scale 200ms var(--out)}
+.pc.land{animation:land 260ms var(--out)}@keyframes land{0%{scale:1.25 .75}60%{scale:.92 1.08}100%{scale:1}}
+.pc.clear{animation:clr 220ms ease-in forwards}@keyframes clr{0%{scale:1}35%{scale:1.2;filter:brightness(2)}100%{scale:0;opacity:0}}
+.lane{position:absolute;background:linear-gradient(var(--dir),#ffffff38,transparent);pointer-events:none;border-radius:12px;transition:all 120ms}
+.launcher{position:absolute;width:48px;height:48px;margin:-24px;z-index:4;pointer-events:none}
+.launcher .body{position:absolute;inset:0;transition:rotate 160ms}
+.launcher .body img{width:100%}.launcher .now{position:absolute;left:50%;top:50%;width:26px;margin:-13px;filter:drop-shadow(0 0 6px #fff8)}
+.launcher.kick .body{animation:kick 160ms var(--out)}@keyframes kick{50%{scale:1.25}}
+.launcher.deny{animation:deny 300ms}@keyframes deny{20%,60%{translate:-5px 0}40%,80%{translate:5px 0}}
+.dot{position:absolute;width:6px;height:6px;margin:-3px;border-radius:50%;background:#ffffff26}
+/* ---- tray: NOW / swap / NEXT ---- */
+.tray{position:absolute;left:0;right:0;bottom:84px;display:flex;justify-content:center;align-items:center;gap:18px;z-index:5}
+.slot{position:relative;width:86px;text-align:center}.slot>img.bg{width:86px;display:block}
+.slot>img.pc2{position:absolute;left:50%;top:44px;width:54px;margin:-27px;transition:scale 180ms var(--out)}
+.slot span{display:block;font:900 12px Poppins;letter-spacing:.1em;opacity:.8;margin-top:4px}
+.slot.next{width:70px}.slot.next>img.bg{width:70px}.slot.next>img.pc2{top:36px;width:42px;margin:-21px}
+.swap{width:54px;cursor:pointer}.swap:active{scale:.88}
+/* ---- floating feedback ---- */
+.float{position:absolute;z-index:20;pointer-events:none;font:900 22px Poppins;color:#fff;-webkit-text-stroke:5px #1a1020;paint-order:stroke fill;animation:rise 800ms cubic-bezier(.33,1,.68,1) forwards}
+@keyframes rise{0%{scale:.6;opacity:0}20%{scale:1.1;opacity:1}100%{translate:0 -54px;opacity:0}}
+.shout{position:absolute;left:0;right:0;top:330px;text-align:center;z-index:21;pointer-events:none;font:900 40px Poppins;color:#ffe08a;-webkit-text-stroke:8px #3a1400;paint-order:stroke fill;rotate:-5deg;animation:shout 900ms var(--out) forwards}
+@keyframes shout{0%{scale:0;opacity:0}25%{scale:1.15;opacity:1}70%{scale:1;opacity:1}100%{scale:1.1;opacity:0}}
+.flash{position:absolute;inset:0;background:#ff3a5a;opacity:0;pointer-events:none;z-index:19}.flash.on{animation:fl 300ms}@keyframes fl{30%{opacity:.25}}
+#fx{position:absolute;inset:0;pointer-events:none;z-index:18}
+/* ---- overlays ---- */
+.ov{position:absolute;inset:0;z-index:40;display:none;place-items:center;background:#05030ecc;backdrop-filter:blur(6px)}
+.ov.on{display:grid}.card{width:300px;padding:58px 18px 20px;border-radius:30px;background:linear-gradient(#3a2ab0,#22168a);box-shadow:inset 0 0 0 3px #ffffff33,0 20px 40px #0008;text-align:center;position:relative;animation:pop 340ms var(--out)}
+@keyframes pop{0%{scale:.7;opacity:0}100%{scale:1;opacity:1}}
+.card .rib{position:absolute;left:50%;top:-30px;translate:-50% 0;width:280px}
+.card h2{margin:0;font:900 22px Poppins}.card .big{font:900 44px Poppins;font-variant-numeric:tabular-nums;margin:6px 0}
+.card p{margin:4px 0 14px;opacity:.85}
+.btn{position:relative;width:220px;margin:8px auto 0;cursor:pointer}.btn img{width:100%;display:block}.btn b{position:absolute;inset:0 0 13%;display:grid;place-items:center;font:900 20px Poppins;color:var(--lc,#0e2a06)}
+.btn:active{scale:.95}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<div class="hint">Tap anywhere on the screen (or <b>Space</b>) to fire · tap NEXT or <b>S</b> to swap · <b>P</b> pauses</div>
+<div class="phone" id="phone">
+  <div class="bgscene" id="bgscene"></div><div class="vig"></div>
+  <div class="hud">
+    <img class="pause" id="pauseBtn" src="../buttons/graphite/ui_graphite_icon-pause_normal.svg" alt="Pause">
+    <div class="score" id="scoreBox"><small>SCORE</small><b id="score">0</b><span class="combo" id="combo">×1</span><div class="meter"><i id="meter"></i></div></div>
+    <div class="lives" id="lives"></div>
+  </div>
+  <div class="meta"><span>BEST <b id="best">0</b></span><span>SPEED <b id="speed">1</b></span><span>STREAK <b id="streak">0</b></span></div>
+  <div class="arena" id="arena"><div class="board" id="board"></div></div>
+  <div class="tray">
+    <div class="slot"><img class="bg" src="../hud/slot_now.svg" alt=""><img class="pc2" id="nowImg" src="../pieces/core/box/piece_box_cyan.svg" alt="NOW piece"><span>NOW</span></div>
+    <img class="swap" id="swapBtn" src="../buttons/graphite/ui_graphite_icon-swap_normal.svg" alt="Swap">
+    <div class="slot next" id="nextSlot" style="cursor:pointer"><img class="bg" src="../hud/slot_next.svg" alt=""><img class="pc2" id="nextImg" src="../pieces/core/box/piece_box_lime.svg" alt="NEXT piece"><span>NEXT</span></div>
+  </div>
+  <div class="taphint" id="taphint">TAP ANYWHERE TO FIRE</div>
+  <div class="flash" id="flash"></div><canvas id="fx"></canvas>
+  <div class="ov" id="pauseOv"><div class="card"><div class="ribbon rib" style="--ribbon-src:url(../ui/chrome/brand/chr_brand_ribbon.svg);height:80px;border-width:0 52px;border-image-width:0 52px"><span class="label-3d" data-text="Paused" style="font:900 26px Poppins">Paused</span></div>
+    <p>The launcher waits for you.</p>
+    <div class="btn" data-act="resume"><img src="../buttons/graphite/ui_graphite_pill-primary_normal.svg" alt=""><b>Resume</b></div>
+    <div class="btn" data-act="restart" style="--lc:#fff"><img src="../buttons/graphite/ui_graphite_pill-secondary_normal.svg" alt=""><b>Restart</b></div>
+    <div class="btn" data-act="home" style="--lc:#fff"><img src="../buttons/graphite/ui_graphite_pill-danger_normal.svg" alt=""><b>Home</b></div></div></div>
+  <div class="ov" id="overOv"><div class="card"><div class="ribbon rib" style="--ribbon-src:url(../ui/chrome/volcano/chr_volcano_ribbon.svg);height:80px;border-width:0 52px;border-image-width:0 52px"><span class="label-3d" data-text="Run over" style="font:900 26px Poppins">Run over</span></div>
+    <h2 id="overWhy">Out of lives</h2><div class="big" id="overScore">0</div><p id="overBest"></p>
+    <div class="btn" data-act="restart"><img src="../buttons/graphite/ui_graphite_pill-primary_normal.svg" alt=""><b>Play again</b></div>
+    <div class="btn" data-act="home" style="--lc:#fff"><img src="../buttons/graphite/ui_graphite_pill-secondary_normal.svg" alt=""><b>Home</b></div></div></div>
+</div>
+<script type="module">
+const $ = s => document.querySelector(s);
+const N = 7, COLORS = ['cyan', 'magenta', 'lime', 'amber'], HEX = ['#7ff3ff', '#ff9ee8', '#d6ff8a', '#ffe08a'];
+// world comes from the home screen (?world=volcano) — its scene, board, pieces and first obstacle skin the run
+const LV = await (await fetch('../data/levels.json')).json();
+const WORLD = LV[new URLSearchParams(location.search).get('world')] ? new URLSearchParams(location.search).get('world') : 'graphite', lv = LV[WORLD];
+const IMG = c => '../' + lv.pieces[c], CRATE = '../' + (WORLD === 'graphite' ? 'pieces/blockers/crate/blk_crate_3.svg' : lv.obstacles[0].states[0]);
+if (lv.scene) $('#bgscene').style.backgroundImage = `url(../${lv.scene})`; else $('#bgscene').style.background = 'radial-gradient(120% 70% at 50% 30%,#2e3340,#12141a)';
+$('#board').style.backgroundImage = `url(../${lv.board})`;
+document.documentElement.style.setProperty('--acc', ['#7ff3ff', '#ff9ee8', '#d6ff8a', '#ffe08a'][Object.keys(LV).indexOf(WORLD) % 4]);
+const css = getComputedStyle(document.documentElement);
+const CELL = 38, GAP = 4, PAD = 8, RING = 34, STEP = CELL + GAP;
+const cx = c => RING + PAD + c * STEP + CELL / 2, cy = r => RING + PAD + r * STEP + CELL / 2;   // arena coords of a cell centre
+const EDGE = RING / 2 - 2;
+// 24 launcher positions clockwise: top cols 0-6 (aim down), right rows 1-5 (aim left), bottom cols 6-0 (aim up), left rows 5-1 (aim right)
+const POS = [];
+for (let c = 0; c < N; c++) POS.push({ x: cx(c), y: EDGE, dr: 1, dc: 0, r0: 0, c0: c, rot: 180 });
+for (let r = 1; r < N - 1; r++) POS.push({ x: 2 * RING + 2 * PAD + N * STEP - GAP - EDGE, y: cy(r), dr: 0, dc: -1, r0: r, c0: N - 1, rot: 270 });
+for (let c = N - 1; c >= 0; c--) POS.push({ x: cx(c), y: 2 * RING + 2 * PAD + N * STEP - GAP - EDGE, dr: -1, dc: 0, r0: N - 1, c0: c, rot: 0 });
+for (let r = N - 2; r >= 1; r--) POS.push({ x: EDGE, y: cy(r), dr: 0, dc: 1, r0: r, c0: 0, rot: 90 });
+
+let grid, cellsEl = [], pcsEl = [], pos, now, next, score, combo, streak, lives, best = +localStorage.getItem('edgepulse.best') || 0, busy, paused, over, timer, placed;
+const arena = $('#arena'), board = $('#board');
+
+// ---- build static board cells + ring dots once ----
+for (let r = 0; r < N; r++) { cellsEl[r] = []; pcsEl[r] = [];
+  for (let c = 0; c < N; c++) { const d = document.createElement('div'); d.className = 'cell'; d.style.left = (cx(c) - CELL / 2) + 'px'; d.style.top = (cy(r) - CELL / 2) + 'px'; arena.appendChild(d); cellsEl[r][c] = d; } }
+POS.forEach(p => { const d = document.createElement('div'); d.className = 'dot'; d.style.left = p.x + 'px'; d.style.top = p.y + 'px'; arena.appendChild(d); });
+const lane = document.createElement('div'); lane.className = 'lane'; arena.appendChild(lane);
+const ghost = document.createElement('img'); ghost.className = 'ghost'; ghost.alt = ''; arena.appendChild(ghost);
+const L = document.createElement('div'); L.className = 'launcher'; L.innerHTML = '<div class="body"><img src="../board/launcher.svg" alt=""></div><img class="now" src="../pieces/core/box/piece_box_cyan.svg" alt="">'; arena.appendChild(L);
+
+// ---- particles ----
+const cv = $('#fx'); cv.width = 390 * devicePixelRatio; cv.height = 844 * devicePixelRatio; cv.style.width = '390px'; cv.style.height = '844px';
+const g = cv.getContext('2d'); let ps = [];
+function burst(x, y, n, cols, shard) { for (let i = 0; i < n; i++) { const a = Math.random() * 6.283, s = 2 + Math.random() * 5; ps.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 2, l: 1, c: cols[i % cols.length], shard }); } }
+(function tick() { g.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0); g.clearRect(0, 0, 390, 844);
+  ps = ps.filter(p => (p.l -= .03) > 0);
+  for (const p of ps) { p.x += p.vx; p.y += p.vy; p.vy += .25; g.globalAlpha = p.l; g.fillStyle = p.c; g.beginPath();
+    if (p.shard) { g.moveTo(p.x, p.y - 6); g.lineTo(p.x + 5, p.y + 4); g.lineTo(p.x - 5, p.y + 3); } else g.arc(p.x, p.y, 1 + 3.5 * p.l, 0, 7); g.fill(); }
+  requestAnimationFrame(tick); })();
+const toPhone = (ax, ay) => { const a = arena.getBoundingClientRect(), ph = $('#phone').getBoundingClientRect(); return [a.left - ph.left + ax, a.top - ph.top + ay]; };
+function floatText(txt, ax, ay) { const [x, y] = toPhone(ax, ay), d = document.createElement('div'); d.className = 'float'; d.textContent = txt; d.style.left = (x - 30) + 'px'; d.style.top = (y - 20) + 'px'; $('#phone').appendChild(d); setTimeout(() => d.remove(), 850); }
+function shout(txt) { const d = document.createElement('div'); d.className = 'shout'; d.textContent = txt; $('#phone').appendChild(d); setTimeout(() => d.remove(), 950); }
+
+// ---- game state ----
+const rnd = () => Math.random() * 4 | 0;
+function newGame() {
+  grid = Array.from({ length: N }, () => Array(N).fill(null));
+  pcsEl.forEach(row => row.forEach((el, c) => { if (el) el.remove(); }));
+  pcsEl = Array.from({ length: N }, () => Array(N).fill(null));
+  // starter layout: a few pieces in the middle (no ready-made matches) + two crates
+  let n = 0; while (n < 9) { const r = 2 + (Math.random() * 3 | 0), c = 1 + (Math.random() * 5 | 0); if (grid[r][c]) continue;
+    const col = rnd(); grid[r][c] = { col }; if (group(r, c).length >= 3) { grid[r][c] = null; continue; } n++; }
+  [[3, 0], [3, 6]].forEach(([r, c]) => (grid[r][c] = { crate: true }));
+  for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) if (grid[r][c]) draw(r, c);
+  pos = 0; now = rnd(); next = rnd(); score = 0; combo = 1; streak = 0; lives = 3; placed = 0; busy = false; paused = false; over = false;
+  $('#lives').innerHTML = '<img src="../hud/life_potion.svg" alt="">'.repeat(3);
+  ui(); $('#overOv').classList.remove('on'); $('#pauseOv').classList.remove('on');
+  shots = 0; $('#taphint').style.opacity = 1;
+  busy = true; readyGo().then(() => { busy = false; schedule(); });   // READY… GO! then the launcher starts
+}
+let shots = 0;
+async function readyGo() {
+  for (const [txt, cls] of [['READY', ''], ['GO!', 'go']]) { const d = document.createElement('div'); d.className = 'ready ' + cls; d.textContent = txt; $('#phone').appendChild(d); await wait(560); d.remove(); }
+}
+function draw(r, c, cls) {
+  pcsEl[r][c]?.remove();
+  const v = grid[r][c]; if (!v) { pcsEl[r][c] = null; return; }
+  const im = document.createElement('img'); im.className = 'pc' + (cls ? ' ' + cls : ''); im.src = v.crate ? CRATE : IMG(v.col);
+  im.style.left = (cx(c) - CELL / 2) + 'px'; im.style.top = (cy(r) - CELL / 2) + 'px'; arena.appendChild(im); pcsEl[r][c] = im;
+}
+const interval = () => Math.max(150, 430 - score / 25);          // launcher speeds up with score
+function schedule() { clearTimeout(timer); if (paused || over) return; timer = setTimeout(() => { if (!busy) { pos = (pos + 1) % POS.length; place(); } schedule(); }, interval()); }
+
+/** Where a shot from position p would land: last free cell before a piece/crate/opposite wall, or null if the entry is blocked. */
+function landing(p) {
+  let r = p.r0, c = p.c0; if (grid[r][c]) return null;
+  while (true) { const nr = r + p.dr, nc = c + p.dc; if (nr < 0 || nr >= N || nc < 0 || nc >= N || grid[nr][nc]) return [r, c]; r = nr; c = nc; }
+}
+function place() {
+  const p = POS[pos];
+  L.style.transition = `left ${interval()}ms linear, top ${interval()}ms linear`; L.style.left = p.x + 'px'; L.style.top = p.y + 'px';
+  L.querySelector('.body').style.rotate = p.rot + 'deg';
+  document.querySelectorAll('.cell.target').forEach(e => e.classList.remove('target'));
+  const t = landing(p);
+  ghost.style.display = t ? '' : 'none';
+  if (t) { const el = cellsEl[t[0]][t[1]]; el.classList.add('target'); el.style.setProperty('--tc', HEX[now]);
+    ghost.src = IMG(now); ghost.style.left = (cx(t[1]) - CELL / 2) + 'px'; ghost.style.top = (cy(t[0]) - CELL / 2) + 'px';
+    // lane highlight from entry to landing cell
+    const x1 = Math.min(cx(p.c0), cx(t[1])) - CELL / 2, y1 = Math.min(cy(p.r0), cy(t[0])) - CELL / 2, x2 = Math.max(cx(p.c0), cx(t[1])) + CELL / 2, y2 = Math.max(cy(p.r0), cy(t[0])) + CELL / 2;
+    Object.assign(lane.style, { left: x1 + 'px', top: y1 + 'px', width: (x2 - x1) + 'px', height: (y2 - y1) + 'px', opacity: 1, '--dir': `${p.rot + 180}deg` });
+    lane.style.setProperty('--dir', `${p.rot + 180}deg`);
+  } else lane.style.opacity = 0;
+}
+function ui() {
+  $('#score').textContent = score.toLocaleString(); $('#best').textContent = best.toLocaleString(); $('#streak').textContent = streak;
+  $('#speed').textContent = (430 / interval()).toFixed(1) + '×';
+  $('#combo').textContent = '×' + combo; $('#combo').classList.toggle('on', combo > 1); $('#meter').style.width = ((combo - 1) / 4 * 100) + '%';
+  if (grid) $('#phone').classList.toggle('danger', POS.filter(q => landing(q)).length <= 5);
+  $('#nowImg').src = IMG(now); $('#nextImg').src = IMG(next); L.querySelector('.now').src = IMG(now);
+  if (POS[pos]) place();
+}
+
+// connected same-colour group (orthogonal) containing r,c
+function group(r, c) {
+  const col = grid[r][c]?.col; if (col == null) return [];
+  const seen = new Set([r * N + c]), out = [[r, c]];
+  for (let i = 0; i < out.length; i++) { const [a, b] = out[i];
+    for (const [dr, dc] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const x = a + dr, y = b + dc;
+      if (x >= 0 && x < N && y >= 0 && y < N && !seen.has(x * N + y) && grid[x][y]?.col === col) { seen.add(x * N + y); out.push([x, y]); } } }
+  return out;
+}
+
+async function fire() {
+  if (busy || paused || over) return;
+  const p = POS[pos], t = landing(p);
+  if (!t) {   // blocked entry: lose a life, keep the piece
+    L.classList.remove('deny'); void L.offsetWidth; L.classList.add('deny'); $('#flash').classList.remove('on'); void $('#flash').offsetWidth; $('#flash').classList.add('on');
+    loseLife('Blocked entry'); return;
+  }
+  busy = true; L.classList.remove('kick'); void L.offsetWidth; L.classList.add('kick');
+  if (++shots >= 3) $('#taphint').style.opacity = 0;
+  const col = now; now = next; next = rnd(); ui();
+  // fly: launcher → landing cell, with a short motion trail
+  const fly = document.createElement('img'); fly.className = 'pc'; fly.src = IMG(col); fly.style.zIndex = 6;
+  fly.style.left = (p.x - CELL / 2) + 'px'; fly.style.top = (p.y - CELL / 2) + 'px'; arena.appendChild(fly);
+  const dist = Math.hypot(cx(t[1]) - p.x, cy(t[0]) - p.y), ms = 80 + dist * .55;
+  fly.animate([{ translate: '0 0' }, { translate: `${cx(t[1]) - p.x}px ${cy(t[0]) - p.y}px` }], { duration: ms, easing: 'cubic-bezier(.33,1,.68,1)', fill: 'forwards' });
+  await wait(ms);   // timer-driven: gameplay never waits on an animation promise
+  fly.remove();
+  grid[t[0]][t[1]] = { col }; draw(t[0], t[1], 'land'); placed++;
+  let gain = 10;
+  // clears: same-colour group of 3+ containing the new piece, plus any full row / column
+  const clear = new Set(), grp = group(t[0], t[1]); if (grp.length >= 3) grp.forEach(([a, b]) => clear.add(a * N + b));
+  let lines = 0;
+  for (let i = 0; i < N; i++) {
+    if (grid[i].every(v => v)) { lines++; for (let c = 0; c < N; c++) if (!grid[i][c].crate) clear.add(i * N + c); }
+    if (grid.every(row => row[i])) { lines++; for (let r = 0; r < N; r++) if (!grid[r][i].crate) clear.add(r * N + i); }
+  }
+  if (clear.size) {
+    await wait(140);
+    gain += 40 * clear.size * combo + 80 * lines;
+    const crates = new Set();
+    clear.forEach(k => { const r = k / N | 0, c = k % N;
+      for (const [dr, dc] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const x = r + dr, y = c + dc; if (grid[x]?.[y]?.crate) crates.add(x * N + y); }
+      pcsEl[r][c]?.classList.add('clear'); const [px, py] = toPhone(cx(c), cy(r)); burst(px, py, 7, [HEX[grid[r][c].col], '#fff']); });
+    crates.forEach(k => { const r = k / N | 0, c = k % N; gain += 25; pcsEl[r][c]?.classList.add('clear');
+      const [px, py] = toPhone(cx(c), cy(r)); burst(px, py, 12, ['#c98a4a', '#e8b070', '#6b3a14'], true); });
+    const [fx, fy] = [cx(t[1]), cy(t[0])]; floatText('+' + gain, fx, fy);
+    if (lines) shout(lines > 1 ? 'DOUBLE LINE!' : 'LINE CLEAR!'); else if (combo >= 2) shout(['', '', 'NICE!', 'GREAT!', 'AMAZING!', 'PULSE!'][Math.min(combo, 5)]);
+    await wait(230);
+    clear.forEach(k => { grid[k / N | 0][k % N] = null; draw(k / N | 0, k % N); });
+    crates.forEach(k => { grid[k / N | 0][k % N] = null; draw(k / N | 0, k % N); });
+    streak++; combo = Math.min(5, combo + 1);
+  } else { combo = 1; streak = 0; floatText('+10', cx(t[1]), cy(t[0])); }
+  score += gain; if (score > best) { best = score; localStorage.setItem('edgepulse.best', best); }
+  $('#scoreBox').classList.remove('bump'); void $('#scoreBox').offsetWidth; $('#scoreBox').classList.add('bump');
+  busy = false; ui();
+  if (POS.every(q => !landing(q))) endRun('Every entry is blocked');
+}
+function loseLife(why) {
+  lives--; const imgs = $('#lives').querySelectorAll('img:not(.lost)'); const last = imgs[imgs.length - 1];
+  if (last) { last.classList.add('lost'); const r = last.getBoundingClientRect(), ph = $('#phone').getBoundingClientRect(); burst(r.left - ph.left + 17, r.top - ph.top + 17, 8, ['#ff7ad9', '#c9a0ff', '#fff'], true); }
+  combo = 1; streak = 0; ui(); if (lives <= 0) endRun(why === 'Blocked entry' ? 'Out of lives' : why);
+}
+function endRun(why) {
+  over = true; clearTimeout(timer);
+  $('#overWhy').textContent = why; $('#overScore').textContent = score.toLocaleString();
+  $('#overBest').textContent = score >= best && score > 0 ? '🎉 New best!' : `Best ${best.toLocaleString()} · ${placed} pieces placed`;
+  setTimeout(() => $('#overOv').classList.add('on'), 450);
+}
+const wait = ms => new Promise(r => setTimeout(r, ms));
+function setPause(v) { if (over) return; paused = v; $('#pauseOv').classList.toggle('on', v); if (!v) schedule(); else clearTimeout(timer); }
+function swap() { if (busy || paused || over) return; [now, next] = [next, now]; ui(); for (const id of ['#nowImg', '#nextImg']) $(id).animate([{ scale: .5 }, { scale: 1.1 }, { scale: 1 }], 260); }
+
+// tap anywhere on the screen fires — except the HUD, the tray (swap) and open panels
+$('#phone').addEventListener('pointerdown', e => {
+  if (e.target.closest('.hud, .tray, .ov')) return;
+  const ph = $('#phone').getBoundingClientRect(), r = document.createElement('div'); r.className = 'tapfx';
+  r.style.left = (e.clientX - ph.left) + 'px'; r.style.top = (e.clientY - ph.top) + 'px'; $('#phone').appendChild(r); setTimeout(() => r.remove(), 450);
+  fire();
+});
+$('#swapBtn').onclick = swap; $('#nextSlot').onclick = swap; $('#pauseBtn').onclick = () => setPause(true);
+document.addEventListener('click', e => { const b = e.target.closest('[data-act]'); if (!b) return;
+  if (b.dataset.act === 'resume') setPause(false); if (b.dataset.act === 'restart') newGame(); if (b.dataset.act === 'home') location.href = 'home.html'; });
+addEventListener('keydown', e => { if (e.code === 'Space') { e.preventDefault(); fire(); } if (e.key === 's') swap(); if (e.key === 'p') setPause(!paused); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) setPause(true); });   // spec: an interrupted run returns paused
+newGame();
+</script></body></html>

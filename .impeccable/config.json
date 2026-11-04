@@ -74,6 +74,33 @@
         ],
         "createdAt": "2026-11-04T06:48:28.664Z",
         "reason": "Ribbon world title uses the 3D game lettering from the user's references"
+      },
+      {
+        "rule": "clipped-overflow-container",
+        "value": "*",
+        "files": [
+          "assets/pages/gameplay.html"
+        ],
+        "createdAt": "2026-11-04T07:26:23.688Z",
+        "reason": "Phone screen frame intentionally clips (device mock)"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "assets/pages/gameplay.html"
+        ],
+        "createdAt": "2026-11-04T07:26:23.716Z",
+        "reason": "Ribbon titles on pause/game-over use the established 3D game lettering"
+      },
+      {
+        "rule": "nested-cards",
+        "value": "*",
+        "files": [
+          "assets/pages/gameplay.html"
+        ],
+        "createdAt": "2026-11-04T07:27:28.024Z",
+        "reason": "Game screen mock: board and pause/game-over panels sit inside the phone screen frame by design"
       }
     ]
   }

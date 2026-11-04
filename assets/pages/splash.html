@@ -114,6 +114,8 @@ setInterval(() => {
 const TIPS = ['Wait for the launcher to line up with a gap, then tap to fire.', 'Fill a whole row or column to clear it — any colours count.',
               'Swap NOW and NEXT when another colour fits better.', 'Every fifth good shot in Blast drops a charged piece.'];
 let timers = [];
+/** After loading, the game opens on the home (main) screen. ?stay keeps the splash looping for review. */
+function goHome() { if (location.search.includes('stay')) return show('s4'); $('#phone').animate([{ opacity: 1 }, { opacity: 0 }], 280).onfinish = null; setTimeout(() => (location.href = 'home.html'), 260); }
 const later = (fn, ms) => timers.push(setTimeout(fn, ms));
 function show(id) { document.querySelectorAll('.scene').forEach(s => s.classList.toggle('on', s.id === id));
   document.querySelectorAll('[data-go]').forEach(b => b.setAttribute('aria-pressed', b.dataset.go === id)); }
@@ -127,7 +129,7 @@ function loading(onDone) {
 function play() {
   timers.forEach(clearTimeout); timers.forEach(clearInterval); timers = [];
   $('#paint').innerHTML = '';
-  show('s1'); later(() => show('s2'), 2100); later(() => { show('s3'); loading(() => later(() => show('s4'), 300)); }, 3900);
+  show('s1'); later(() => show('s2'), 2100); later(() => { show('s3'); loading(() => later(goHome, 300)); }, 3900);
 }
 document.addEventListener('click', e => {
   const g = e.target.closest('[data-go]');
@@ -171,7 +173,7 @@ async function collide() {
     A2(sp, [{ scale: 0 }, { scale: i === 3 ? 14 : 3 + i * 1.6 }], 520 + i * 90, 'cubic-bezier(.2,.9,.3,1)', 60 + i * 130);
   }
   await new Promise(r => setTimeout(r, 1700));
-  busy = false; play();    // in the game this is where the first level loads
+  busy = false; goHome();   // title PLAY also leads into the home screen
 }
 const A2 = (el, kf, ms, easing = 'ease-out', delay = 0) => el.animate(kf, { duration: ms, easing, delay, fill: 'forwards' }).finished;
 play();

@@ -37,7 +37,8 @@ for folder, title in CATEGORIES.items():
             nav.append(f'<a class="sub" href="#pieces-{sub}">{sub} <b>{n}</b></a>')
     sections.append(f'<details class="acc" id="{folder}"><summary><h2>{title} <span>{folder}/ · {count}</span></h2></summary><div class="accb">{body}</div></details>')
 
-LIVE = [("home-live", "Home · first screen (live)", "pages/home.html", "Lobby: HUD, world hero, side rails, modes, big PLAY, bottom tabs", 960),
+LIVE = [("gameplay-live", "Gameplay (playable)", "pages/gameplay.html", "7×7 board · launcher circles 24 edge positions · tap/Space to fire · S swap · P pause", 960),
+        ("home-live", "Home · first screen (live)", "pages/home.html", "Lobby: HUD, world hero, side rails, modes, big PLAY, bottom tabs", 960),
         ("splash-live", "Splash & opening (live)", "pages/splash.html", "Vertical opening: studio splash → characters → loading tips → title + Play", 960),
         ("ribbons-live", "Ribbons & result banners (live)", "pages/ribbons.html", "Curved/wave/bow ribbons, level-up badges, level completed, victory, icon progress bars", 1500),
         ("panels-live", "Panels & banners (live)", "pages/panels.html", "Dialogs, rewards, results, shop, daily, quests, toasts, events, callouts, lists, banners", 1500),

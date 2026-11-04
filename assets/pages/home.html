@@ -158,7 +158,8 @@ document.addEventListener('click', e => {
   const mode = e.target.closest('.mode');
   if (mode) { document.querySelectorAll('.mode').forEach(m => m.classList.toggle('sel', m === mode)); A.play(mode, 'pop');
     $('#ptxt').textContent = 'PLAY'; $('#psub').textContent = mode.dataset.mode === 'Campaign' ? `Level ${WORLDS.indexOf(world) * 10 + 14}` : mode.dataset.mode; return; }
-  if (e.target.closest('#play')) { const p = $('#play'); A.play(p, 'jelly'); burst(p, 30, ['#9dff6a', '#fff', '#ffd65a']); toast(`Starting ${$('#psub').textContent}…`); return; }
+  if (e.target.closest('#play')) { const p = $('#play'); A.play(p, 'jelly'); burst(p, 30, ['#9dff6a', '#fff', '#ffd65a']); toast(`Starting ${$('#psub').textContent}…`);
+    setTimeout(() => (location.href = `gameplay.html?world=${world}`), 650); return; }
   const a = e.target.closest('[data-act]'); if (!a) return;
   A.play(a, a.dataset.act === 'poke' ? 'jelly' : 'pop');
   const msg = { lives: 'Lives are full', coins: 'Open coin shop', settings: 'Settings', daily: 'Daily Pulse is ready!', event: 'Spooky Pulse event', offer: 'Starter offer', missions: '3 missions to claim', weekly: 'Weekly Journey 4/5', gift: '+25 shards!' }[a.dataset.act];
